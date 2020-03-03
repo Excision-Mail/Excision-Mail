@@ -18,7 +18,7 @@ For full functionality, including virus detection from ClamAV: 1GB RAM + 1GB swa
 
 * Allow each configuration to be overriden using user defined local configs, which are untouched over upgrades.
  
-## Minimalistic dependancies
+## Architecture Goals
  
 AnsiMail aims to use as much of the base OpenBSD system as possible
   * [OpenSMTPD](https://www.opensmtpd.org/)  
