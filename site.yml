@@ -1,0 +1,6 @@
+name: Install/Upgrade AnsiMail on this machine
+
+hosts: local
+
+vars_file:
+  - vars.yml
