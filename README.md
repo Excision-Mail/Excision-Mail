@@ -13,11 +13,11 @@ Aim of the project:
    Make an autoritative nameserver for your domain.  
    RECOMMENDED: this allows for a much better control over your DNS records
    * `unbound`
-   Make a local caching dns resolver.
+   Make a local caching dns resolver.  
    RECOMMENDED: this allows faster dns resolution and reduces your dependance on outside dns resolvers
  * Add minimalistic dependancies from ports for much needed and outstanding functionality
    * `rspamd`
-   Highly efficient and configurable spam classifier.
+   Highly efficient and configurable spam classifier.  
    We will also use it for dkim signing of outgoing mail.
    * `dovecot`
    Highly secure IMAP server to allow access from clients outside the server.
