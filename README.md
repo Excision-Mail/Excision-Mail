@@ -4,17 +4,20 @@ Anisble email project based on OpenSMTPD for OpenBSD
 ## Functionality Goals
 
 * Complete email server 
-  * Automated statistics reporting
+  * automated statistics reporting
   * alias management
-  * compression support for POP3 + IMAP (for minimizing data usage on mobile clients)
-  * 
+  * compression support for minimizing data usage on mobile clients
+  * full encryption support, using TLSA records for [DANE](https://halon.io/blog/what-is-dane/) protocol support
+  * automatic management of certificates from [Lets Encrypt](https://letsencrypt.org/)
+  * spam classification and automatic learning using [Rspamd](https://rspamd.com)
+  * OpenPGP support, including Web Key Service with Web Key Directory for automatic key exchange protocol
    
 * Very efficient  
 Minimal requirements: 1GB RAM + 1 core.  
 For full functionality, including virus detection from ClamAV: 1GB RAM + 1GB swap + 1 core.
  
 * Easy to build and upgrade  
- There should be no differences between upgrading a previous install and starting an install from scratch if using the same configurations for both pathways.
+ There should be no differences between upgrading a previous install and starting an install from scratch, if using the same configurations for both pathways.
 
 * Allow each configuration to be overriden using user defined local configs, which are untouched over upgrades.
  
@@ -40,3 +43,4 @@ Add as few dependancies as possible from ports for much needed and outstanding f
   Highly secure IMAP server to allow access from clients outside the server.
   * [Maildrop](https://www.courier-mta.org/maildrop/)  
   Local mail delivery agent, for automatic classification of emails into various inboxes.
+  RECOMMENDED: maildrop is highly configurable on a local user basis which allows for great flexibility.
