@@ -13,16 +13,16 @@ Anisble email project based on OpenSMTPD for OpenBSD
   * OpenPGP support, including Web Key Service with Web Key Directory for automatic key exchange protocol
    
 * Very efficient  
-Recommended requirements
-  * 1 core
-  * 1GB RAM
-  * Swap enabled
+  Recommended requirements
+    * 1 core
+    * 1GB RAM
+    * Swap enabled
   
-Minimal requirements
-  * 1 core
-  * 512MB RAM
+  Minimal requirements
+    * 1 core
+    * 512MB RAM
 
-Turn of optional dependancies if you don't have enough computational power.
+  Turn of optional dependancies if you don't have enough computational power.
  
 * Easy to build and upgrade  
  There should be no differences between upgrading a previous install and starting an install from scratch, if using the same configurations for both pathways.
