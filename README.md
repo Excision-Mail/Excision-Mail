@@ -45,10 +45,10 @@ Add as few dependancies as possible from ports for much needed and outstanding f
   * [Dovecot](https://www.dovecot.org/)  
   Highly secure IMAP server to allow access from clients outside the server.
   * [ClamAV](https://www.clamav.net/)  
-  Open source antivirus tools to check email attachments
+  Open source antivirus tools to check email attachments.  
   RECOMMENDED: is a very good tool give that some of your email clients will be on windows.
   * [Maildrop](https://www.courier-mta.org/maildrop/)  
-  Local mail delivery agent, for automatic classification of emails into various inboxes.
+  Local mail delivery agent, for automatic classification of emails into various inboxes.  
   RECOMMENDED: maildrop is highly configurable on a local user basis which allows for great flexibility.
 
 ## Installation
