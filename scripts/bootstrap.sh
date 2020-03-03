@@ -2,7 +2,7 @@
 
 
 if [ $(id -u) -ne 0 ] ; then
-    echo "this script must be run as root"
+    echo "You need to bootstrap the system as root or do the steps manually"
     exit 1
 fi
 
