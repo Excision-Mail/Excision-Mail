@@ -17,9 +17,11 @@ Recommended requirements
   * 1 core
   * 1GB RAM
   * Swap enabled
+  
 Minimal requirements
   * 1 core
   * 512MB RAM
+
 Turn of optional dependancies if you don't have enough computational power.
  
 * Easy to build and upgrade  
