@@ -1,5 +1,5 @@
 # AnsiMail
-Anisble email project based on OpenSMTPD for OpenBSD
+Fullstack mailserver based on OpenSMTPD for OpenBSD based on ansible
 
 ## Functionality Goals
 
@@ -12,22 +12,12 @@ Anisble email project based on OpenSMTPD for OpenBSD
   * spam classification and automatic learning using [Rspamd](https://rspamd.com)
   * OpenPGP support, including Web Key Service with Web Key Directory for automatic key exchange protocol
    
-* Very efficient  
-  Recommended requirements
-    * 1 core
-    * 1GB RAM
-    * Swap enabled
-  
-  Minimal requirements
-    * 1 core
-    * 512MB RAM
+* Be replicable, easy and stable to build and upgrade  
+There should be no differences between upgrading a previous install and starting an install from scratch, if using the same configurations for both pathways.  
+The main point of ansible is to be easily replicable and result in the exact same final state, no matter what interruptions in the middle. AnsiMail aims to be as 
 
-  Turn of optional dependancies if you don't have enough computational power.
- 
-* Easy to build and upgrade  
- There should be no differences between upgrading a previous install and starting an install from scratch, if using the same configurations for both pathways.
-
-* Allow each configuration to be overriden using user defined local configs, which are untouched over upgrades.
+* Locally configurable  
+Allow each configuration to be overriden using user defined local configs, which are untouched over upgrades.
  
 ## Architecture Goals
  
@@ -52,6 +42,22 @@ Add as few dependancies as possible from ports for much needed and outstanding f
   * [Maildrop](https://www.courier-mta.org/maildrop/)  
   Local mail delivery agent, for automatic classification of emails into various inboxes.  
   RECOMMENDED: maildrop is highly configurable on a local user basis which allows for great flexibility.
+
+## Requirements
+
+* Very efficient  
+  Recommended requirements
+    * 1 core
+    * 1GB RAM
+    * Swap enabled
+  
+  Minimal requirements
+    * 1 core
+    * 512MB RAM
+
+  **Note**: Turn off some of the optional components, if you don't have enough computational power.
+
+## Prerequisites
 
 ## Installation
 
