@@ -45,7 +45,7 @@ Add as few dependancies as possible from ports for much needed and outstanding f
 
 ## Requirements
 
-* Very efficient  
+* Highly efficient  
   Recommended requirements
     * 1 core
     * 1GB RAM
