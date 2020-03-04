@@ -18,6 +18,10 @@ The main point of ansible is to be easily replicable and result in the exact sam
 
 * Locally configurable  
 Allow each configuration to be overriden using user defined local configs, which are untouched over upgrades.
+
+* Well documented
+AnsiMail tries to follow OpenBSD philosophy of being well documented and explaining all the choices that have been made.  
+If it does not have good documentation, then it is still buggy.
  
 ## Architecture Goals
  
