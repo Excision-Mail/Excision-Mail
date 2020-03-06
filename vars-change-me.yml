@@ -9,35 +9,88 @@
 # This is the domain name for which the mail server will be set up.
 # You need at least one domain name.
 # Additional domain names will be allowed in the optional configurations.
-domain: <change-me>
+domain: <change-me> # e.g. aisha.cc
 
 # This is the network interface talking to the outside world
 # through which you will be receiving emails and clients will be connecting.
-#interface: vio0 # this is the one generally used on Vultr and other VPS platform
-interface: <change-me>
+#interface: vio0
+interface: <change-me> #e.g. vio0 # this is the one generally used on Vultr 
+                       #            and other VPS platform
 
 # ipv4/ipv6 address of this server
 # We need to get this manually instead of automatically in the case
 # that this server is behind a NAT and is only reachable via forwarded ports
-ip: <change-me>
-ip6: <change-me>
-
+ip: <change-me> # e.g. 1.2.3.4
+ip6: <change-me> # e.g. dead:beef
 
 # This is the user that will be added to :wheel and also quite a bit of other 
 # config is done to allow this user to work the system
 # (and if you use ssh_harden, will also be allowed ssh access to server)
 # Make sure that this user does not exist prior to running
 # Ansimail creates a default _ansimail user that is used to do configurations
-username: <change-me> 
+username: <change-me> # e.g. aisha
 
 
 
 #------------ OPTIONAL
 
+# SSH by default uses password authentication and allows everyone (except root)
+# We can harden ssh by only allowing certain users to 
+# access the server using ONLY public-key based authentication
+# Enabling this option adds a tonne of options, some of which are
+#  - SSHFP records to NSD (which also enables DNSSEC)
+#  - disables password bsaed logins for everyone
+#  - enables pubkey access for specified users (the username value from above
+#      is added by default, no need to list it here again)
+#  - changes default port of sshd to specified value
+#  - only allows ssh access on the specified interfaces (by opening the firewall)
+ssh_harden: true
+ssh_interfaces:
+        - <change-me> # vio0 is the default egress interface for most VPS servers
+        - <change-me> # add any others, like virtual(!?) interfaces
+ssh_port: <change-me> # change this to something other than 22 (unless you want 
+                      # random attackers trying out your server for checks
+ssh_users:
+        - <change-me>
+        - <change-me>
+
+# Harden the default firewall PF
+# By default the firewall allows all ports to be accessed
+# though there does need to be a service making use of that 
+# port
+# This will disable access to all ports except the ones 
+# required by enabled services and those listed here
+# Currently the ports are opened on all interfaces
+# If you have complex networking setup, then you should
+# disable pf_harden and configure it yourself, like a good little kid
+pf_harden: true
+additional_tcp_ports:
+        - <change-me>
+        - <change-me>
+additional_udp_ports:
+        - <change-me>
+        - <change-me>
+
 #--- NSD config (if you want to run a stealth master configuration)
 # HIGHLY RECOMMENDED TO ENABLE
 # (this is going to be a bit long)
 nsd_enable: true
+
+# Additional domain names for which to configure the mail server
+# can be added here
+# Contains the default domain name listed above automatically
+# Each of them is going to allow users to send the emails as if sent from 
+# their domain name
+# If you are enabling multiple domain names, it is a good idea to read
+# up on the NSD config (not necessary)
+# Also you need to provide secondary_nameservers and public_nameserver(_ipv6)
+# for each of the additional domains seperately
+#
+# COMPLEX USAGE: allows to do really complex things based off
+#                the automatic zone file configuration
+domain_list:
+        - <change-me> # domain-1 # e.g. epsilonknot.xyz
+        - <change-me> # domain-2 
 
 # These nameservers are the ones to which we will be sending NOTIFY and AXFR
 # BEWARE: these are not the same as the ip's of the nameservers of the 
@@ -62,35 +115,6 @@ public_nameservers_ipv6:
         - <change-me>
         - <change-me>
 
-# Additional domain names for which to configure the mail server
-# Each of them is going to allow users to send the emails as if sent from 
-# their domain name
-# If you are enabling multiple domain names, it is a good idea to read
-# up on the NSD config (not necessary)
-# Also you need to provide secondary_nameservers and public_nameserver(_ipv6)
-# for each of the additional domains seperately
-#
-# COMPLEX ENHANCEMENT: allow 
-additional_domains_present: false
-additional_domains:
-        - <change-me> # domain-1 # e.g. epsilonknot.xyz
-        - <change-me> # domain-2 
 additional_nameservers:
         - 
-
-
-# SSH by default uses password authentication
-# We can harden ssh by only allowing certain users to 
-# access the server using ONLY public-key based authentication
-# Enabling this option adds a tonne of options, some of which are
-#  - SSHFP records to NSD (which also enables DNSSEC)
-#  - disables password bsaed logins for everyone
-#  - enables pubkey access for specified users (the username value from above
-#      is added by default, no need to list it here again)
-#  - changes default port of sshd to specified value
-ssh_harden: false
-ssh_port: 2244 # or <change-me>
-ssh_users:
-        - <change-me>
-        - <change-me>
 
