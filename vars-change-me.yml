@@ -1,0 +1,96 @@
+# Variables information file
+
+# Each option has been described in as much detail as possible
+# READ EVERYTHING VERY CLOSELY
+
+
+#------------ REQUIRED
+
+# This is the domain name for which the mail server will be set up.
+# You need at least one domain name.
+# Additional domain names will be allowed in the optional configurations.
+domain: <change-me>
+
+# This is the network interface talking to the outside world
+# through which you will be receiving emails and clients will be connecting.
+#interface: vio0 # this is the one generally used on Vultr and other VPS platform
+interface: <change-me>
+
+# ipv4/ipv6 address of this server
+# We need to get this manually instead of automatically in the case
+# that this server is behind a NAT and is only reachable via forwarded ports
+ip: <change-me>
+ip6: <change-me>
+
+
+# This is the user that will be added to :wheel and also quite a bit of other 
+# config is done to allow this user to work the system
+# (and if you use ssh_harden, will also be allowed ssh access to server)
+# Make sure that this user does not exist prior to running
+# Ansimail creates a default _ansimail user that is used to do configurations
+username: <change-me> 
+
+
+
+#------------ OPTIONAL
+
+#--- NSD config (if you want to run a stealth master configuration)
+# HIGHLY RECOMMENDED TO ENABLE
+# (this is going to be a bit long)
+nsd_enable: true
+
+# These nameservers are the ones to which we will be sending NOTIFY and AXFR
+# BEWARE: these are not the same as the ip's of the nameservers of the 
+#         DNS hosting provider, such as ns1.dnsmadeeasy.com. These have are
+#         given to you when you configure the DNS provider as a secondary 
+#         service, not when using as the primary 
+# For some reason these are currently only ipv4 (maybe I should read some more)
+secondary_nameservers:
+        - <change-me>
+        - <change-me>
+
+# These nameservers are used by others in the internet to find your servers
+# through DNS querying.
+# They are the ones that should resolve to ns1.dnsmadeeasy.com/ns1.<dns-provider.tld>
+# or something of that form, which makes it clear that they are DNS servers
+# You will also need to provide these for any additional domains that
+# you add in the following section
+public_nameservers:
+        - <change-me>
+        - <change-me>
+public_nameservers_ipv6:
+        - <change-me>
+        - <change-me>
+
+# Additional domain names for which to configure the mail server
+# Each of them is going to allow users to send the emails as if sent from 
+# their domain name
+# If you are enabling multiple domain names, it is a good idea to read
+# up on the NSD config (not necessary)
+# Also you need to provide secondary_nameservers and public_nameserver(_ipv6)
+# for each of the additional domains seperately
+#
+# COMPLEX ENHANCEMENT: allow 
+additional_domains_present: false
+additional_domains:
+        - <change-me> # domain-1 # e.g. epsilonknot.xyz
+        - <change-me> # domain-2 
+additional_nameservers:
+        - 
+
+
+# SSH by default uses password authentication
+# We can harden ssh by only allowing certain users to 
+# access the server using ONLY public-key based authentication
+# Enabling this option adds a tonne of options, some of which are
+#  - SSHFP records to NSD (which also enables DNSSEC)
+#  - disables password bsaed logins for everyone
+#  - enables pubkey access for specified users (the username value from above
+#      is added by default, no need to list it here again)
+#  - changes default port of sshd to specified value
+ssh_harden: false
+ssh_port: 2244 # or <change-me>
+ssh_users:
+        - <change-me>
+        - <change-me>
+
