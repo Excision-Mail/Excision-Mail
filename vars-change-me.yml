@@ -39,6 +39,7 @@ username: <change-me> # e.g. aisha
 # access the server using ONLY public-key based authentication
 # Enabling this option adds a tonne of options, some of which are
 #  - SSHFP records to NSD (which also enables DNSSEC)
+#      this can be toggled off per domain basis
 #  - disables password bsaed logins for everyone
 #  - enables pubkey access for specified users (the username value from above
 #      is added by default, no need to list it here again)
@@ -74,23 +75,8 @@ additional_udp_ports:
 #--- NSD config (if you want to run a stealth master configuration)
 # HIGHLY RECOMMENDED TO ENABLE
 # (this is going to be a bit long)
-nsd_enable: true
 
-# Additional domain names for which to configure the mail server
-# can be added here
-# Contains the default domain name listed above automatically
-# Each of them is going to allow users to send the emails as if sent from 
-# their domain name
-# If you are enabling multiple domain names, it is a good idea to read
-# up on the NSD config (not necessary)
-# Also you need to provide secondary_nameservers and public_nameserver(_ipv6)
-# for each of the additional domains seperately
-#
-# COMPLEX USAGE: allows to do really complex things based off
-#                the automatic zone file configuration
-domain_list:
-        - <change-me> # domain-1 # e.g. epsilonknot.xyz
-        - <change-me> # domain-2 
+nsd_enable: true
 
 # These nameservers are the ones to which we will be sending NOTIFY and AXFR
 # BEWARE: these are not the same as the ip's of the nameservers of the 
@@ -115,6 +101,69 @@ public_nameservers_ipv6:
         - <change-me>
         - <change-me>
 
-additional_nameservers:
-        - 
+
+# COMPLEX USAGE: allows you to do really complex things based off
+#                the automatic zone file configuration
+# If this is true, it ignores the following variables
+#   - domain (the first variable defined above)
+#   - nsd_enable
+#   - secondary_nameservers
+#   - public_nameservers
+#   - public_nameservers_ipv6
+# You need to do complex nsd if you have more than one domain
+# that you want to configure here, and send emails for both 
+# of them from the same server, else it is fine to use the simple nsd config from above
+nsd_complex: false
+
+# There will be some example configurations in the examples/ directory
+# which show how to pick and choose domains for NSD and also how to disable
+# specific records that our NSD configuration adds
+# In essence, the configuration here can be thought of as a generator for each domain
+# You have to enable the first domain, which needs to be the same as the one above
+# but even there you can enable/disable certain configs
+
+# Additional domain names for which to configure the mail server
+# can be added here
+# Contains the default domain name listed above automatically
+# Each of them is going to allow users to send the emails as if sent from 
+# their domain name
+# If you are enabling multiple domain names, it is a good idea to read
+# up on the NSD config (not necessary)
+# Also you need to provide secondary_nameservers and public_nameserver(_ipv6)
+# for each of the additional domains seperately
+
+domain_list:
+        - name: <change-me>
+          domain_name: <change-me>
+          # Do the certificates for this domain need to be generated and auto managed?
+          # If so, we will use the default httpd and acme-client to generate the certs
+          # specifically for ansimail.domain.tld
+          # valid options: true/false
+          manage_certs: <change-me>
+          # If you disable nsd for a domain, a zone file is still created to tell you
+          # what records you need to manually enter in your DNS host
+          enable_domain_nsd: <change-me>
+          # secondary nameservers for this specific domain
+          secondary_nameservers:
+                  - <change-me>
+                  - <change-me>
+          # These nameservers are used by others in the internet to find your servers
+          # through DNS querying.
+          # They are the ones that should resolve to ns1.dnsmadeeasy.com/ns1.<dns-provider.tld>
+          # or something of that form, which makes it clear that they are DNS servers
+          # You will also need to provide these for any additional domains that
+          # you add in the following section
+          # NEEDS: enable_domain_nsd: true
+          public_nameservers:
+                  - <change-me>
+                  - <change-me>
+          public_nameservers_ipv6:
+                  - <change-me>
+                  - <change-me>
+          # You can disable specific records if you want
+          # valid options are: sshfp, caa, tlsa
+          # NEEDS: enable_domain_nsd: true
+          disable_records:
+                  - <change-me>
+                  - <change-me>
 
