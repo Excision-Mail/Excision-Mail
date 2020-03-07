@@ -48,20 +48,19 @@ Add as few dependancies as possible from ports for much needed and outstanding f
   RECOMMENDED: maildrop is highly configurable on a local user basis which allows for great flexibility.
 
 ## Requirements
+OpenBSD 6.6 (may run on -current, but it will not be prioritized)  
+Recommended requirements
+  * 1 core
+  * 1GB RAM
+  * Swap enabled
+Minimal requirements
+  * 1 core
+  * 512MB RAM
 
-* Highly efficient  
-  Recommended requirements
-    * 1 core
-    * 1GB RAM
-    * Swap enabled
-  
-  Minimal requirements
-    * 1 core
-    * 512MB RAM
-
-  **Note**: Turn off some of the optional components, if you don't have enough computational power.
+**Note**: Turn off some of the optional components, if you don't have enough computational power.
 
 ## Prerequisites
+
 
 ## Installation
 
