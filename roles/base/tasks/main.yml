@@ -1,0 +1,27 @@
+- name: generate login.conf
+  copy:
+          src: login.conf
+          dest: /etc/login.conf
+  notify: rebuild login database
+
+- name: create log files
+  copy:
+          content: ""
+          dest: /var/log/{{ item }}
+          force: no
+          mode: 0640
+  with_items: { nsd, httpd, doas, spamd }
+  notify: reload syslog
+
+- name: generate syslog conf
+  copy:
+          src: syslog.conf
+          dest: /etc/syslog.conf
+  notify: reload syslog
+
+- name: generate newsyslog conf
+  copy:
+          src: newsyslog.conf
+          dest: /etc/newsyslog.conf
+  notify: newsyslog
+

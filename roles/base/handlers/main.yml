@@ -1,0 +1,10 @@
+- name: rebuild login database
+  command: cap_mkdb /etc/login.conf
+
+- name: reload syslog
+  service:
+    name: syslogd
+    state: reloaded
+
+- name: newsyslog
+  command: newsyslog

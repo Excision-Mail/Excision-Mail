@@ -7,13 +7,12 @@
 
   roles:
         - { role: base,      tags: ['base']      }
-        - { role: spamd,     tags: ['spamd']     }
-        - { role: rspamd,    tags: ['rspamd']    }
-        - { role: clamav,    tags: ['clamav']    }
-        - { role: dovecot,   tags: ['dovecot']   }
-        - { role: smtpd,     tags: ['smtpd']     }
-        - { role: ssh,       tags: ['ssh']       }
-        - { role: pf,        tags: ['pf']        }
-        - { role: nsd,       tags: ['nsd']       }
-        - { role: ansimail,  tags: ['ansimail']  }
+          #- { role: rspamd,    tags: ['rspamd']    }
+          #- { role: clamav,    tags: ['clamav']    }
+          #- { role: dovecot,   tags: ['dovecot']   }
+          #- { role: smtpd,     tags: ['smtpd']     }
+          #- { role: ssh,       tags: ['ssh']       }
+          #- { role: pf,        tags: ['pf']        }
+          #- { role: nsd,       tags: ['nsd']       }
+          #- { role: ansimail,  tags: ['ansimail']  }
 
