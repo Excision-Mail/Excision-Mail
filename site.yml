@@ -1,11 +1,11 @@
-name: Install/Upgrade AnsiMail on this machine
+- name: Install/Upgrade AnsiMail on this machine
 
-hosts: local
+  hosts: local
 
-vars_file:
+  vars_files:
         - vars.yml
 
-roles:
+  roles:
         - { role: base,      tags: ['base']      }
         - { role: spamd,     tags: ['spamd']     }
         - { role: rspamd,    tags: ['rspamd']    }
