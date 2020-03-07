@@ -104,7 +104,8 @@ public_nameservers_ipv6:
 
 # COMPLEX USAGE: allows you to do really complex things based off
 #                the automatic zone file configuration
-# If this is true, it ignores the following variables
+# If this is true, the above simple nsd config is not done
+# This makes the configuration ignore the following variables
 #   - secondary_nameservers
 #   - public_nameservers
 #   - public_nameservers_ipv6
@@ -129,37 +130,37 @@ nsd_complex: false
 # Also you need to provide secondary_nameservers and public_nameserver(_ipv6)
 # for each of the additional domains seperately
 domain_list:
-        - name: <change-me>
-          domain_name: <change-me>
-          # Do the certificates for this domain need to be generated and auto managed?
-          # If so, we will use the default httpd and acme-client to generate the certs
-          # specifically for ansimail.domain.tld
-          # valid options: true/false
-          manage_certs: <change-me>
-          # If you disable nsd for a domain, a zone file is still created to tell you
-          # what records you need to manually enter in your DNS host
-          enable_domain_nsd: <change-me>
-          # secondary nameservers for this specific domain
-          secondary_nameservers:
-                  - <change-me>
-                  - <change-me>
-          # These nameservers are used by others in the internet to find your servers
-          # through DNS querying.
-          # They are the ones that should resolve to ns1.dnsmadeeasy.com/ns1.<dns-provider.tld>
-          # or something of that form, which makes it clear that they are DNS servers
-          # You will also need to provide these for any additional domains that
-          # you add in the following section
-          # NEEDS: enable_domain_nsd: true
-          public_nameservers:
-                  - <change-me>
-                  - <change-me>
-          public_nameservers_ipv6:
-                  - <change-me>
-                  - <change-me>
-          # You can disable specific records if you want
-          # valid options are: sshfp, caa, tlsa
-          # NEEDS: enable_domain_nsd: true
-          disable_records:
-                  - <change-me>
-                  - <change-me>
+        <domain-1>: # also change the domain name in domain-1
+                domain_name: <change-me>
+                # Do the certificates for this domain need to be generated and auto managed?
+                # If so, we will use the default httpd and acme-client to generate the certs
+                # specifically for ansimail.domain.tld
+                # valid options: true/false
+                manage_certs: <change-me>
+                # If you disable nsd for a domain, a zone file is still created to tell you
+                # what records you need to manually enter in your DNS host
+                enable_domain_nsd: <change-me>
+                # secondary nameservers for this specific domain
+                secondary_nameservers:
+                        - <change-me>
+                        - <change-me>
+                # These nameservers are used by others in the internet to find your servers
+                # through DNS querying.
+                # They are the ones that should resolve to ns1.dnsmadeeasy.com/ns1.<dns-provider.tld>
+                # or something of that form, which makes it clear that they are DNS servers
+                # You will also need to provide these for any additional domains that
+                # you add in the following section
+                # NEEDS: enable_domain_nsd: true
+                public_nameservers:
+                        - <change-me>
+                        - <change-me>
+                public_nameservers_ipv6:
+                        - <change-me>
+                        - <change-me>
+                # You can disable specific records if you want
+                # valid options are: sshfp, caa, tlsa
+                # NEEDS: enable_domain_nsd: true
+                disable_records:
+                        - <change-me>
+                        - <change-me>
 
