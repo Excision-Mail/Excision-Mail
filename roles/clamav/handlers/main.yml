@@ -1,0 +1,23 @@
+- name: enable clamd
+  service:
+          name: clamd
+          state: enabled
+
+- name: enable freshclam
+  service:
+          name: freshclam
+          state: enabled
+
+- name: install freshclam list
+  command: freshclam
+
+- name: start clamd
+  service:
+          name: clamd
+          state: restarted
+
+- name: start freshclam
+  service:
+          name: freshclam
+          state: restarted
+

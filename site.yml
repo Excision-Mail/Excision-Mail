@@ -7,10 +7,10 @@
 
   roles:
         - { role: base,      tags: ['base']      }
+        - { role: clamav,    tags: ['clamav']    }
           #- { role: rspamd,    tags: ['rspamd']    }
-          #- { role: clamav,    tags: ['clamav']    }
-          #- { role: dovecot,   tags: ['dovecot']   }
           #- { role: smtpd,     tags: ['smtpd']     }
+          #- { role: dovecot,   tags: ['dovecot']   }
           #- { role: ssh,       tags: ['ssh']       }
           #- { role: pf,        tags: ['pf']        }
           #- { role: nsd,       tags: ['nsd']       }

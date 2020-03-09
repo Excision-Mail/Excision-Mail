@@ -1,0 +1,21 @@
+- name: install clamav
+  openbsd_pkg:
+          name: clamav
+          state: present
+  notify: 
+        - enable clamd
+        - enable freshclam
+
+- name: install freshclam conf
+  copy:
+          src: freshclam.conf
+          dest: /etc/freshclam.conf
+  notify:
+        - install freshclam list
+        - start freshclam
+
+- name: install clamd conf
+  copy:
+          src: clamd.conf
+          dest: /etc/clamd.conf
+  notify: start clamd

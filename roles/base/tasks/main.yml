@@ -10,7 +10,7 @@
           dest: /var/log/{{ item }}
           force: no
           mode: 0640
-  with_items: { nsd, httpd, doas, spamd }
+  with_items: { nsd, httpd, doas, spamd, clamav, freshclam}
   notify: reload syslog
 
 - name: generate syslog conf
