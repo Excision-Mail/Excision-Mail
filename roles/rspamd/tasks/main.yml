@@ -1,0 +1,47 @@
+- name: install redis
+  openbsd_pkg:
+          name: redis
+          state: present
+  notify: enable redis
+
+- name: install rspamd
+  openbsd_pkg:
+          name: rspamd
+          state: present
+
+- name: create public certificate directory
+  file:
+          path: '{{ dkim_home }}'
+          mode: 0755
+          owner: root
+          group: wheel
+          state: directory
+
+- name: create private certificate directory
+  file:
+          path: '{{ dkim_home }}/private'
+          mode: 0750
+          owner: root
+          group: _rspamd
+          state: directory
+
+- name: create certificates for domain
+  include: openssl.yml
+
+- name: install rspamd local configs
+  copy:
+          src: local.d/{{ item }}
+          dest: /etc/rspamd/local.d/
+  with_items: { antivirus.conf, redis.conf, neural.conf, neural_group.conf }
+
+- name: install dkim signing config
+  template:
+          src: local.d/dkim_signing.conf.j2
+          dest: /etc/rspamd/local.d/dkim_signing.conf
+
+- name: install rspamd actions config
+  copy:
+          src: actions.conf
+          dest: /etc/rspamd/actions.conf
+  notify: enable rspamd
+ 
