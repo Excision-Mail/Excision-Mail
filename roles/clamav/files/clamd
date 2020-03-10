@@ -1,0 +1,13 @@
+#!/bin/ksh
+
+# Modified for AnsiMail (OpenBSD 6.6)
+
+daemon="/usr/local/sbin/clamd"
+daemon_timeout="120"
+
+. /etc/rc.d/rc.subr
+
+rc_reload=NO
+rc_bg=YES
+
+rc_cmd $1
