@@ -1,0 +1,18 @@
+- restart smtpd
+  service:
+          name: smtpd
+          enabled: yes
+          state: restarted
+
+
+- generate tables
+  template:
+          src: {{ item }}.j2
+          dest: /etc/mail/{{ item }}
+  with_items: { aliases, vdomains, vusers }
+
+- generate smtpd config
+  template:
+          src: smtpd.conf.j2
+          dest: /etc/mail/smtpd.conf
+  notify: restart smtpd
