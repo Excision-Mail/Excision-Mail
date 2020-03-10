@@ -1,0 +1,45 @@
+domain: aisha.cc
+hostname: cmail.aisha.cc
+
+interface: vio0
+
+ip: 66.55.159.103
+ip6: 2001:19f0:5:636f:5400:2ff:fe98:b6b1
+
+username: ansisha
+
+nsd_enable: true
+
+secondary_nameservers:
+        - 208.94.147.135
+        - 208.94.150.198
+        - 63.219.151.12
+        - 69.65.50.192
+        - 216.218.133.2
+
+public_nameservers:
+        freedns2:
+                ipv4: 66.55.159.10
+                ipv6: 2001:1850:1:5:800::6b
+        he5:
+                ipv4: 208.94.148.13
+                ipv6: 2600:1800:5::1
+        he6:
+                ipv4: 208.80.124.13
+                ipv6: 2600:1801:6::1
+        he7:
+                ipv4: 208.80.126.13
+                ipv6: 2600:1802:7::1
+        dnseasy2:
+                ipv4: 216.218.131.2
+                ipv6: 2001:470:200::2
+        dnseasy3:
+                ipv4: 216.218.132.2
+                ipv6: 2001:470:300::2
+        dnseasy4:
+                ipv4: 216.66.1.2
+                ipv6: 2001:470:400::2
+        dnseasy5:
+                ipv4: 216.66.80.18
+                ipv6: 2001:470:500::2
+
