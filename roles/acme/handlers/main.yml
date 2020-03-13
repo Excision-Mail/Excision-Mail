@@ -1,0 +1,11 @@
+- name: restart httpd
+  service:
+          name: httpd
+          enabled: yes
+          state: restarted
+
+- name: create acme certs
+  shell: acme-client -vv -f /etc/ansimail/acme-client.conf {{ hostname }}
+  ignore_errors: yes
+
+

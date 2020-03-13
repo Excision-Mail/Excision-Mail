@@ -8,6 +8,7 @@
   roles:
         - { role: pre-ansimail,  tags: ['pre-ansimail']   }
         - { role: base,          tags: ['base']           }
+        - { role: acme,          tags: ['acme']           }
         - { role: clamav,        tags: ['clamav']         }
         - { role: rspamd,        tags: ['rspamd']         }
           #- { role: spamd,         tags: ['spamd']          }

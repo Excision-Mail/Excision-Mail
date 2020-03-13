@@ -1,0 +1,12 @@
+- name: Create httpd config
+  template:
+          src: httpd.conf.j2
+          dest: /etc/httpd.conf
+  notify: restart httpd
+
+- name: Create acme config
+  template:
+          src: acme-client.conf.j2
+          dest: /etc/ansimail/acme-client.conf
+  notify: create acme certs
+
