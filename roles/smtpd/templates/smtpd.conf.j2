@@ -7,11 +7,7 @@ queue encryption a272335c9ee548b50c81f533356349be
 
 queue ttl 4d
 
-bounce warn 1h, 6h, 2d
-
 smtp max-message-size 35M
-
-max-deferred 100
 
 # actual mail handling
 pki {{ hostname }} cert  "/etc/ansimail/ssl/{{ hostname }}.fullchain.pem" 
