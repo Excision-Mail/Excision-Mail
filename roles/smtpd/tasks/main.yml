@@ -6,13 +6,13 @@
 - name: install senderscore filter
   openbsd_pkg:
           name: opensmtpd-filter-senderscore
-          state: present2
+          state: present
 
 - name: generate tables
   template:
-          src: {{ item }}.j2
+          src: aliases.j2
           dest: /etc/mail/{{ item }}
-  with_items: { aliases, vdomains, vusers }
+  with_items: aliases
 
 - name: generate smtpd config
   template:

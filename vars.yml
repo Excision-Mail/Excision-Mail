@@ -1,14 +1,14 @@
-domain: aisha.cc
-hostname: cmail.aisha.cc
+domain: epsilonknot.xyz
+hostname: ansimail.aisha.cc
+admin: epsilon
 
 interface: vio0
 
 ip: 66.55.159.103
 ip6: 2001:19f0:5:636f:5400:2ff:fe98:b6b1
 
-username: ansisha
-
 nsd_enable: true
+enable_clamav: true
 
 secondary_nameservers:
         - 208.94.147.135
