@@ -1,13 +1,13 @@
 #!/bin/sh
 
 domain=$1
-key_file="/etc/mail/dkim/ansimail.$domain.key"
-pub_file="/etc/mail/dkim/ansimail.$domain.pub"
+key_file="/etc/ansimail/dkim/ansimail.$domain.key"
+pub_file="/etc/ansimail/dkim/ansimail.$domain.pub"
 
 mkdir -p /etc/mail/dkim
 
 if [ ! -e $key_file ]; then 
-	openssl genrsa -out "/etc/mail/dkim/ansimail.$domain.key" 2048
+	openssl genrsa -out $key_file 2048
 fi
 
 openssl rsa -in $key_file -pubout -out $pub_file

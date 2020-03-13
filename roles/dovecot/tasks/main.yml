@@ -1,0 +1,47 @@
+- name: Dovecot overriding configs
+  file:
+          src: {{ item }}
+          dest: /etc/dovecot/conf.d/
+  with_items: { 10-mail.conf, 15-mailboxes.conf, 20-imap.conf, 90-plugin.conf }
+
+- name: Dovecot local config
+  file:
+          src: local.conf
+          dest: /etc/dovecot/
+
+- name: Generate dovecot config
+  template:
+          src: 10-ssl.conf.j2
+          dest: /etc/dovecot/conf.d/10-ssl.conf
+  notify: restart dovecot
+
+- name: Add sieve scripts for spam and ham
+  file:
+          src: {{ item }}
+          dest: /usr/local/lib/dovecot/sieve/{{ item }}
+          owner: root
+          group: wheel
+          mode: '0644'
+  with_items: { report-ham.sieve, report-spam.sieve }
+
+- name: Add autolearn scripts for spam and ham
+  file:
+          src: {{ item }}
+          dest: /usr/local/lib/dovecot/sieve/{{ item }}
+          owner: root
+          group: wheel
+          mode: '0755'
+  with_items: { sa-learn-ham.sh, sa-learn-spam.sh }
+
+- name: sievec report spam
+  shell: sievec report-spam.sieve
+  args:
+          chdir: /usr/local/lib/dovecot/sieve/
+          creates: report-spam.svbin
+
+- name: sievec report ham
+  shell: sievec report-ham.sieve
+  args:
+          chdir: /usr/local/lib/dovecot/sieve/
+          creates: report-ham.svbin
+

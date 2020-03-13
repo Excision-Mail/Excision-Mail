@@ -1,0 +1,11 @@
+- name: Add aliases file
+  template:
+          src: aliases.j2
+          dest: /etc/mail/aliases
+
+- name: Generate smtpd config
+  template:
+          src: smtpd.conf.j2
+          dest: /etc/mail/smtpd.conf
+  notify: restart smtpd
+

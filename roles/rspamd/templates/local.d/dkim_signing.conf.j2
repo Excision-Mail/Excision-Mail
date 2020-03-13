@@ -2,7 +2,7 @@ allow_username_mismatch = true;
 
 domain {
     {{ domain }} {
-        path = "/etc/mail/dkim/private/ansimail.{{ domain }}.key";
+        path = "/etc/ansimail/dkim/private/ansimail.{{ domain }}.key";
         selector = "ansimail";
     }
 }

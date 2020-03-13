@@ -1,5 +1,6 @@
 # Modified for AnsiMail (OpenBSD 6.6)
 
+# options for smtpd
 queue compression
 
 queue encryption {{ enc_key }}
@@ -12,9 +13,9 @@ smtp max-message-size 35M
 
 max-deferred 100
 
-
-pki {{ hostname }} cert  "/etc/ssl/{{ hostname }}.fullchain.pem" 
-pki {{ hostname }} key   "/etc/ssl/private/{{ hostname }}.key"
+# actual mail handling
+pki {{ hostname }} cert  "/etc/ansimail/ssl/{{ hostname }}.fullchain.pem" 
+pki {{ hostname }} key   "/etc/ansimail/ssl/private/{{ hostname }}.key"
 
 # junk those sending from dynamic ip regex matches
 filter check_dyndns phase connect match rdns regex { '.*\.dyn\..*', '.*\.dsl\..*' } junk
@@ -32,20 +33,18 @@ filter rspamd proc-exec "filter-rspamd"
 # these are virtual names set up for forwarding
 table aliases file:/etc/mail/aliases
 
-table 
-
 # this checks for spam vs ham on smtp port
-listen on all tls pki mail.aisha.cc \
+listen on all tls pki {{ hostname }}  \
     filter { check_dyndns, check_rdns, check_fcrdns, senderscore, rspamd }
 
 # this signs the outgoing emails using the rspamd dkim_signing module
-listen on all port submission tls-require pki mail.aisha.cc auth filter rspamd
+listen on all port submission tls-require pki {{ hostname }} auth filter rspamd
 
 action "local_mail" maildir junk alias <aliases>
 #action "local_mail" mda "/usr/local/bin/maildrop -f -" alias <aliases>
-action "outbound" relay helo mail.aisha.cc
+action "outbound" relay helo {{ hostname }}
 
-match from any for domain "" action "local_mail"
+match from any for domain "{{ domain }}" action "local_mail"
 match for local action "local_mail"
 
 match from any auth for any action "outbound"

@@ -1,12 +1,7 @@
-- name: install clamav
-  openbsd_pkg:
-          name: clamav
-          state: present
-
 - name: install clamd init script
   copy:
           src: clamd
-          dest: /etc/rc.d/clamd.conf
+          dest: /etc/rc.d/clamd
           mode: 0755
           owner: root
           group: bin
