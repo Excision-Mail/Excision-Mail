@@ -1,14 +1,25 @@
 - name: Install required packages
   openbsd_pkg:
-          name: {{ item }}
+          name: "{{ item.name }}"
           state: present
-  with_items: { dovecot, dovecot-pigeonhole, rspamd, opensmtpd-filter-rspamd, opensmtpd-filter-senderscore, redis, maildrop }
+  with_items: 
+          - { name: "dovecot" }
+          - { name: "dovecot-pigeonhole" }
+          - { name: "rspamd" }
+          - { name: "opensmtpd-filter-rspamd" }
+          - { name: "opensmtpd-filter-senderscore" }
+          - { name: "redis" }
 
 - name: Install ClamAV if needed
   openbsd_pkg:
           name: clamav
           state: present
   when: enable_clamav|default(false)|bool
+
+- name: Make AnsiMail group
+  group:
+          name: _ansimail
+          system: yes
 
 - name: Make AnsiMail user
   user:
@@ -17,7 +28,7 @@
           system: yes
           group: _ansimail
           append: yes
-          groups: wheel, _smtpd, _rspamd, _clamav, _sshd 
+          groups: wheel, _smtpd, _rspamd, _clamav, sshd 
           login_class: default
           shell: /sbin/nologin
           create_home: no
@@ -40,7 +51,7 @@
           state: directory
           owner: _ansimail
           group: wheel
-          mode: '0755'
+          mode: '0775'
 
 - name: Create DKIM public certificate directory
   file:
@@ -48,7 +59,7 @@
           state: directory
           owner: _ansimail
           group: wheel
-          mode: '0755'
+          mode: '0775'
 
 - name: Create DKIM private certificates directory
   file:
@@ -56,7 +67,7 @@
           state: directory
           owner: _ansimail
           group: wheel
-          mode: '0750'
+          mode: '0770'
 
 - name: Create Lets Encrypt public certificates directory
   file:
@@ -64,7 +75,7 @@
           state: directory
           owner: _ansimail
           group: wheel
-          mode: '0755'
+          mode: '0775'
 
 - name: Create Lets Encrypt private certificates directory
   file:
@@ -72,7 +83,7 @@
           state: directory
           owner: _ansimail
           group: wheel
-          mode: '0750'
+          mode: '0770'
 
 - name: Create NSD config directory
   file:
@@ -80,5 +91,5 @@
           state: directory
           owner: _ansimail
           group: wheel
-          mode: '0755'
+          mode: '0775'
 
