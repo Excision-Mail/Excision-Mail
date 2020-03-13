@@ -1,11 +1,21 @@
-- name: Add aliases file
-  template:
-          src: aliases.j2
-          dest: /etc/mail/aliases
+- name: install rspamd filter
+  openbsd_pkg:
+          name: opensmtpd-filter-rspamd
+          state: present
 
-- name: Generate smtpd config
+- name: install senderscore filter
+  openbsd_pkg:
+          name: opensmtpd-filter-senderscore
+          state: present2
+
+- name: generate tables
+  template:
+          src: {{ item }}.j2
+          dest: /etc/mail/{{ item }}
+  with_items: { aliases, vdomains, vusers }
+
+- name: generate smtpd config
   template:
           src: smtpd.conf.j2
           dest: /etc/mail/smtpd.conf
   notify: restart smtpd
-
