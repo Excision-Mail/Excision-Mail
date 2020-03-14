@@ -1,27 +1,47 @@
-- name: generate login.conf
+- name: Generate login.conf
   copy:
           src: login.conf
           dest: /etc/login.conf
+          owner: root
+          group: wheel
+          mode: '0644'
   notify: rebuild login database
 
-- name: create log files
+- name: Make sure log files exist
   copy:
           content: ""
           dest: /var/log/{{ item }}
           force: no
-          mode: 0640
-  with_items: { nsd, httpd, doas, spamd, clamd, freshclam}
-  notify: reload syslog
+          owner: root
+          group: wheel
+          mode: '0640'
+  with_items: { nsd, httpd, doas, clamd, freshclam}
 
-- name: generate syslog conf
+- name: Generate syslog conf
   copy:
           src: syslog.conf
           dest: /etc/syslog.conf
+          owner: root
+          group: wheel
+          mode: '0644'
   notify: reload syslog
 
-- name: generate newsyslog conf
+- name: Generate newsyslog conf
   copy:
           src: newsyslog.conf
           dest: /etc/newsyslog.conf
-  notify: newsyslog
+          owner: root
+          group: wheel
+          mode: '0644'
+  notify: reload newsyslog
 
+- name: Generate pf config
+  template:
+          src: pf.conf.j2
+          dest: /etc/pf.conf
+          owner: root
+          group: wheel
+          mode: '0600'
+  notify: reload pf
+
+- meta: flush_handlers

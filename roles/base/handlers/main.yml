@@ -6,5 +6,9 @@
     name: syslogd
     state: reloaded
 
-- name: newsyslog
+- name: reload newsyslog
   command: newsyslog
+
+- name: reload pf
+  command: pfctl -f /etc/pf.conf
+
