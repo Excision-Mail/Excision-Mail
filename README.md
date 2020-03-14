@@ -28,8 +28,6 @@ If it does not have good documentation, then it is still buggy.
 AnsiMail aims to use as much of the base OpenBSD system as possible
   * [OpenSMTPD](https://www.opensmtpd.org/)  
   The default OpenBSD mail transfer agent. Highly secure, fast and efficient.
-  * [spamd(8)](https://man.openbsd.org/spamd)
-  Spam deferral daemon which rejects false mail in a very efficient way, used for greylisting.
   * [nsd(8)](https://man.openbsd.org/nsd.8)  
   Make an autoritative nameserver for your domain.  
 
