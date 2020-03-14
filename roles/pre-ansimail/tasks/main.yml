@@ -50,14 +50,11 @@
 
 - name: Install AnsiMail scripts
   copy:
-          src: "{{ item.name }}"
+          src: ansimail_scripts/
           dest: /usr/local/share/ansimail/
           owner: root
           group: wheel
           mode: '0644'
-  with_items:
-          - { name: "renew-certs" }
-          - { name: "show-stats" }
 
 - name: Create AnsiMail base config directory
   file:

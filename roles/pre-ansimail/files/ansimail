@@ -11,6 +11,8 @@ if [ $# -lt 1 ]; then
 fi
 
 case "$1" in
+	"ensure-dkim")
+		/bin/sh /usr/local/share/ansimail/ensure-dkim $2;;
 	"renew-certs")
 		/bin/sh /usr/local/share/ansimail/renew-certs $2;;
 	"show-stats")

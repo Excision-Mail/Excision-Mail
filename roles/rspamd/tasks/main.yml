@@ -1,20 +1,24 @@
-- name: create certificates for domain
+- name: Create dkim certs for domain
   include: openssl.yml
 
-- name: install rspamd local configs
-  copy:
-          src: local.d/{{ item }}
-          dest: /etc/rspamd/local.d/
-  with_items: { antivirus.conf, redis.conf, neural.conf, neural_group.conf }
+- name: Create rspamd local.d directory
+  file:
+          name: /etc/rspamd/local.
+          state: directory
+          owner: root
+          group: wheel
+          mode: '0755'
 
-- name: install dkim signing config
+- name: Create rspamd local confs
+  copy:
+          src: etc_rspamd_locald/
+          dest: /etc/rspamd/local.d/
+          owner: root
+          group: wheel
+          mode: '0644'
+
+- name: Create dkim_signing config
   template:
           src: local.d/dkim_signing.conf.j2
           dest: /etc/rspamd/local.d/dkim_signing.conf
 
-- name: install rspamd actions config
-  copy:
-          src: actions.conf
-          dest: /etc/rspamd/actions.conf
-  notify: enable rspamd
- 

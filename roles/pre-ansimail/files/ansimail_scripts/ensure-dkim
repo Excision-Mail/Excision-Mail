@@ -1,0 +1,30 @@
+#!/bin/sh
+
+domain=$1
+key_file="/etc/ansimail/dkim/private/ansimail.$domain.key"
+pub_file="/etc/ansimail/dkim/ansimail.$domain.pub"
+
+echo "##### Generating/Checking DKIM certificates for domain: $domain"
+
+echo "### Making sure private key file exists"
+if [ ! -e $key_file ]; then 
+	openssl genrsa -out $key_file 2048
+fi
+
+openssl rsa -in $key_file -check
+
+if [ $? -ne 0 ]; then
+	openssl genrsa -out $key_file 2048
+fi
+
+echo "### Making sure public key file exists"
+
+openssl rsa -in $key_file -pubout -out $pub_file
+
+echo "### Ensuring correct permissions on both files"
+chown root:_rspamd $key_file
+chmod 640 $key_file
+
+chown root:wheel $pub_file
+chmod 644 $pub_file
+
