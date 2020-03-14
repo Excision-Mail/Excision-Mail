@@ -2,18 +2,18 @@
 inbound_tcp = "{ submission, smtp, imaps }"
 
 # check what port we want ssh to run on and open that specific one
-{% if ssh_port %}
+{% if ssh_port is defined %}
 ssh_port = "{ {{ ssh_port }} }"
 {% else %}
 ssh_port = "{ ssh }"
 {% endif %}
 
 # we will also need to open the additional ports defined by the user
-{% if additional_tcp_ports %}
+{% if additional_tcp_ports is defined %}
 additional_tcp_ports = "{ {{ additional_tcp_ports | join(', ') }} }"
 {% endif %}
 
-{% if additional_udp_ports %}
+{% if additional_udp_ports is defined %}
 additional_udp_ports = "{ {{ additional_udp_ports | join(', ') }} }"
 {% endif %}
 
@@ -29,15 +29,15 @@ pass proto icmp6
 
 pass in on egress inet proto tcp to port $ssh_port
 
-{% if enable_nsd %}
+{% if enable_nsd is defined %}
 pass in on egress inet to port domain
 {% endif %}
 
-{% if additional_tcp_ports %}
+{% if additional_tcp_ports is defined %}
 pass in on egress inet proto tcp to port $additional_tcp_ports
 {% endif %}
 
-{% if additional_udp_ports %}
+{% if additional_udp_ports is defined %}
 pass in on egress inet proto udp to port $additional_udp_ports
 {% endif %}
 

@@ -5,31 +5,34 @@
   with_items: 
           - { name: "dovecot" }
           - { name: "dovecot-pigeonhole" }
+          - { name: "clamav" }
           - { name: "rspamd" }
           - { name: "opensmtpd-filter-rspamd" }
           - { name: "opensmtpd-filter-senderscore" }
           - { name: "redis" }
 
-- name: Install ClamAV if needed
-  openbsd_pkg:
-          name: clamav
-          state: present
-  when: enable_clamav|default(false)|bool
-
-- name: Make AnsiMail group
-  group:
-          name: _ansimail
-          system: yes
+- name: Enable required services
+  service:
+          name: "{{ item.name }}"
+          enabled: yes
+  with_items:
+          - { name: "redis" }
+          - { name: "freshclam" }
+          - { name: "clamd" }
+          - { name: "rspamd" }
+          - { name: "dovecot" }
+          - { name: "nsd" }
+          - { name: "httpd" }
 
 - name: Make AnsiMail user
   user:
-          name: _ansimail
+          name: ansimail
           comment: AnsiMail manager
           system: yes
-          group: _ansimail
+          group: wheel
           append: yes
-          groups: wheel, _smtpd, _rspamd, _clamav, sshd 
-          login_class: default
+          groups: _smtpd, _rspamd, _clamav, sshd 
+          login_class: daemon
           shell: /sbin/nologin
           create_home: no
 
@@ -41,55 +44,74 @@
   file:
           name: /usr/local/share/ansimail
           state: directory
-          owner: _ansimail
+          owner: root
           group: wheel
           mode: '0755'
+
+- name: Install AnsiMail scripts
+  copy:
+          src: "{{ item.name }}"
+          dest: /usr/local/share/ansimail/
+          owner: root
+          group: wheel
+          mode: '0644'
+  with_items:
+          - { name: "renew-certs" }
+          - { name: "show-stats" }
 
 - name: Create AnsiMail base config directory
   file:
           name: /etc/ansimail
           state: directory
-          owner: _ansimail
+          owner: root
           group: wheel
-          mode: '0775'
+          mode: '0755'
 
 - name: Create DKIM public certificate directory
   file:
           name: /etc/ansimail/dkim
           state: directory
-          owner: _ansimail
+          owner: root
           group: wheel
-          mode: '0775'
+          mode: '0755'
 
 - name: Create DKIM private certificates directory
   file:
           name: /etc/ansimail/dkim/private
           state: directory
-          owner: _ansimail
+          owner: root
           group: wheel
-          mode: '0770'
+          mode: '0750'
 
 - name: Create Lets Encrypt public certificates directory
   file:
           name: /etc/ansimail/ssl
           state: directory
-          owner: _ansimail
+          owner: root
           group: wheel
-          mode: '0775'
+          mode: '0755'
 
 - name: Create Lets Encrypt private certificates directory
   file:
           name: /etc/ansimail/ssl/private
           state: directory
-          owner: _ansimail
+          owner: root
           group: wheel
-          mode: '0770'
+          mode: '0750'
 
 - name: Create NSD config directory
   file:
           name: /etc/ansimail/nsd
           state: directory
-          owner: _ansimail
+          owner: root
           group: wheel
-          mode: '0775'
+          mode: '0755'
+
+- name: Install `ansimail` command
+  copy:
+          src: ansimail
+          dest: /usr/local/bin/
+          owner: root
+          group: wheel
+          mode: '0755'
 

@@ -12,10 +12,12 @@
           dest: /etc/freshclam.conf
   notify:
           - install freshclam list
-          - start freshclam
+          - restart freshclam
 
 - name: install clamd conf
   copy:
           src: clamd.conf
           dest: /etc/clamd.conf
-  notify: start clamd
+  notify: restart clamd
+
+- meta: flush_handlers

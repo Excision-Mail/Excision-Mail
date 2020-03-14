@@ -1,13 +1,13 @@
 - name: install freshclam list
   command: freshclam
 
-- name: start clamd
+- name: restart clamd
   service:
           name: clamd
           enabled: yes
           state: restarted
 
-- name: start freshclam
+- name: restart freshclam
   service:
           name: freshclam
           enabled: yes

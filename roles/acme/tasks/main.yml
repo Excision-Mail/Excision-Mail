@@ -2,11 +2,18 @@
   template:
           src: httpd.conf.j2
           dest: /etc/httpd.conf
+          owner: root
+          group: wheel
+          mode: '0644'
   notify: restart httpd
 
 - name: Create acme config
   template:
           src: acme-client.conf.j2
           dest: /etc/ansimail/acme-client.conf
+          owner: root
+          group: wheel
+          mode: '0644'
   notify: create acme certs
 
+- meta: flush_handlers
