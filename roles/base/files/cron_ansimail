@@ -1,0 +1,19 @@
+# Modified for AnsiMail (OpenBSD 6.6)
+
+# crontab for ansimail user
+
+SHELL=/bin/sh
+PATH=/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin
+HOME=/var/log
+#
+#minute	hour	mday	month	wday	command
+#
+
+# get statistics report
+0	1	*	*	*	doas ansimail show-stats
+
+# renew lets-encrypt certificates
+0	2	*	*	*	doas ansimail renew-certs
+
+# show pending syspatches
+0	3	*	*	*	syspatch -c
