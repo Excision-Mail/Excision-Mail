@@ -18,4 +18,7 @@
   template:
           src: local.d/dkim_signing.conf.j2
           dest: /etc/rspamd/local.d/dkim_signing.conf
+          owner: root
+          group: wheel
+          mode: '0644'
 
