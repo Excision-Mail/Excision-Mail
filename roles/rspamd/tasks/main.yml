@@ -22,3 +22,17 @@
           group: wheel
           mode: '0644'
 
+- name: Check redis is started
+  service:
+          name: redis
+          state: started
+
+- name: Check rspamd is started
+  service:
+          name: rspamd
+          state: started
+
+- name: Check rspamd is reloaded
+  service:
+          name: rspamd
+          state: reloaded
