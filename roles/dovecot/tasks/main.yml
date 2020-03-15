@@ -1,23 +1,28 @@
-- name: Dovecot overriding configs
+- name: Copy dovecot local configs
   copy:
           src: "{{ item.name }}"
           dest: /etc/dovecot/conf.d/
+          owner: root
+          group: wheel
+          mode: '0644'
   with_items:
           - { name: "10-mail.conf" }
           - { name: "15-mailboxes.conf" }
           - { name: "20-imap.conf" }
           - { name: "90-plugin.conf" }
 
-- name: Dovecot local config
-  copy:
-          src: local.conf
-          dest: /etc/dovecot/local.conf
-
-- name: Generate dovecot config
+- name: Generate dovecot ssl local config
   template:
           src: 10-ssl.conf.j2
           dest: /etc/dovecot/conf.d/10-ssl.conf
-  notify: restart dovecot
+          owner: root
+          group: wheel
+          mode: '0644'
+
+- name: Restart dovecot
+  service:
+          name: dovecot
+          state: restarted
 
 - name: Add sieve scripts for spam and ham
   copy:
@@ -45,11 +50,9 @@
   shell: sievec report-spam.sieve
   args:
           chdir: /usr/local/lib/dovecot/sieve/
-          creates: report-spam.svbin
 
 - name: sievec report ham
   shell: sievec report-ham.sieve
   args:
           chdir: /usr/local/lib/dovecot/sieve/
-          creates: report-ham.svbin
 
