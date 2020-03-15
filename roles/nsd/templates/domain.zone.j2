@@ -34,9 +34,9 @@ www	IN	AAAA	{{ ipv6 }}
 {{ hostname }}	IN	AAAA	{{ ipv6 }}
 
 autoconfig	IN	CNAME	{{ hostname }}.{{ domain }}.
-wkd	IN	CNAME	{{ hostname }}.{{ domain }}.
 imap	IN	CNAME	{{ hostname }}.{{ domain }}.
 smtp	IN	CNAME	{{ hostname }}.{{ domain }}.
+wkd	IN	CNAME	{{ hostname }}.{{ domain }}.
 
 _openpgpkey._tcp	IN	SRV	0	0	443	wkd.{{ domain }}.
 _submission._tcp	IN	SRV	0	1	587	{{ hostname }}.{{ domain }}.
