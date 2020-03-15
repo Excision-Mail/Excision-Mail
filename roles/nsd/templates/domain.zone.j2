@@ -1,12 +1,12 @@
-$TTL	10800		; 3h ; used for all entries without ttl values, hence it can be overloaded by individual entries
+$TTL	600		; 3h ; used for all entries without ttl values, hence it can be overloaded by individual entries
 $ORIGIN	{{ domain }}.
 
-@	1D	SOA	ns1.{{ domain }}.	root.{{ domain }}. (
+@	600	SOA	ns1.{{ domain }}.	root.{{ domain }}. (
 	00000001	; serial
-	1h		; refresh
-	3m		; retry
+	10m		; refresh
+	1m		; retry
 	1w		; expire
-	3h		; minimum
+	10m		; minimum
 )
 
 
@@ -30,12 +30,11 @@ ns{{ loop.index }}	IN	AAAA	{{ ps.ipv6 }}
 www	IN	A	{{ ipv4 }}
 www	IN	AAAA	{{ ipv6 }}
 
-ansimail	IN	A	{{ ipv4 }}
-ansimail	IN	AAAA	{{ ipv6 }}
+{{ hostname }}	IN	A	{{ ipv4 }}
+{{ hostname }}	IN	AAAA	{{ ipv6 }}
 
-@	IN	MX	0	{{ hostname }}.
+@	IN	MX	0	{{ hostname }}.{{ domain }}.
 
 @	IN	TXT	"v=spf1 mx -all"
 _dmarc	IN	TXT	"v=DMARC1;p=reject;pct=100;rua=mailto:postmaster@{{ domain }};"
-
 
