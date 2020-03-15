@@ -14,6 +14,9 @@
           group: wheel
           mode: '0644'
 
+- name: Add DKIM TXT record to zone master file
+  shell: cat /etc/ansimail/ansimail.{{ domain }}.txt >> /var/nsd/zones/master/{{ domain }}.zone
+
 - name: Restart nsd
   service: 
           name: nsd
