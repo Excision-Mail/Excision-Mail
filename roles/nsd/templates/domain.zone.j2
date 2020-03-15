@@ -1,0 +1,40 @@
+$TTL	10800		; 3h ; used for all entries without ttl values, hence it can be overloaded by individual entries
+$ORIGIN	{{ domain }}.
+
+@	1D	SOA	ns1.{{ domain }}.	root.{{ domain }}. (
+	00000001	; serial
+	1h		; refresh
+	3m		; retry
+	1w		; expire
+	3h		; minimum
+)
+
+
+; CAA
+@	IN	CAA	0	issue		"letsencrypt.org"
+@	IN	CAA	0	issuewild	"letsencrypt.org"
+
+{% for ps in public_nameservers %}
+{% if ps.ipv4 is defined %}
+ns{{ loop.index }}	IN	A	{{ ps.ipv4 }}
+{% endif %}
+{% if ps.ipv6 is defined %}
+ns{{ loop.index }}	IN	AAAA	{{ ps.ipv6 }}
+{% endif %}
+{% endfor %}
+
+@	IN	A	{{ ipv4 }}
+@	IN	AAAA	{{ ipv6 }}
+
+www	IN	A	{{ ipv4 }}
+www	IN	AAAA	{{ ipv6 }}
+
+ansimail	IN	A	{{ ipv4 }}
+ansimail	IN	AAAA	{{ ipv6 }}
+
+@	IN	MX	0	ansimail.{{ domain }}.
+
+@	IN	TXT	"v=spf1 mx -all"
+_dmarc	IN	TXT	"v=DMARC1;p=reject;pct=100;rua=mailto:postmaster@{{ domain }};"
+
+

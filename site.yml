@@ -9,6 +9,7 @@
         - { role: pre-ansimail,  tags: ['pre-ansimail']   }
         - { role: base,          tags: ['base']           }
         - { role: acme,          tags: ['acme']           }
+        - { role: nsd,           tags: ['nsd']            }
         - { role: rspamd,        tags: ['rspamd']         }
         - { role: clamav,        tags: ['clamav']         }
         - { role: smtpd,         tags: ['smtpd']          }

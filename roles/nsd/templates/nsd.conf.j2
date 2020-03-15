@@ -1,0 +1,26 @@
+server:
+  ip-address: {{ ipv4 }}
+  ip-address: {{ ipv6 }}
+  ip-transparent: yes
+  server-count: 1
+  hide-version: yes
+  verbosity: 1
+  database: /var/nsd/db/nsd.db
+
+remote-control:
+  control-enable: yes
+  control-interface: /var/run/nsd.sock
+
+zone:
+  name: {{ domain }}
+  zonefile: "master/{{ domain }}.zone"
+{% for ns in secondary_nameservers %}
+  {% if ns.ipv4 is defined %}
+  notify: {{ ns.ipv4 }} NOKEY
+  provide-xfr: {{ ns.ipv4 }} NOKEY
+  {% endif %}
+  {% if ns.ipv6 is defined %}
+  notify: {{ ns.ipv6 }} NOKEY
+  provide-xfr: {{ ns.ipv6 }} NOKEY
+  {% endif %}
+{% endfor %}

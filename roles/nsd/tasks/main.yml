@@ -1,0 +1,21 @@
+- name: Generate nsd conf
+  template:
+          src: nsd.conf.j2
+          dest: /var/nsd/etc/nsd.conf
+          owner: root
+          group: wheel
+          mode: '0640'
+
+- name: Generate zone master file
+  template:
+          src: domain.zone.j2
+          dest: /var/nsd/zones/master/{{ domain }}.zone
+          owner: root
+          group: wheel
+          mode: '0640'
+
+- name: Restart nsd
+  service: 
+          name: nsd
+          state: restarted
+
