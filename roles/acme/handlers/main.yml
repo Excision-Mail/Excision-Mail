@@ -5,7 +5,7 @@
           state: restarted
 
 - name: create acme certs
-  shell: acme-client -vv -f /etc/ansimail/acme-client.conf {{ hostname }}
+  shell: acme-client -f /etc/ansimail/acme-client.conf {{ hostname }}
   ignore_errors: yes
 
 
