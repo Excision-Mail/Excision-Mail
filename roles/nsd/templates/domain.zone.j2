@@ -32,7 +32,7 @@ www	IN	AAAA	{{ ipv6 }}
 ansimail	IN	A	{{ ipv4 }}
 ansimail	IN	AAAA	{{ ipv6 }}
 
-@	IN	MX	0	ansimail.{{ domain }}.
+@	IN	MX	0	{{ hostname }}.
 
 @	IN	TXT	"v=spf1 mx -all"
 _dmarc	IN	TXT	"v=DMARC1;p=reject;pct=100;rua=mailto:postmaster@{{ domain }};"

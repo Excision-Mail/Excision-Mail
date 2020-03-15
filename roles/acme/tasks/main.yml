@@ -14,10 +14,12 @@
           owner: root
           group: wheel
           mode: '0644'
-  notify: create acme certs
+
+- name: Create acme certs
+  command: acme-client -f /etc/ansimail/acme-client.conf {{ hostname }}
 
 - name: Create dkim certs
   command: ansimail ensure-dkim {{ domain }}
-  notify: generate txt records
+  notify: generate TXT records
 
 - meta: flush_handlers
