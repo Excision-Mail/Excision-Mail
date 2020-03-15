@@ -1,5 +1,6 @@
 # read the file /etc/services to get an idea of predefined port names
-inbound_tcp = "{ submission, domain, smtp, imaps }"
+inbound_tcp = "{ submission, domain, smtp, imaps, http, https}"
+inbound_udp = "{ domain }"
 
 # check what port we want ssh to run on and open that specific one
 {% if ssh_port is defined %}
@@ -30,10 +31,7 @@ pass proto icmp6
 pass in on egress proto tcp to port $ssh_port
 
 pass in on egress proto tcp to port $inbound_tcp
-
-{% if enable_nsd is defined %}
-pass in on egress proto udp to port domain
-{% endif %}
+pass in on egress proto tcp to port $inbound_udp
 
 {% if additional_tcp_ports is defined %}
 pass in on egress proto tcp to port $additional_tcp_ports
