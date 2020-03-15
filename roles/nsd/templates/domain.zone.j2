@@ -15,6 +15,7 @@ $ORIGIN	{{ domain }}.
 @	IN	CAA	0	issuewild	"letsencrypt.org"
 
 {% for ps in public_nameservers %}
+@	IN	NS	ns{{ loop.index }}.{{ domain }}.
 {% if ps.ipv4 is defined %}
 ns{{ loop.index }}	IN	A	{{ ps.ipv4 }}
 {% endif %}
