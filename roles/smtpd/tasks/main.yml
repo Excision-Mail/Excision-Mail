@@ -1,21 +1,13 @@
-- name: install rspamd filter
-  openbsd_pkg:
-          name: opensmtpd-filter-rspamd
-          state: present
-
-- name: install senderscore filter
-  openbsd_pkg:
-          name: opensmtpd-filter-senderscore
-          state: present
-
-- name: generate tables
+- name: Generate aliases table
   template:
           src: aliases.j2
           dest: /etc/mail/{{ item }}
   with_items: aliases
 
-- name: generate smtpd config
+- name: Generate smtpd config
   template:
           src: smtpd.conf.j2
           dest: /etc/mail/smtpd.conf
   notify: restart smtpd
+
+- meta: flush_handlers
