@@ -2,11 +2,7 @@
 
 # options for smtpd
 queue compression
-
-queue encryption a272335c9ee548b50c81f533356349be
-
 queue ttl 4d
-
 smtp max-message-size 35M
 
 # actual mail handling
@@ -36,8 +32,8 @@ listen on all tls pki {{ hostname }}  \
 # this signs the outgoing emails using the rspamd dkim_signing module
 listen on all port submission tls-require pki {{ hostname }} auth filter rspamd
 
-action "local_mail" maildir junk alias <aliases>
-#action "local_mail" mda "/usr/local/bin/maildrop -f -" alias <aliases>
+#action "local_mail" maildir junk alias <aliases>
+action "local_mail" alias <aliases> deliver to lmtp "/var/dovecot/lmtp" rcpt-to
 action "outbound" relay helo {{ hostname }}
 
 match from any for domain "{{ domain }}" action "local_mail"

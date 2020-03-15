@@ -1,15 +1,10 @@
 - name: Copy dovecot local configs
   copy:
-          src: "{{ item.name }}"
+          src: etc_dovecot_confd/
           dest: /etc/dovecot/conf.d/
           owner: root
           group: wheel
           mode: '0644'
-  with_items:
-          - { name: "10-mail.conf" }
-          - { name: "15-mailboxes.conf" }
-          - { name: "20-imap.conf" }
-          - { name: "90-plugin.conf" }
 
 - name: Generate dovecot ssl local config
   template:

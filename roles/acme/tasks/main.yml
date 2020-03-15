@@ -17,6 +17,7 @@
 
 - name: Create acme certs
   command: acme-client -f /etc/ansimail/acme-client.conf {{ hostname }}
+  ignore_errors: yes
 
 - name: Create dkim certs
   command: ansimail ensure-dkim {{ domain }}

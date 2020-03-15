@@ -3,7 +3,7 @@
           src: nsd.conf.j2
           dest: /var/nsd/etc/nsd.conf
           owner: root
-          group: wheel
+          group: _nsd
           mode: '0640'
 
 - name: Generate zone master file
