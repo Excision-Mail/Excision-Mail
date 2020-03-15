@@ -1,6 +1,12 @@
 # Modified for AnsiMail (OpenBSD 6.6)
 
-server "{{ hostname }}" {
+server "{{ domain }}" {
+	alias "{{ hostname }}.{{ domain }}"
+	alias "autoconfig.{{ domain }}"
+	alias "wkd.{{ domain }}"
+	alias "imap.{{ domain }}"
+	alias "smtp.{{ domain }}"
+	alias "www.{{ domain }}"
 	listen on * port 80
 	location "/.well-known/acme-challenge/*" {
 		root "/acme"

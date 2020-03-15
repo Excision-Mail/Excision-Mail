@@ -10,8 +10,9 @@ authority letsencrypt-staging {
 	account key "/etc/acme/letsencrypt-staging-privkey.pem"
 }
 
-domain {{ hostname }} {
-	domain key "/etc/ansimail/ssl/private/{{ hostname }}.key"
-	domain full chain certificate "/etc/ansimail/ssl/{{ hostname }}.fullchain.pem"
+domain {{ domain }} {
+	alternative names { {{ hostname }}.{{ domain }} autoconfig.{{ domain }} wkd.{{ domain }} imap.{{ domain }} smtp.{{ domain }} www.{{ domain }} }
+	domain key "/etc/ansimail/ssl/private/{{ domain }}.key"
+	domain full chain certificate "/etc/ansimail/ssl/{{ domain }}.fullchain.pem"
 	sign with letsencrypt
 }
