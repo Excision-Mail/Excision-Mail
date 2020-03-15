@@ -12,11 +12,11 @@ fi
 
 case "$1" in
 	"ensure-dkim")
-		/bin/sh /usr/local/share/ansimail/ensure-dkim $2;;
+		/bin/sh /usr/local/lib/ansimail/ensure-dkim $2;;
 	"renew-certs")
-		/bin/sh /usr/local/share/ansimail/renew-certs $2;;
+		/bin/sh /usr/local/lib/ansimail/renew-certs $2;;
 	"show-stats")
-		/bin/sh /usr/local/share/ansimail/show-stats $2;;
+		/bin/sh /usr/local/lib/ansimail/show-stats $2;;
 	*)
 		echo "Unknow argument"
 		exit 1;;

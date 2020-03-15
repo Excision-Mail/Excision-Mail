@@ -42,7 +42,7 @@
 
 - name: Create AnsiMail scripts directory
   file:
-          name: /usr/local/share/ansimail
+          name: /usr/local/lib/ansimail
           state: directory
           owner: root
           group: wheel
@@ -51,7 +51,7 @@
 - name: Install AnsiMail scripts
   copy:
           src: ansimail_scripts/
-          dest: /usr/local/share/ansimail/
+          dest: /usr/local/lib/ansimail/
           owner: root
           group: wheel
           mode: '0644'
