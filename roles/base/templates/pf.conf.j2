@@ -28,6 +28,10 @@ block all
 pass proto icmp
 pass proto icmp6
 
+{% if private_interface is defined %}
+pass in on {{ private_interface }}
+{% endif %}
+
 pass in on egress proto tcp to port $ssh_port
 
 pass in on egress proto tcp to port $inbound_tcp
