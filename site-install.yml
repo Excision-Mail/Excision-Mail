@@ -1,0 +1,18 @@
+- name: Install/Upgrade AnsiMail on this machine
+
+  hosts: local
+
+  vars_files:
+          - vars.yml
+          - vars-system.yml
+
+  roles:
+          - { role: pre-ansimail,  tags: ['pre-ansimail']   }
+          - { role: base,          tags: ['base']           }
+          - { role: nsd,           tags: ['nsd']            }
+          - { role: acme,          tags: ['acme']           }
+          - { role: rspamd,        tags: ['rspamd']         }
+          - { role: clamav,        tags: ['clamav']         }
+          - { role: smtpd,         tags: ['smtpd']          }
+          - { role: dovecot,       tags: ['dovecot']        }
+
