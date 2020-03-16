@@ -5,7 +5,11 @@
           owner: root
           group: wheel
           mode: '0644'
-  notify: restart httpd
+
+- name: Restart httpd
+  service:
+          name: httpd
+          state: restarted
 
 - name: Create acme config
   template:
@@ -21,10 +25,9 @@
 
 - name: Create dkim certs
   command: ansimail ensure-dkim {{ domain }}
-  notify: generate TXT records
 
 - name: Add DKIM TXT record to zone master file
-    shell: cat /etc/ansimail/ansimail.{{ domain }}.txt >> /var/nsd/zones/master/{{ domain }}.zone
+  shell: cat /etc/ansimail/dkim/ansimail.{{ domain }}.txt >> /var/nsd/zones/master/{{ domain }}.zone
 
 - name: Restart nsd
   service:
