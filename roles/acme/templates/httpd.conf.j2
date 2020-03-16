@@ -7,13 +7,28 @@ server "{{ domain }}" {
 	alias "imap.{{ domain }}"
 	alias "smtp.{{ domain }}"
 	alias "www.{{ domain }}"
+
 	listen on * port 80
+
+	tcp nodelay
+	connection { max requests 500, timeout 3600 }
+
+	log { access "access.log", error "error.log" }
+
 	location "/.well-known/acme-challenge/*" {
 		root "/acme"
 		request strip 2
 	}
-	location * {
+
+	location "/mail/*" {
+		block return 302 "https://autoconfig.{{ domain }}$REQUEST_URI"
+	}
+
+	location "/*" {
 		block return 302 "https://$HTTP_HOST$REQUEST_URI"
 	}
 }
 
+types {
+	include "/usr/share/misc/mime.types"
+}
