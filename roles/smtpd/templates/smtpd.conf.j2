@@ -30,7 +30,8 @@ listen on all tls pki {{ domain }}  \
     filter { check_dyndns, check_rdns, check_fcrdns, senderscore, rspamd }
 
 # this signs the outgoing emails using the rspamd dkim_signing module
-listen on all port submission tls-require pki {{ domain }} auth filter rspamd
+listen on all port smtps tls-require pki {{ domain }} auth filter rspamd # SSL/TLS port
+listen on all port submission tls-require pki {{ domain }} auth filter rspamd # STARTTLS port
 
 #action "local_mail" maildir junk alias <aliases>
 action "local_mail" lmtp "/var/dovecot/lmtp" alias <aliases>
