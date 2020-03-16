@@ -31,7 +31,7 @@ pass proto icmp6
 pass in on egress proto tcp to port $ssh_port
 
 pass in on egress proto tcp to port $inbound_tcp
-pass in on egress proto tcp to port $inbound_udp
+pass in on egress proto udp to port $inbound_udp
 
 {% if additional_tcp_ports is defined %}
 pass in on egress proto tcp to port $additional_tcp_ports
