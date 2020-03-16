@@ -78,7 +78,7 @@
           state: directory
           owner: root
           group: wheel
-          mode: '0750'
+          mode: '0755'
 
 - name: Create Lets Encrypt public certificates directory
   file:
@@ -94,7 +94,7 @@
           state: directory
           owner: root
           group: wheel
-          mode: '0750'
+          mode: '0755'
 
 - name: Create NSD config directory
   file:
