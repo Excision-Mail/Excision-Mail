@@ -34,6 +34,7 @@
           groups: _smtpd, _rspamd, _clamav, sshd 
           login_class: daemon
           shell: /sbin/nologin
+          home: /nonexistent
           create_home: no
 
 - name: Make AnsiMail ssh group
@@ -44,6 +45,14 @@
   file:
           name: /usr/local/lib/ansimail
           state: directory
+          owner: root
+          group: wheel
+          mode: '0755'
+
+- name: Install `ansimail` command
+  copy:
+          src: ansimail
+          dest: /usr/local/bin/
           owner: root
           group: wheel
           mode: '0755'
@@ -100,14 +109,6 @@
   file:
           name: /etc/ansimail/nsd
           state: directory
-          owner: root
-          group: wheel
-          mode: '0755'
-
-- name: Install `ansimail` command
-  copy:
-          src: ansimail
-          dest: /usr/local/bin/
           owner: root
           group: wheel
           mode: '0755'
