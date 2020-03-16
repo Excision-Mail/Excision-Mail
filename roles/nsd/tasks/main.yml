@@ -1,3 +1,9 @@
+- name: Generate serial for nsd
+  shell: echo $(( $(date +%y%m%d%H%M) + 20000000 ))
+  register: nsdserial
+
+- debug: var=nsdserial.stdout
+
 - name: Generate nsd conf
   template:
           src: nsd.conf.j2
@@ -14,11 +20,12 @@
           group: wheel
           mode: '0644'
 
-- name: Add DKIM TXT record to zone master file
-  shell: cat /etc/ansimail/ansimail.{{ domain }}.txt >> /var/nsd/zones/master/{{ domain }}.zone
-
 - name: Add SSHFP records to zone master file
   shell: ssh-keygen -r {{ hostname }} >> /var/nsd/zones/master/{{ domain }}.zone
+
+- name: Addon nsd config for extra domain not listed here
+  when: (nsd_addon is defined)
+  shell: cat {{ nsd_addon }} >> /var/nsd/zones/master/{{ domain }}.zone  
 
 - name: Restart nsd
   service: 

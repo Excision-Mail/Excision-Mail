@@ -15,12 +15,12 @@ zone:
   name: {{ domain }}
   zonefile: "master/{{ domain }}.zone"
 {% for ns in secondary_nameservers %}
-  {% if ns.ipv4 is defined %}
+{% if ns.ipv4 is defined %}
   notify: {{ ns.ipv4 }} NOKEY
   provide-xfr: {{ ns.ipv4 }} NOKEY
-  {% endif %}
-  {% if ns.ipv6 is defined %}
+{% endif %}
+{% if ns.ipv6 is defined %}
   notify: {{ ns.ipv6 }} NOKEY
   provide-xfr: {{ ns.ipv6 }} NOKEY
-  {% endif %}
+{% endif %}
 {% endfor %}

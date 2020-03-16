@@ -1,12 +1,12 @@
-$TTL	600		; 3h ; used for all entries without ttl values, hence it can be overloaded by individual entries
+$TTL	10800		; 3h ; used for all entries without ttl values, hence it can be overloaded by individual entries
 $ORIGIN	{{ domain }}.
 
-@	600	SOA	ns1.{{ domain }}.	root.{{ domain }}. (
-	00000001	; serial
-	10m		; refresh
-	1m		; retry
-	1w		; expire
-	10m		; minimum
+@	1d	SOA	ns1.{{ domain }}.	root.{{ domain }}. (
+	{{ nsdserial.stdout }}		; serial
+	3h			; refresh
+	3m			; retry
+	1w			; expire
+	1d			; minimum
 )
 
 
