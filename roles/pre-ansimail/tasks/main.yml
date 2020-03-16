@@ -28,7 +28,6 @@
   user:
           name: ansimail
           comment: AnsiMail manager
-          system: yes
           group: wheel
           append: yes
           groups: _smtpd, _rspamd, _clamav, sshd 
