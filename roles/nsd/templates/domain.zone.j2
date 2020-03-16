@@ -39,7 +39,8 @@ smtp	IN	CNAME	{{ hostname }}.{{ domain }}.
 wkd	IN	CNAME	{{ hostname }}.{{ domain }}.
 
 _openpgpkey._tcp	IN	SRV	0	0	443	wkd.{{ domain }}.
-_submission._tcp	IN	SRV	0	1	587	{{ hostname }}.{{ domain }}.
+_submission._tcp	IN	SRV	0	1	465	{{ hostname }}.{{ domain }}.
+_submission._tcp	IN	SRV	5	1	587	{{ hostname }}.{{ domain }}.
 _imaps._tcp	IN	SRV	0	1	993	{{ hostname }}.{{ domain }}
 _imap._tcp	IN	SRV	0	0	0	.
 _pop3s._tcp	IN	SRV	0	0	0	.
