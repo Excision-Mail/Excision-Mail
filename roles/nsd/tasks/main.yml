@@ -2,8 +2,6 @@
   shell: echo $(( $(date +%y%m%d%H%M) + 20000000 ))
   register: nsdserial
 
-- debug: var=nsdserial.stdout
-
 - name: Generate nsd conf
   template:
           src: nsd.conf.j2
@@ -11,6 +9,13 @@
           owner: root
           group: _nsd
           mode: '0640'
+
+- name: Generate DKIM certs
+  command: ansimail ensure-dkim {{ domain }}
+
+- name: Get DKIM record
+  shell: cat /etc/ansimail/dkim/ansimail.{{ domain }}.txt
+  register: nsddkim
 
 - name: Generate zone master file
   template:

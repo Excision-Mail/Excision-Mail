@@ -48,5 +48,5 @@ _pop3._tcp	IN	SRV	0	0	0	.
 @	IN	MX	0	{{ hostname }}.{{ domain }}.
 @	IN	TXT	"v=spf1 mx -all"
 _dmarc	IN	TXT	"v=DMARC1;p=reject;pct=100;rua=mailto:postmaster@{{ domain }};"
-ansimail._domainkey	IN	TXT	"ansimail-placeholder"
+{{ nsddkim.stdout }}
 
