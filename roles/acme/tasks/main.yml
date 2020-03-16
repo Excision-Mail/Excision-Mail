@@ -16,7 +16,7 @@
           mode: '0644'
 
 - name: Create acme certs
-  command: acme-client -f /etc/ansimail/acme-client.conf {{ hostname }}
+  command: acme-client -f /etc/ansimail/acme-client.conf {{ domain }}
   ignore_errors: yes
 
 - name: Create dkim certs
