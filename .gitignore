@@ -1,5 +1,6 @@
 # don't add the vars file that users make
-vars.yml
+vars-user.yml
+
 
 CMakeLists.txt.user
 CMakeCache.txt
