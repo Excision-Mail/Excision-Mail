@@ -1,9 +1,0 @@
-- name: restart httpd
-  service:
-          name: httpd
-          enabled: yes
-          state: restarted
-
-- name: generate TXT records
-  shell: ( awk 'NR>2 {print last} {last=$0}' ORS='' /etc/ansimail/dkim/ansimail.{{ domain }}.pub ) | fold -w255 | awk 'BEGIN { print "ansimail._domainkey\tIN\tTXT\t(\"v=DKIM1;k=rsa;p=\"" } { print " " "\"" $0 "\"" } END { print " \";\")" }' | tr -d '\n' > /etc/ansimail/dkim/ansimail.{{ domain }}.txt
-
