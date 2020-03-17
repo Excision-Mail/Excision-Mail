@@ -22,6 +22,23 @@
           group: wheel
           mode: '0755'
 
+- name: Create mail directory in httpd domain
+  file:
+          name: /var/www/{{ domain }}/mail
+          state: directory
+          owner: root
+          group: wheel
+          mode: '0755'
+
+# https://wiki.mozilla.org/Thunderbird:Autoconfiguration#Implementation
+- name: Copy mozilla config file to mail
+  template:
+          src: config-v1.1.xml.j2
+          dest: /var/www/{{ domain }}/mail/config-v1.1.xml
+          owner: root
+          group: wheel
+          mode: '0755'
+
 - name: Create mta-sts directory
   file:
           name: /var/www/mta-sts
@@ -70,5 +87,10 @@
 - name: Create acme certs
   command: acme-client -f /etc/ansimail/acme-client.conf {{ domain }}
   ignore_errors: yes
+
+- name: Restart httpd
+  service:
+          name: httpd
+          state: restarted
 
 - meta: flush_handlers
