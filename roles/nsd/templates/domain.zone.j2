@@ -49,7 +49,7 @@ www	IN	AAAA	{{ ipv6 }}
 autoconfig	IN	CNAME	{{ hostname }}.{{ domain }}.
 ; autodiscover is used by mail clients based on outlook
 ; damn you microsoft; why not just use autoconfig
-autodiscover	IN	CNAME	{{ hostname }}.{{ domain }}
+autodiscover	IN	CNAME	{{ hostname }}.{{ domain }}.
 ; also set up other well known CNAME records in case of 
 ; older non compliant clients
 imap	IN	CNAME	{{ hostname }}.{{ domain }}.
@@ -71,7 +71,7 @@ _autodiscover._tcp	IN	SRV	0	0	443	autodiscover.{{ domain }}.
 ; submission's' is the SSL/TLS port while without the 's' is the STARTTLS
 _submissions._tcp	IN	SRV	0	1	465	{{ hostname }}.{{ domain }}. ; SSL/TLS
 _submission._tcp	IN	SRV	5	1	587	{{ hostname }}.{{ domain }}. ; STARTTLS
-_imaps._tcp	IN	SRV	0	1	993	{{ hostname }}.{{ domain }}
+_imaps._tcp	IN	SRV	0	1	993	{{ hostname }}.{{ domain }}.
 ; we disable POP3 and insecure IMAP from being automatically detected
 ; mayhaps you can override them on a client but just don't use them
 _imap._tcp	IN	SRV	0	0	0	.
