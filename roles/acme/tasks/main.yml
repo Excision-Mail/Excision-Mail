@@ -30,11 +30,29 @@
           group: wheel
           mode: '0755'
 
+- name: Create autodiscover directory in httpd domain
+  file:
+          name: /var/www/{{ domain }}/autodiscover
+          state: directory
+          owner: root
+          group: wheel
+          mode: '0755'
+
 # https://wiki.mozilla.org/Thunderbird:Autoconfiguration#Implementation
 - name: Copy mozilla config file to mail
   template:
           src: config-v1.1.xml.j2
           dest: /var/www/{{ domain }}/mail/config-v1.1.xml
+          owner: root
+          group: wheel
+          mode: '0755'
+
+# https://github.com/gronke/email-autodiscover/blob/master/mail/autodiscover.xml
+# https://docs.microsoft.com/en-us/previous-versions/office/office-2010/cc511507(v=office.14)?redirectedfrom=MSDN#Anchor_3
+- name: Copy autodiscover config file to autodiscover
+  template:
+          src: autodiscover.xml.j2
+          dest: /var/www/{{ domain }}/autodiscover/autodiscover.xml
           owner: root
           group: wheel
           mode: '0755'

@@ -11,7 +11,7 @@ authority letsencrypt-staging {
 }
 
 domain {{ domain }} {
-	alternative names { {{ hostname }}.{{ domain }} autoconfig.{{ domain }} wkd.{{ domain }} imap.{{ domain }} smtp.{{ domain }} mta-sts.{{ domain }} www.{{ domain }} }
+	alternative names { {{ hostname }}.{{ domain }} autoconfig.{{ domain }} autodiscover.{{ domain }} wkd.{{ domain }} imap.{{ domain }} smtp.{{ domain }} mta-sts.{{ domain }} www.{{ domain }} }
 	domain key "/etc/ansimail/ssl/private/{{ domain }}.key"
 	domain full chain certificate "/etc/ansimail/ssl/{{ domain }}.fullchain.pem"
 	sign with letsencrypt

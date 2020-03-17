@@ -47,6 +47,11 @@ www	IN	AAAA	{{ ipv6 }}
 ; autoconfig is used by mail clients to automatically set up
 ; the IMAP/SMTP configurations; specifically mozilla
 autoconfig	IN	CNAME	{{ hostname }}.{{ domain }}.
+; autodiscover is used by mail clients based on outlook
+; damn you microsoft; why not just use autoconfig
+autodiscover	IN	CNAME	{{ hostname }}.{{ domain }}
+; also set up other well known CNAME records in case of 
+; older non compliant clients
 imap	IN	CNAME	{{ hostname }}.{{ domain }}.
 smtp	IN	CNAME	{{ hostname }}.{{ domain }}.
 ; wkd is used for the web key directory service
@@ -60,6 +65,9 @@ mta-sts	IN	CNAME	{{ hostname }}.{{ domain }}.
 
 ; we also detail all the services used and the ports that they map to
 _openpgpkey._tcp	IN	SRV	0	0	443	wkd.{{ domain }}.
+; we need autodiscover service >.>
+; damn you microsoft
+_autodiscover._tcp	IN	SRV	0	0	443	autodiscover.{{ domain }}.
 ; submission's' is the SSL/TLS port while without the 's' is the STARTTLS
 _submissions._tcp	IN	SRV	0	1	465	{{ hostname }}.{{ domain }}. ; SSL/TLS
 _submission._tcp	IN	SRV	5	1	587	{{ hostname }}.{{ domain }}. ; STARTTLS
