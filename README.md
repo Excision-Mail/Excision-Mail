@@ -4,13 +4,10 @@ Fullstack mailserver based on OpenSMTPD for OpenBSD using ansible
 ## Functionality Goals
 
 * Complete email server 
-  * automated statistics reporting
-  * alias management
-  * compression support for minimizing data usage on mobile clients
-  * full encryption support, using TLSA records for [DANE](https://halon.io/blog/what-is-dane/) protocol support
+  * full encryption support, using MTA-STS
   * automatic management of certificates from [Lets Encrypt](https://letsencrypt.org/)
   * spam classification and automatic learning using [Rspamd](https://rspamd.com)
-  * OpenPGP support, including Web Key Service with Web Key Directory for automatic key exchange protocol
+  * Mozilla autoconfiguration manager for thunderbird and other opensource clients
    
 * Be replicable, easy and stable to build and upgrade  
 There should be no differences between upgrading a previous install and starting an install from scratch, if using the same configurations for both pathways.  
