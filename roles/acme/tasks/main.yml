@@ -6,6 +6,46 @@
           group: wheel
           mode: '0644'
 
+- name: Create httpd domain directory
+  file:
+          name: /var/www/{{ domain }}
+          state: directory
+          owner: root
+          group: wheel
+          mode: '0755'
+
+- name: Create domain index file with Hello, World!
+  copy:
+          src: index.html
+          dest: /var/www/{{ domain }}/index.html
+          owner: root
+          group: wheel
+          mode: '0755'
+
+- name: Create mta-sts directory
+  file:
+          name: /var/www/mta-sts
+          state: directory
+          owner: root
+          group: wheel
+          mode: '0755'
+
+- name: Copy mta-sts.txt file
+  template:
+          src: mta-sts.txt.j2
+          dest: /var/www/mta-sts/mta-sts.txt
+          owner: root
+          group: wheel
+          mode: '0755'
+
+- name: Create OpenPGP directory for WKD
+  file:
+          name: /var/www/openpgpkey
+          state: directory
+          owner: root
+          group: wheel
+          mode: '0755'
+
 - name: Restart httpd
   service:
           name: httpd

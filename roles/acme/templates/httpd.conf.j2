@@ -1,19 +1,20 @@
 # Modified for AnsiMail (OpenBSD 6.6)
 
+# CREDIT: vedetta-com/caesonia
+# https://github.com/vedetta-com/caesonia
+
 server "{{ domain }}" {
 	alias "{{ hostname }}.{{ domain }}"
 	alias "autoconfig.{{ domain }}"
 	alias "wkd.{{ domain }}"
+	alias "mta-sts.{{ domain }}"
 	alias "imap.{{ domain }}"
 	alias "smtp.{{ domain }}"
 	alias "www.{{ domain }}"
 
-	listen on * port 80
+	listen on * port http
 
 	tcp nodelay
-	connection { max requests 500, timeout 3600 }
-
-	log { access "access.log", error "error.log" }
 
 	location "/.well-known/acme-challenge/*" {
 		root "/acme"
@@ -27,6 +28,47 @@ server "{{ domain }}" {
 	location "/*" {
 		block return 302 "https://$HTTP_HOST$REQUEST_URI"
 	}
+}
+
+server "{{ domain }}" {
+	alias "{{ hostname }}.{{ domain }}"
+        alias "autoconfig.{{ domain }}"
+        alias "wkd.{{ domain }}"
+        alias "mta-sts.{{ domain }}"
+        alias "imap.{{ domain }}"
+        alias "smtp.{{ domain }}"
+        alias "www.{{ domain }}"
+
+	listen on * tls port https
+
+	hsts {
+		subdomains
+		preload 
+	}
+
+	tls {
+		certificate "/etc/ansimail/ssl/{{ domain }}.fullchain.pem"
+		key "/etc/ansimail/ssl/private/{{ domain }}.key"
+	}
+
+	tcp nodelay
+
+	# SMTP MTA Strict Transport Security
+	location "/.well-known/mta-sts.txt" {
+		root "/mta-sts"
+		request strip 1
+	}
+
+	# OpenPGP Web Key Directory
+	location "/.well-known/openpgpkey/*" {
+		root "/openpgpkey"
+		request strip 2
+	}
+
+	location "/*" {
+		root "/{{ domain }}"
+	}
+
 }
 
 types {
