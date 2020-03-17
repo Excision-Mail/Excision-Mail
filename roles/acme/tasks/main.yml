@@ -46,6 +46,14 @@
           group: wheel
           mode: '0755'
 
+- name: Copy OpenPGP submission address mail
+  template:
+          src: submission-address.j2
+          dest: /var/www/openpgpkey/submission-address
+          owner: root
+          group: wheel
+          mode: '0755'
+
 - name: Restart httpd
   service:
           name: httpd
