@@ -87,8 +87,9 @@
           state: directory
           owner: root
           group: wheel
-          mode: '0755'
+          mode: "{{ item.perm }}"
   with_items:
-          - { name: "/etc/ansimail/dkim/private" }
-          - { name: "/etc/ansimail/ssl/private" }
-          - { name: "/etc/ansimail/nsd" }
+          - { name: "/etc/ansimail/dkim/private", perm: "0755" }
+          - { name: "/etc/ansimail/ssl/private", perm: "0755" }
+          - { name: "/etc/ansimail/nsd", perm: "0755" }
+          - { name: "/etc/ansimail/smtpd", perm: "0700" }

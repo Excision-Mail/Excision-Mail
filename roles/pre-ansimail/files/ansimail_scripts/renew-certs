@@ -8,7 +8,7 @@ fi
 $domain=$1
 
 echo "### Renewing acme certificates"
-acme-client -v -f /etc/ansimail/acme-client.conf $domain
+acme-client -v -f /etc/ansimail/ssl/acme-client.conf $domain
 
 echo "\n### Reloading services"
 rcctl reload httpd dovecot
