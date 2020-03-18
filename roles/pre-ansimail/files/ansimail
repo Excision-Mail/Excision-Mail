@@ -17,6 +17,10 @@ case "$1" in
 		/bin/sh /usr/local/lib/ansimail/renew-certs $2;;
 	"show-stats")
 		/bin/sh /usr/local/lib/ansimail/show-stats $2;;
+	"add-alias")
+		/bin/sh /usr/local/lib/ansimail/add-alias $2;;
+	"add-user")
+		/bin/sh /usr/local/lib/ansimail/add-user $2;;
 	*)
 		echo "Unknow argument"
 		exit 1;;

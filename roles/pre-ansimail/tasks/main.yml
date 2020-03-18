@@ -24,11 +24,28 @@
           - { name: "nsd" }
           - { name: "httpd" }
 
+- name: Make AnsiMail group
+  group:
+          name: ansimail
+
+- name: Add users to ansimail group
+  user:
+          name: "{{ item.name }}"
+          append: yes
+          groups: ansimail
+  with_items:
+          - { name: "_rspamd" }
+          - { name: "_smtpd" }
+          - { name: "_dovecot" }
+          - { name: "_dovenull" }
+          - { name: "_clamav" }
+          - { name: "root" }
+
 - name: Make AnsiMail user
   user:
           name: ansimail
           comment: AnsiMail manager
-          group: wheel
+          group: ansimail
           append: yes
           groups: _smtpd, _rspamd, _clamav, sshd 
           login_class: daemon
@@ -64,51 +81,14 @@
           group: wheel
           mode: '0644'
 
-- name: Create AnsiMail base config directory
+- name: Create AnsiMail config directories
   file:
-          name: /etc/ansimail
+          name: "{{ item.name }}"
           state: directory
           owner: root
           group: wheel
           mode: '0755'
-
-- name: Create DKIM public certificate directory
-  file:
-          name: /etc/ansimail/dkim
-          state: directory
-          owner: root
-          group: wheel
-          mode: '0755'
-
-- name: Create DKIM private certificates directory
-  file:
-          name: /etc/ansimail/dkim/private
-          state: directory
-          owner: root
-          group: wheel
-          mode: '0755'
-
-- name: Create Lets Encrypt public certificates directory
-  file:
-          name: /etc/ansimail/ssl
-          state: directory
-          owner: root
-          group: wheel
-          mode: '0755'
-
-- name: Create Lets Encrypt private certificates directory
-  file:
-          name: /etc/ansimail/ssl/private
-          state: directory
-          owner: root
-          group: wheel
-          mode: '0755'
-
-- name: Create NSD config directory
-  file:
-          name: /etc/ansimail/nsd
-          state: directory
-          owner: root
-          group: wheel
-          mode: '0755'
-
+  with_items:
+          - { name: "/etc/ansimail/dkim/private" }
+          - { name: "/etc/ansimail/ssl/private" }
+          - { name: "/etc/ansimail/nsd" }
