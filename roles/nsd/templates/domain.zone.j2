@@ -65,13 +65,13 @@ mta-sts	IN	CNAME	{{ hostname }}.{{ domain }}.
 
 ; we also detail all the services used and the ports that they map to
 _openpgpkey._tcp	IN	SRV	0	0	443	wkd.{{ domain }}.
-; we need autodiscover service >.>
+; we need autodiscover service >.> why so much???
 ; damn you microsoft
 _autodiscover._tcp	IN	SRV	0	0	443	autodiscover.{{ domain }}.
 ; submission's' is the SSL/TLS port while without the 's' is the STARTTLS
-_submissions._tcp	IN	SRV	0	1	465	{{ hostname }}.{{ domain }}. ; SSL/TLS
-_submission._tcp	IN	SRV	5	1	587	{{ hostname }}.{{ domain }}. ; STARTTLS
-_imaps._tcp	IN	SRV	0	1	993	{{ hostname }}.{{ domain }}.
+_submissions._tcp	IN	SRV	0	1	465	smtp.{{ domain }}. ; SSL/TLS
+_submission._tcp	IN	SRV	5	1	587	smtp.{{ domain }}. ; STARTTLS
+_imaps._tcp	IN	SRV	0	1	993	imap.{{ domain }}.
 ; we disable POP3 and insecure IMAP from being automatically detected
 ; mayhaps you can override them on a client but just don't use them
 _imap._tcp	IN	SRV	0	0	0	.
@@ -85,6 +85,7 @@ _dmarc	IN	TXT	"v=DMARC1;p=reject;pct=100;rua=mailto:dmarcreports@{{ domain }};"
 _smtp._tls	IN	TXT	"v=TLSRPTv1;rua=mailto:tlsreports@{{ domain }};"
 _mta-sts	IN	TXT	"v=STSv1;id={{ nsdserial.stdout }};"
 
+;>>>>>>>>>>ANSIMAIL-DKIM ; DO NOT REMOVE OR MODIFY THESE TWO LINES
 {{ nsddkim.stdout }}
 
 ; ansible will add the SSHFP records here
