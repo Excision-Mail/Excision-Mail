@@ -97,13 +97,13 @@
 - name: Create acme config
   template:
           src: acme-client.conf.j2
-          dest: /etc/ansimail/acme-client.conf
+          dest: /etc/ansimail/ssl/acme-client.conf
           owner: root
           group: wheel
           mode: '0644'
 
 - name: Create acme certs
-  command: acme-client -f /etc/ansimail/acme-client.conf {{ domain }}
+  command: acme-client -f /etc/ansimail/ssl/acme-client.conf {{ domain }}
   ignore_errors: yes
 
 - name: Restart httpd
