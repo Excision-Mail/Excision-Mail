@@ -9,6 +9,7 @@
           - { name: "rspamd" }
           - { name: "opensmtpd-filter-rspamd" }
           - { name: "opensmtpd-filter-senderscore" }
+          - { name: "opensmtpd-extras" }
           - { name: "redis" }
 
 - name: Enable required services
