@@ -53,6 +53,7 @@ autodiscover	IN	CNAME	{{ hostname }}.{{ domain }}.
 ; also set up other well known CNAME records in case of 
 ; older non compliant clients
 imap	IN	CNAME	{{ hostname }}.{{ domain }}.
+pop3	IN	CNAME	{{ hostname }}.{{ domain }}.
 smtp	IN	CNAME	{{ hostname }}.{{ domain }}.
 ; wkd is used for the web key directory service
 ; which allows us to use openpgp encryption on the email
@@ -72,10 +73,10 @@ _autodiscover._tcp	IN	SRV	0	0	443	autodiscover.{{ domain }}.
 _submissions._tcp	IN	SRV	0	1	465	smtp.{{ domain }}. ; SSL/TLS
 _submission._tcp	IN	SRV	5	1	587	smtp.{{ domain }}. ; STARTTLS
 _imaps._tcp	IN	SRV	0	1	993	imap.{{ domain }}.
-; we disable POP3 and insecure IMAP from being automatically detected
+_pop3s._tcp	IN	SRV	0	1	995	pop3.{{ domain }}.
+; we disable insecure POP3 and insecure IMAP from being automatically detected
 ; mayhaps you can override them on a client but just don't use them
 _imap._tcp	IN	SRV	0	0	0	.
-_pop3s._tcp	IN	SRV	0	0	0	.
 _pop3._tcp	IN	SRV	0	0	0	.
 
 ; we also need to setup the acceptable mail server in the SPF record
