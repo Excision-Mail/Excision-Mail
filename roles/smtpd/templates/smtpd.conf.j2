@@ -3,14 +3,20 @@
 # options for smtpd
 queue compression
 queue ttl 4d
+bounce warn-interval 1h, 6h, 2d # default: 4h
 smtp max-message-size 35M
+
+smtp sub-addr-delim '+'
 
 # actual mail handling
 pki {{ domain }} cert  "/etc/ansimail/ssl/{{ domain }}.fullchain.pem" 
 pki {{ domain }} key   "/etc/ansimail/ssl/private/{{ domain }}.key"
 
+# Filters
+#
+# junk: add X-Spam header
 # junk those sending from dynamic ip regex matches
-filter check_dyndns phase connect match rdns regex { '.*\.dyn\..*', '.*\.dsl\..*' } junk
+filter check_dyndns phase connect match rdns regex { ".*\.dyn\..*", ".*\.dsl\..*" } junk
 
 # junk those who don't have forward or reverse dns
 filter check_rdns phase connect match !rdns junk
@@ -22,24 +28,93 @@ filter senderscore proc-exec "filter-senderscore -junkBelow 70 -slowFactor 100"
 # also use the rspamd filter
 filter rspamd proc-exec "filter-rspamd"
 
-# these are virtual names set up for forwarding
-table aliases file:/etc/mail/aliases
+# Tables
+#
+# Local host aliases
+table	aliases \
+	file:/etc/mail/aliases
+#
+# Virtual host aliases
+table	virtuals \
+	file:/etc/mail/virtual
+#
+# Virtual domains
+table	vdomains \
+	file:/etc/mail/vdomains
+#
+# Virtual passwd
+table	passwd \
+	passwd:/etc/mail/passwd
+#
+# OpenPGP WKS Submission Address
+table	submission-address \
+	file:/var/www/openpgpkey/submission-address
 
-# this checks for spam vs ham on smtp port
-listen on all tls pki {{ domain }}  \
-    filter { check_dyndns, check_rdns, check_fcrdns, senderscore, rspamd }
+# Incoming connections
+#
+# Local messages
+listen on socket
+#
+# Incoming messages from outside to people in <vdomain>
+# this filter checks for spam vs ham on smtp port
+listen on egress \
+	tls pki {{ domain }} \
+	filter { check_dyndns, check_rdns, check_fcrdns, senderscore, rspamd }
+# 
+# User submitted messages on two ports 465-SSL/TLS and 587-STARTTLS
+# this filter signs the outgoing emails using the rspamd dkim_signing module
+listen on egress port smtps \
+	smtps pki {{ domain }} \
+	auth <passwd> received-auth \
+	filter rspamd 
+listen on egress port submission \
+	tls-require pki {{ domain }} \
+	auth <passwd> received-auth \
+	filter rspamd 
 
-# this signs the outgoing emails using the rspamd dkim_signing module
-listen on all port smtps smtps pki {{ domain }} auth filter rspamd # SSL/TLS port
-listen on all port submission tls-require pki {{ domain }} auth filter rspamd # STARTTLS port
+# Sending messages
+#
+action "local_mail" \
+	forward-only \
+	alias <aliases>
+action "dovecot-lmtp" \
+	lmtp "/var/dovecot/lmtp" rcpt-to \
+	virtual <virtuals>
+action "outbound" \
+	relay \
+	helo {{ hostname }}.{{ domain }}
 
-#action "local_mail" maildir junk alias <aliases>
-action "local_mail" lmtp "/var/dovecot/lmtp" alias <aliases>
-action "outbound" relay helo {{hostname}}.{{ domain }}
-
-match from any for domain "{{ domain }}" action "local_mail"
-match for local action "local_mail"
-
-match from any auth for any action "outbound"
-match for any action "outbound"
-
+# Rules - first to match is applied
+#
+# Forward local messages
+match 	from local \
+	for local \
+	action "local_mail"
+#
+# Send any authenticated mail not meant for <vdomains> to outside
+match	from any auth \
+	!for domain <vdomains> \
+	action "outbound"
+#
+# Local mail to <vdomains> is sent properly
+match	from local \
+	for domain <vdomains> \
+	action "dovecot-lmtp"
+#
+# From authenticated users to <submission-address>
+match	from any auth \
+	for domain <vdomains> \
+	rcpt-to <submission-address> \
+	action "dovecot-lmtp"
+# 
+# accept mail from outside sent to our <vdomains>
+# BUT not those who are coming for key-submission
+match	from any \
+	for domain <vdomains> \
+	!rcpt-to <submission-address> \
+	action "dovecot-lmtp"
+#
+# Every other mail is to be rejected
+match	from any \
+	for any \
+	reject

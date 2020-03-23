@@ -11,13 +11,13 @@
 
 # Basic system aliases -- these MUST be present
 MAILER-DAEMON: postmaster
-postmaster: root
+root: postmaster
 
 # General redirections for important pseudo accounts
-daemon:	root
-ftp-bugs: root
-operator: root
-www:	root
+daemon:	postmaster
+ftp-bugs: postmaster
+operator: postmaster
+www: postmaster
 
 # Redirections for pseudo accounts that should not receive mail
 _bgpd: /dev/null
@@ -82,30 +82,20 @@ _syspatch: /dev/null
 _slaacd: /dev/null
 sshd:   /dev/null
 
-# RFC 2142: NETWORK OPERATIONS MAILBOX NAMES
-abuse:		root
-noc:		root
-security:	root
-
 # RFC 2142: SUPPORT MAILBOX NAMES FOR SPECIFIC INTERNET SERVICES
-hostmaster:	root
-usenet:		root
-news:		root
-webmaster:	root
-ftp:		root
+hostmaster:	postmaster
+usenet:		postmaster
+news:		postmaster
+webmaster:	postmaster
+ftp:		postmaster
 
 # Well-known aliases -- these should be filled in!
-manager:	root
-dumper:		root
-root:		{{ admin }}
+manager:	postmaster
+dumper:		postmaster
 
-# WKS reports
-key-submission:	{{ admin }}
-webkey:		{{ admin }}
+# Ansimail created users
+ansimail:		postmaster
+ansimail-manager:	postmaster
 
-# nsd reports
-dmarcreports:	{{ admin }}
-tlsreports:	{{ admin }}
-
-# getting reports from ansimail
-ansimail:	{{ admin }}
+# We forward root to the admin account
+postmaster:	{{ admin }}@{{ domain }}

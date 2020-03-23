@@ -1,0 +1,30 @@
+# OpenPGP Web Key Service (WKS) Submission Address
+# it should actually receive emails
+key-submission@{{ domain }}		ansimail
+
+# Important pseudo accounts
+root@{{ domain }}			{{ admin }}@{{ domain }}
+postmaster@{{ domain }}			{{ admin }}@{{ domain }}
+
+# RFC 2142: NETWORK OPERATIONS MAILBOX NAMES
+abuse@{{ domain }}			{{ admin }}@{{ domain }}
+noc@{{ domain }}			{{ admin }}@{{ domain }}
+security@{{ domain }}			{{ admin }}@{{ domain }}
+
+# RFC 2142: SUPPORT MAILBOX NAMES FOR SPECIFIC INTERNET SERVICES
+hostmaster@{{ domain }}			{{ admin }}@{{ domain }}
+usenet@{{ domain }}			{{ admin }}@{{ domain }}
+news@{{ domain }}			{{ admin }}@{{ domain }}
+webmaster@{{ domain }}			{{ admin }}@{{ domain }}
+ftp@{{ domain }}			{{ admin }}@{{ domain }}
+
+# Domain reports from outside world
+dmarcreports@{{ domain }}		{{ admin }}@{{ domain }}
+tlsreports@{{ domain }}			{{ admin }}@{{ domain }}
+
+# AnsiMail specific account for users to seek support
+ansimail@{{ domain }}			{{ admin }}@{{ domain }}
+
+# Admin account receives mails
+{{ admin }}@{{ domain }}		ansimail
+
