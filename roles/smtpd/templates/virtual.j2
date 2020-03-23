@@ -1,7 +1,3 @@
-# OpenPGP Web Key Service (WKS) Submission Address
-# it should actually receive emails
-key-submission@{{ domain }}		ansimail
-
 # Important pseudo accounts
 root@{{ domain }}			{{ admin }}@{{ domain }}
 postmaster@{{ domain }}			{{ admin }}@{{ domain }}
@@ -25,6 +21,13 @@ tlsreports@{{ domain }}			{{ admin }}@{{ domain }}
 # AnsiMail specific account for users to seek support
 ansimail@{{ domain }}			{{ admin }}@{{ domain }}
 
+# OpenPGP Web Key Service (WKS) Submission Address
+# It should actually receive emails
+# (this will be added by add-user)
+#wks@{{ domain }}			ansimail
+
+
 # Admin account receives mails
-{{ admin }}@{{ domain }}		ansimail
+# (this will be added by add-user)
+#{{ admin }}@{{ domain }}		ansimail
 
