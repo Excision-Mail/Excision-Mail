@@ -4,19 +4,15 @@ Fullstack,security focused mailserver based on OpenSMTPD for OpenBSD using ansib
 ## Functionality Goals
 
 * Complete email server 
-  * full encryption support, using MTA-STS
-  * automatic management of certificates from [Lets Encrypt](https://letsencrypt.org/)
-  * spam classification and automatic learning using [Rspamd](https://rspamd.com)
+  * Full encryption support, using MTA-STS
+  * Automatic management of certificates from [Lets Encrypt](https://letsencrypt.org/)
+  * Spam classification and automatic learning using [Rspamd](https://rspamd.com)
   * Mozilla autoconfiguration manager for thunderbird and other opensource clients
    
-* Be replicable, easy and stable to build and upgrade  
+* Replicable and stable to build and upgrade  
 There should be no differences between upgrading a previous install and starting an install from scratch, if using the same configurations for both pathways.  
-The main point of ansible is to be easily replicable and result in the exact same final state, no matter what interruptions in the middle. AnsiMail aims to be as 
 
-* Locally configurable  
-Allow each configuration to be overriden using user defined local configs, which are untouched over upgrades.
-
-* Well documented
+* Well documented  
 AnsiMail tries to follow OpenBSD philosophy of being well documented and explaining all the choices that have been made.  
 If it does not have good documentation, then it is still buggy.
  
@@ -44,10 +40,5 @@ System requirements
   * 1GB RAM
   * 2GB Swap 
 
-## Prerequisites
-
-
-## Installation
-
-
-## Upgrading
+## Prerequisites and Installation
+See [INSTALLATION.md](INSTALLATION.md)
