@@ -10,25 +10,30 @@ if [ $# -lt 1 ]; then
 	exit 1
 fi
 
-case "$1" in
+command=$1
+shift
+
+case "$command" in
 	"ensure-dkim")
-		/bin/sh /usr/local/lib/ansimail/ensure-dkim $2;;
+		/bin/sh /usr/local/lib/ansimail/ensure-dkim $@;;
 	"renew-certs")
-		/bin/sh /usr/local/lib/ansimail/renew-certs $2;;
+		/bin/sh /usr/local/lib/ansimail/renew-certs $@;;
 	"show-stats")
-		/bin/sh /usr/local/lib/ansimail/show-stats $2;;
+		/bin/sh /usr/local/lib/ansimail/show-stats $@;;
 	"add-alias")
-		/bin/sh /usr/local/lib/ansimail/add-alias $2;;
+		/bin/sh /usr/local/lib/ansimail/add-alias $@;;
 	"add-user")
-		/bin/sh /usr/local/lib/ansimail/add-user $2;;
+		/bin/sh /usr/local/lib/ansimail/add-user $@;;
 	"change-passwd")
-		/bin/sh /usr/local/lib/ansimail/change-passwd $2;;
+		/bin/sh /usr/local/lib/ansimail/change-passwd $@;;
 	"daily-report")
-		/bin/sh /usr/local/lib/ansimail/daily-report $2;;
+		/bin/sh /usr/local/lib/ansimail/daily-report $@;;
 	"userdb-check")
-		/bin/sh /usr/local/lib/ansimail/userdb-check $2;;
+		/bin/sh /usr/local/lib/ansimail/userdb-check $@;;
 	"fix-perms")
-		/bin/sh /usr/local/lib/ansimail/fix-perms $2;;
+		/bin/sh /usr/local/lib/ansimail/fix-perms $@;;
+	"virtual-regen")
+		/bin/sh /usr/local/lib/ansimail/virtual-regen $@;;
 	*)
 		echo "Unknow argument"
 		exit 1;;
