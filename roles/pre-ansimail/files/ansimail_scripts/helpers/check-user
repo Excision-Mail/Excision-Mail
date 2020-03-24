@@ -4,18 +4,14 @@
 #         1 -> Exists
 #         2 -> Exists as alias for another user  
 
+. /usr/local/lib/ansimail/helpers/variables
+
 user=$1
 
-if [ -f "/etc/ansimail/users/user-data/$1" ]; then
+if [ -e "$user_home/user-data/$1" ]; then
 	echo 1
  	exit 0;
 fi
-
-. /usr/local/lib/ansimail/helpers/variables
-
-grep -q "$1" *
-
-found=$?
 
 for user in $user_home/user-data/*; do
 	[ -e $user ] || break

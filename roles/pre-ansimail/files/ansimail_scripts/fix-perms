@@ -24,7 +24,7 @@ find $user_home -type d -exec sh $vfix root wheel 700 {} \;
 find $user_home -type f -exec sh $vfix root wheel 600 {} \;
 
 find $ssl_home/private -type d -exec sh $vfix root wheel 750 {} \;
-find $ssl_home/private -type f -exec sh $vfix root wheel 640 {} \;
+find $ssl_home/private -type f -exec sh $vfix root wheel 600 {} \;
 
 find $dkim_home/private -type d -exec sh $vfix root _rspamd 750 {} \;
 find $dkim_home/private -type f -exec sh $vfix root _rspamd 640 {} \;
