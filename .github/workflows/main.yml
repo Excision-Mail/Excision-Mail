@@ -1,5 +1,5 @@
 name: "Push Notification"
-on: [push, pull_request, create, issues, issues_comment]
+on: [push, pull_request, create, issues, issue_comment]
 
 jobs:
   test:
@@ -40,7 +40,7 @@ jobs:
             ${{ github.actor }} has ${{ github.event.type }} an issue ${{ github.event.ref }}
       - name: irc issue
         uses: rectalogic/notify-irc@v1
-        if: github.event_name == 'issue'
+        if: github.event_name == 'issue_comment'
         with:
           channel: "#ansimail"
           nickname: ansimail-bot
