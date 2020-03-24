@@ -1,5 +1,5 @@
 # AnsiMail
-Fullstack mailserver based on OpenSMTPD for OpenBSD using ansible
+Fullstack,security focused mailserver based on OpenSMTPD for OpenBSD using ansible
 
 ## Functionality Goals
 
