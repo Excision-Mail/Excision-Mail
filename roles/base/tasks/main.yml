@@ -44,20 +44,12 @@
           mode: '0600'
   notify: reload pf
 
-- name: Install ansimail crontab file
+- name: Install new root crontab file
   copy:
-          src: cron_ansimail
-          dest: /var/cron/tabs/ansimail
+          src: cron
+          dest: /var/cron/tabs/root
           owner: ansimail
           group: crontab
           mode: '0600'
-
-- name: Install doas conf
-  copy:
-          src: doas.conf
-          dest: /etc/doas.conf
-          owner: root
-          group: wheel
-          mode: '0644'
 
 - meta: flush_handlers
