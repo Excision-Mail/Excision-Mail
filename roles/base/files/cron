@@ -20,4 +20,4 @@ HOME=/var/log
 #0	*	*	*	*	sleep $((RANDOM \% 2048)) && /usr/libexec/spamd-setup
 
 # do daily ansimail reporting using the ansimail command
-30	7	*	*	*	/usr/local/bin/ansimail daily
+30	7	*	*	*	/usr/local/bin/ansimail daily-report
