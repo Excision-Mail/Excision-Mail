@@ -14,7 +14,7 @@ There should be no differences between upgrading a previous install and starting
 
 * Well documented  
 AnsiMail tries to follow OpenBSD philosophy of being well documented and explaining all the choices that have been made.  
-If it does not have good documentation, then it is still buggy.
+If it does not have good documentation, then it is still buggy, 
  
 ## Architecture Goals
  
