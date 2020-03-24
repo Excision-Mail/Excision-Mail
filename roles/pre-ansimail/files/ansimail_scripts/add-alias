@@ -2,12 +2,10 @@
 
 ### Creates a virtual alias $1 and forwards all messages to $2
 
-echo "TODO: add-alias"
-
 . /usr/local/lib/ansimail/helpers/variables
 
-$alias=$1
-$user=$2
+alias=$1
+user=$2
 
 alias_status=$( sh $amscripts/helpers/check-user $alias )
 user_status=$( sh $amscripts/helpers/check-user $user )

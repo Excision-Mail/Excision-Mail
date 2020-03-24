@@ -5,6 +5,11 @@ if [ $(id -u) -ne 0 ]; then
 	exit 1
 fi
 
+# This script assumes that you are working with 
+# a clean database that has been verified with userdb-check
+# The behaviour is undefined on random unstable databases
+# It may mutate your cat and make your kombucha lose its fizzzzzzz
+
 . /usr/local/lib/ansimail/helpers/variables
 
 user=$1
@@ -21,10 +26,18 @@ case $user_status in
 		exit 2
 		;;
 	*)
-		echo "User currently not in system, proceeding to add them"
+		echo "User $user currently not in system, proceeding to add them"
 		;;
 esac
 
 touch $user_home/user-data/$user
 chmod 700 $user_home/user-data/$user
 
+printf "Password: "
+read password
+echo $password
+echo "\n"
+
+password=$( echo $password | smtpctl encrypt )
+
+echo "$user:$password::::::::" >> $user_home/passwd

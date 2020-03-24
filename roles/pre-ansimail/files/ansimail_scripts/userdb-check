@@ -19,6 +19,7 @@ pwd_mkdb -c $user_home/passwd
 
 echo "\n### Checking all users are in password database\n"
 for user_file in $user_home/user-data/*; do
+	[ -e $user_file ] || break
 	username=$( basename $user_file )
 	if ! grep -q "$username" $user_home/passwd; then
 		echo "$username exists as a user but is not present in the password database. Please check."
@@ -46,6 +47,7 @@ done < $user_home/passwd
 # Now check that every alias is only an alias
 # (this also ensures that every use is only a user, due to bipartite-ness)
 for user_file in $user_home/user-data/*; do
+	[ -e $user_file ] || break
 	username=$( basename $user_file )
 	while IFS= read -r alias; do
 		if [ -e $user_home/user-data/$alias ]; then

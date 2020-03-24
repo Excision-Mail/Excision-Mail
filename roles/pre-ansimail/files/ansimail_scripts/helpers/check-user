@@ -18,6 +18,7 @@ grep -q "$1" *
 found=$?
 
 for user in $user_home/user-data/*; do
+	[ -e $user ] || break
 	if grep -q $1 $user; then
 		echo 2
 		exit 0

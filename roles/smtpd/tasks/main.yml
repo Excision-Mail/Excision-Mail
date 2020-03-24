@@ -1,34 +1,17 @@
 - name: Copy base aliases file
   template:
           src: aliases.j2
-          dest: /etc/ansimail/users/aliases.base
-          owner: root
-          group: wheel
-          mode: '0600'
-
-- name: Copy base virtual file
-  template:
-          src: virtual.j2
-          dest: /etc/ansimail/users/virtual.base
-          owner: root
-          group: wheel
-          mode: '0600'
+          dest: /etc/mail/aliases
 
 - name: Copy mailname
   template:
           src: mailname.j2
-          dest: /etc/ansimail/users/mailname
-          owner: root
-          group: wheel
-          mode: '0600'
+          dest: /etc/mail/mailname
 
 - name: Copy vdomains
   template:
           src: vdomains.j2
-          dest: /etc/ansimail/users/vdomains
-          owner: root
-          group: wheel
-          mode: '0600'
+          dest: /etc/mail/vdomains
 
 - name: Make sure that passwd file exists
   file:
@@ -47,15 +30,42 @@
           mode: '0700'
 
 - name: Add admin user with random password (ignore if already exists)
-  shell: openssl rand -hex 32 | ansimail add-user {{ admin }}
+  shell: openssl rand -hex 32 | ansimail add-user "{{ admin }}@{{ domain }}"
+  register: aadmin
   ignore_errors: yes
 
 - name: Add wks user with random password (ignore if already exists)
-  shell: openssl rand -hex 32 | ansimail add-user "wks"
+  shell: openssl rand -hex 32 | ansimail add-user "wks@{{ domain }}"
+  register: wks
   ignore_errors: yes
 
+- debug:
+        var: aadmin
+        verbosity: 2
+
+- debug:
+        var: wks
+        verbosity: 2
+
+- name: Add all the needed aliases for admin
+  shell: ansimail add-alias "{{ item.name }}@{{ domain }}" "{{ admin }}@{{ domain }}"
+  ignore_errors: yes
+  with_items:
+          - { name: "postmaster" }
+          - { name: "abuse" }
+          - { name: "noc" }
+          - { name: "security" }
+          - { name: "hostmaster" }
+          - { name: "usenet" }
+          - { name: "news" }
+          - { name: "webmaster" }
+          - { name: "dmarcreports" }
+          - { name: "tlsreports" }
+          - { name: "ansimail" }
+
+
 - name: Generate smtpd data files (virtuals, aliases, passwd, mailname, vdomains)
-  shell: ansimail smtp-gendata
+  shell: ansimail virtual-regen
 
 # Any items belonging to _smtpd group are 640 and wheel are 644
 # passwd is an exception as it needs to be read by both dovecot and smtpd

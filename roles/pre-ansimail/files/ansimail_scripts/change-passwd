@@ -1,0 +1,21 @@
+#!/bin/sh
+
+. /usr/local/lib/ansimail/helpers/variables
+
+user=$1
+
+printf "Password: "
+read password
+echo "\n"
+
+password=$( echo $password | smtpctl encrypt )
+echo $password
+
+sed -i "/$user/d" $user_home/passwd
+
+echo "$user:$password::::::::" >> $user_home/passwd
+
+cp $user_home/passwd /etc/mail/passwd
+chmod 440 /etc/mail/passwd
+chown _smtpd:_dovecot /etc/mail/passwd
+
