@@ -5,9 +5,17 @@ Fullstack,security focused mailserver based on OpenSMTPD for OpenBSD using ansib
 
 * Complete email server 
   * Full encryption support, using MTA-STS
+  * All connections are TLS enforced, including pop3, imap, smtp and sieve.
+  * Server side filtering support and automatic filter management using `managesieve`
+  * Tag support for `user+tag@...` getting automatically managed for both sending and receiving
+  * Additional alias creation for both sending and receiving
+  * User management scripts for checking user base inconsistencies, adding users and aliases
   * Automatic management of certificates from [Lets Encrypt](https://letsencrypt.org/)
   * Spam classification and automatic learning using [Rspamd](https://rspamd.com)
   * Mozilla autoconfiguration manager for thunderbird and other opensource clients
+  * GnuPG Web Key Server support for auto publishing of user public keys
+
+Basically AnsiMail implements most features required from a private, secure, email server in a minimlistic fashion.
    
 * Replicable and stable to build and upgrade  
 There should be no differences between upgrading a previous install and starting an install from scratch, if using the same configurations for both pathways.  
@@ -42,3 +50,7 @@ System requirements
 
 ## Prerequisites and Installation
 See [INSTALLATION.md](INSTALLATION.md)
+
+## Contact and support
+The primary mode of contact for reporting bugs would be GitHub but AnsiMail also has an IRC [#ansimail](https://webchat.freenode.net/?channels=ansimail) on freenode.  
+I am known as epsilonKNOT on freenode :)
