@@ -12,7 +12,8 @@ jobs:
           channel: "#ansimail"
           nickname: ansimail-bot
           message: |
-            ${{ github.actor }} pushed ${{ github.event.ref }} ${{ github.event.compare }}
+            ${{ github.actor }} has pushed to ${{ github.event.ref }}
+            ${{ github.event.compare }}
             ${{ join(github.event.commits.*.message) }}
       - name: irc pull request
         uses: rectalogic/notify-irc@v1
@@ -21,7 +22,8 @@ jobs:
           channel: "#ansimail"
           nickname: ansimail-bot
           message: |
-            ${{ github.actor }} opened PR ${{ github.event.html_url }}
+            ${{ github.actor }} has opened PR 
+            ${{ github.event.html_url }}
       - name: irc tag created
         uses: rectalogic/notify-irc@v1
         if: github.event_name == 'create' && github.event.ref_type == 'tag'
@@ -29,7 +31,8 @@ jobs:
           channel: "#ansimail"
           nickname: ansimail-bot
           message: |
-            ${{ github.actor }} tagged ${{ github.repository }} ${{ github.event.ref }}
+            ${{ github.actor }} has tagged ${{ github.repository }}
+            ${{ github.event.ref }}
       - name: irc issue
         uses: rectalogic/notify-irc@v1
         if: github.event_name == 'issues'
@@ -37,7 +40,8 @@ jobs:
           channel: "#ansimail"
           nickname: ansimail-bot
           message: |
-            ${{ github.actor }} has ${{ github.event.event }} an issue ${{ github.event.ref }}
+            ${{ github.actor }} has ${{ github.event.action }} an issue
+            ${{ github.event.issue.html_url }}
       - name: irc issue
         uses: rectalogic/notify-irc@v1
         if: github.event_name == 'issue_comment'
@@ -45,4 +49,5 @@ jobs:
           channel: "#ansimail"
           nickname: ansimail-bot
           message: |
-            ${{ github.actor }} has ${{ github.event.event }} a comment on an issue ${{ github.event.url }}
+            ${{ github.actor }} has ${{ github.event.action }} a comment on an issue
+            ${{ github.event.issue.html_url }}
