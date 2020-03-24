@@ -32,12 +32,12 @@ jobs:
             ${{ github.actor }} tagged ${{ github.repository }} ${{ github.event.ref }}
       - name: irc issue
         uses: rectalogic/notify-irc@v1
-        if: github.event_name == 'issue'
+        if: github.event_name == 'issues'
         with:
           channel: "#ansimail"
           nickname: ansimail-bot
           message: |
-            ${{ github.actor }} has ${{ github.event.type }} an issue ${{ github.event.ref }}
+            ${{ github.actor }} has ${{ github.event.event }} an issue ${{ github.event.ref }}
       - name: irc issue
         uses: rectalogic/notify-irc@v1
         if: github.event_name == 'issue_comment'
@@ -45,4 +45,4 @@ jobs:
           channel: "#ansimail"
           nickname: ansimail-bot
           message: |
-            ${{ github.actor }} has ${{ github.event.type }} a comment on an issue ${{ github.event.ref }}
+            ${{ github.actor }} has ${{ github.event.event }} a comment on an issue ${{ github.event.url }}
