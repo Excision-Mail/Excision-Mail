@@ -1,0 +1,42 @@
+#!/bin/bash
+
+echo "\n\n### Fixing permissions of AnsiMail config + script files\n\n"
+
+chown root:wheel /usr/local/lib/ansimail/fix-perms /usr/local/lib/ansimail/helpers/verbose-fix
+chmod 600 /usr/local/lib/ansimail/fix-perms /usr/local/lib/ansimail/helpers/verbose-fix
+
+find /usr/local/lib/ansimail -type d -exec sh /usr/local/lib/ansimail/helpers/verbose-fix root wheel 700 {} \;
+find /usr/local/lib/ansimail -type d -exec sh /usr/local/lib/ansimail/helpers/verbose-fix root wheel 600 {} \;
+
+find /etc/ansimail -type d -exec sh /usr/local/lib/ansimail/helpers/verbose-fix root wheel 755 {} \;
+find /etc/ansimail -type f -exec sh /usr/local/lib/ansimail/helpers/verbose-fix root wheel 644 {} \;
+
+find /etc/ansimail/users -type d -exec sh /usr/local/lib/ansimail/helpers/verbose-fix root wheel 700 {} \;
+find /etc/ansimail/users -type f -exec sh /usr/local/lib/ansimail/helpers/verbose-fix root wheel 600 {} \;
+
+echo "\n\n### Fixing permissions of base install\n\n"
+
+echo "\n\n### Fixing permissions of nsd files\n\n"
+
+echo "\n\n### Fixing permissions of OpenSMTPD files\n\n"
+
+
+
+echo "\n\n### Fixing permissions of httpd + acme files\n\n"
+
+echo "\n\n### Fixing permissions of OpenPGP WKS/WKD files\n\n"
+
+echo "\n\n### Fixing permissions of Dovecot files\n\n"
+
+find /etc/dovecot -type d -exec sh /usr/local/lib/ansimail/helpers/verbose-fix root wheel 755 {} \;
+find /etc/dovecot -type f -exec sh /usr/local/lib/ansimail/helpers/verbose-fix root wheel 644 {} \;
+
+echo "\n\n### Fixing permissions of Clamd files\n\n"
+
+sh /usr/local/lib/ansimail/helpers/verbose-fix root wheel 644 /etc/freshclam.conf
+sh /usr/local/lib/ansimail/helpers/verbose-fix root wheel 644 /etc/clamd.conf
+
+echo "\n\n### Fixing permissions of Rspamd files\n\n"
+
+find /etc/rspamd -type d -exec sh /usr/local/lib/ansimail/helpers/verbose-fix root wheel 755 {} \;
+find /etc/rspamd -type f -exec sh /usr/local/lib/ansimail/helpers/verbose-fix root wheel 644 {} \;

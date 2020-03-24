@@ -1,7 +1,7 @@
 - name: Install required packages
   openbsd_pkg:
           name: "{{ item.name }}"
-          state: present
+          state: latest
   with_items: 
           - { name: "dovecot" }
           - { name: "dovecot-pigeonhole" }
@@ -11,6 +11,7 @@
           - { name: "opensmtpd-filter-senderscore" }
           - { name: "opensmtpd-extras" }
           - { name: "redis" }
+          - { name: "gnupg" }
 
 - name: Enable required services
   service:
@@ -25,63 +26,6 @@
           - { name: "nsd" }
           - { name: "httpd" }
 
-- name: Make AnsiMail group
-  group:
-          name: ansimail
-
-- name: Add users to ansimail group
-  user:
-          name: "{{ item.name }}"
-          append: yes
-          groups: ansimail
-  with_items:
-          - { name: "_rspamd" }
-          - { name: "_smtpd" }
-          - { name: "_dovecot" }
-          - { name: "_dovenull" }
-          - { name: "_clamav" }
-          - { name: "root" }
-
-- name: Make AnsiMail user
-  user:
-          name: ansimail
-          comment: AnsiMail manager
-          group: ansimail
-          append: yes
-          groups: _smtpd, _rspamd, _clamav, sshd 
-          login_class: daemon
-          shell: /sbin/nologin
-          home: /nonexistent
-          create_home: no
-
-- name: Make AnsiMail ssh group
-  group:
-          name: ansimail-ssh
-
-- name: Create AnsiMail scripts directory
-  file:
-          name: /usr/local/lib/ansimail
-          state: directory
-          owner: root
-          group: wheel
-          mode: '0755'
-
-- name: Install `ansimail` command
-  copy:
-          src: ansimail
-          dest: /usr/local/bin/
-          owner: root
-          group: wheel
-          mode: '0755'
-
-- name: Install AnsiMail scripts
-  copy:
-          src: ansimail_scripts/
-          dest: /usr/local/lib/ansimail/
-          owner: root
-          group: wheel
-          mode: '0644'
-
 - name: Create AnsiMail config directories
   file:
           name: "{{ item.name }}"
@@ -93,4 +37,44 @@
           - { name: "/etc/ansimail/dkim/private", perm: "0755" }
           - { name: "/etc/ansimail/ssl/private", perm: "0755" }
           - { name: "/etc/ansimail/nsd", perm: "0755" }
-          - { name: "/etc/ansimail/smtpd", perm: "0700" }
+          - { name: "/etc/ansimail/users", perm: "0700" }
+          - { name: "/etc/ansimail/users/user-data", perm: "0700" }
+
+- name: Make required groups
+  group:
+          name: ansimail
+
+- name: Make AnsiMail user
+  user:
+          name: ansimail
+          comment: AnsiMail manager
+          group: ansimail
+          groups: ""
+          login_class: daemon
+          shell: /bin/ksh
+          home: /var/ansimail-home
+
+- name: Create AnsiMail scripts directory
+  file:
+          name: /usr/local/lib/ansimail/helpers
+          state: directory
+          owner: root
+          group: wheel
+          mode: '0700'
+
+- name: Install `ansimail` command
+  copy:
+          src: ansimail
+          dest: /usr/local/bin/
+          owner: root
+          group: wheel
+          mode: '0700'
+
+- name: Install AnsiMail scripts
+  copy:
+          src: ansimail_scripts/
+          dest: /usr/local/lib/ansimail/
+          owner: root
+          group: wheel
+          mode: '0600'
+

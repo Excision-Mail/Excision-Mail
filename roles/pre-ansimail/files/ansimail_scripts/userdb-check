@@ -1,0 +1,57 @@
+#!/bin/sh
+
+# THIS IS A VERY SENSITIVE FILE
+# HERE WE ARE USING QUITE A SENSITIVE SUBSYTEM WHICH CAN REALLY
+# FUCK UP THE SYSTEM
+# BE CAREFUL
+
+# Checks the consistency of user database and password database
+
+. /usr/local/lib/ansimail/helpers/variables
+
+# Check that the password database is in the correct format
+
+echo "### Checking format of passwd database\n"
+# DID I MENTION THIS IS DANGEROUS
+pwd_mkdb -c $user_home/passwd
+
+# Check that all users in user-data are in the password database
+
+echo "\n### Checking all users are in password database\n"
+for user_file in $user_home/user-data/*; do
+	username=$( basename $user_file )
+	if ! grep -q "$username" $user_home/passwd; then
+		echo "$username exists as a user but is not present in the password database. Please check."
+	fi
+done
+
+# Check every user in the password database is 
+# present in the user-data folder as a real file
+echo "\n### Checking all users in password database are actual users"
+while IFS= read -r line; do
+	username=$( echo $line | cut -d: -f1 )
+	if [ ! -e $user_home/user-data/$username ]; then
+		echo "$username exists in the password database but is not a real user. Please check."
+	fi
+done < $user_home/passwd
+
+# you can speed this part up by doing graph theory for bipartite graphs
+# and checking cycles and the like 
+# BUT
+# creating those structures and using other languages has too much overhead unless 
+# you are at a place with around ~1000 users and aliases
+# optimization is going to be a small priority as most of it is not going to 
+# be shell compatible (will need sql)
+
+# Now check that every alias is only an alias
+# (this also ensures that every use is only a user, due to bipartite-ness)
+for user_file in $user_home/user-data/*; do
+	username=$( basename $user_file )
+	while IFS= read -r alias; do
+		if [ -e $user_home/user-data/$alias ]; then
+			echo "$alias is an alias for $username but is also registered as a real user. Please check."
+		fi
+	done < $user_home/user-data/$username
+done
+
+

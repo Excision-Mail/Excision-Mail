@@ -1,3 +1,44 @@
 #!/bin/sh
 
+### Creates a virtual alias $1 and forwards all messages to $2
+
 echo "TODO: add-alias"
+
+. /usr/local/lib/ansimail/helpers/variables
+
+$alias=$1
+$user=$2
+
+alias_status=$( sh $amscripts/helpers/check-user $alias )
+user_status=$( sh $amscripts/helpers/check-user $user )
+
+# Make sure that user exists
+case $user_status in
+	0)
+		echo "User doesn't exist as a real user"
+		exit 1
+		;;
+	2)
+		echo "User is actually an alias to another user"
+		exit 2
+		;;
+	*)
+		echo "User exists, proceeding to check the alias"
+		;;
+esac
+
+case $alias_status in
+	2)
+		echo "Alias already used by a user"
+		exit 3
+		;;
+	1)
+		echo "Alias is already a real user on the system"
+		exit 4
+		;;
+	*)
+		echo "Alias is not currently in use, proceeding to add it"
+		;;
+esac
+
+echo "$alias" >> $user_home/user-data/$user

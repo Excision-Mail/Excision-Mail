@@ -5,11 +5,13 @@ if [ $(id -u) -ne 0 ]; then
 	exit 1
 fi
 
-$domain=$1
+domain=$1
+
+. /usr/local/lib/ansimail/helpers/variables
 
 echo "### Renewing acme certificates"
-acme-client -v -f /etc/ansimail/ssl/acme-client.conf $domain
-
-echo "\n### Reloading services"
-rcctl reload httpd dovecot
-rcctl restart smtpd
+acme-client -v -f $ssl_home/acme-client.conf $domain && {
+	echo "\n### Reloading services"
+	rcctl reload httpd dovecot
+	rcctl restart smtpd
+}

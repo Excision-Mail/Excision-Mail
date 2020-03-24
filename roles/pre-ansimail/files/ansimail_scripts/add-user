@@ -1,3 +1,30 @@
 #!/bin/sh
 
-echo "TODO: add-user"
+if [ $(id -u) -ne 0 ]; then
+	echo "This can only be run by root"
+	exit 1
+fi
+
+. /usr/local/lib/ansimail/helpers/variables
+
+user=$1
+
+user_status=$( sh $amscripts/helpers/check-user $user )
+
+case $user_status in
+	1)
+		echo "User already exists as real user"
+		exit 1
+		;;
+	2)
+		echo "User already exists as an alias"
+		exit 2
+		;;
+	*)
+		echo "User currently not in system, proceeding to add them"
+		;;
+esac
+
+touch $user_home/user-data/$user
+chmod 700 $user_home/user-data/$user
+

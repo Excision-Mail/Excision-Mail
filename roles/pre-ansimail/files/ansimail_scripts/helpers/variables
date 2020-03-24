@@ -1,0 +1,13 @@
+#!/bin/sh
+
+dkim_home="/etc/ansimail/dkim"
+ssl_home="/etc/ansimail/ssl"
+nsd_home="/etc/ansimail/nsd"
+user_home="/etc/ansimail/users"
+
+amhome="/var/ansimail-home"
+ammails="/var/ansimail"
+
+amscripts="/usr/local/lib/ansimail"
+amhelpers="/usr/local/lib/ansimail/helpers"
+

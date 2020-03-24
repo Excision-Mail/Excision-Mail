@@ -1,0 +1,21 @@
+#!/bin/sh
+
+if [ $(id -u) -ne 0 ]; then
+	echo "This can only be run by root"
+	exit 1
+fi
+
+echo "### Pending syspatches"
+syspatch -c
+
+echo "\n### Pending package upgrades"
+pkg_add -su
+
+echo "\n### Renewing acme certificates"
+/usr/local/bin/ansimail renew-certs
+
+echo "\n### Showing user database status"
+/usr/local/bin/ansimail userdb-check
+
+echo "\n### Showing AnsiMail stats\n"
+/usr/local/bin/ansimail show-stats
