@@ -3,164 +3,117 @@
 # Each option has been described in as much detail as possible
 # READ EVERYTHING VERY CLOSELY
 
-
-#------------ REQUIRED
+#####-------- REQUIRED SECTION
 
 # This is the domain name for which the mail server will be set up.
-# You need at least one domain name.
-# Additional domain names will be allowed in the optional configurations.
+# This should not contain any subdomains, only the main one
+# NOTE: This is going to be the primary domain for which we are going
+#       to set up NSD, certificate management, subdomain management
+#       If you have additional domains for which you want to handle 
+#       mails, set them up later in the appropriate section
 domain: <change-me> # e.g. aisha.cc
 
-# This is the network interface talking to the outside world
-# through which you will be receiving emails and clients will be connecting.
-#interface: vio0
-interface: <change-me> #e.g. vio0 # this is the one generally used on Vultr 
-                       #            and other VPS platform
+# The hostname is one which is what the ip here is hosting
+# the one which is going to act as the subdomain, if the hostname here
+# is put to mail, then the ip here is going to be directed via 
+# mail.domain.tld
+# It is generally a good idea to call this something like mail, mail1
+# or something similar, to make it clear to the outside world that this
+# is an actualy server which was set up with mail in mind
+# NOTE: the reverse dns lookup should also resolve to whatever
+#       you input over here: hostname.domain.tld
+#       e.g. my hostname is called mail and the reverse dns resolves to
+#       mail.aisha.cc
+hostname: mail # can change it if you so prefer, but this is a nice one
 
 # ipv4/ipv6 address of this server
 # We need to get this manually instead of automatically in the case
 # that this server is behind a NAT and is only reachable via forwarded ports
-ip: <change-me> # e.g. 1.2.3.4
-ip6: <change-me> # e.g. dead:beef
+# TODO: currently the configuration is not configurable if you don't have an
+#       ipv6, but it should be done very soon. Given that most hosting providers
+#       give an ipv6 you shouldn't be worried about it too much.
+ipv4: <change-me> # e.g. 1.2.3.4
+ipv6: <change-me> # e.g. dead:beef
 
-# This is the user that will be added to :wheel and also quite a bit of other 
-# config is done to allow this user to work the system
-# (and if you use ssh_harden, will also be allowed ssh access to server)
-# Make sure that this user does not exist prior to running
-# Ansimail creates a default _ansimail user that is used to do configurations
-username: <change-me> # e.g. aisha
+# This is the user that will be created and all server information emails
+# daily reports and outside domain reports will be send to admin@domain.tld
+# This is not an actualy system user, but an email only user 
+# NOTE: AnsiMail is configured so that you can actually use this account
+#       as your daily email, by filterting all emails that are domain related
+#       to go into a information-archive email folder. This is very easy to set up
+#       using mail filtering. I will add a small section on how to configure mail
+#       filtering in the appropriate section, so don't worry about that right now.
+admin: <change-me> # e.g. aisha
 
-
-
-#------------ OPTIONAL
-
-# SSH by default uses password authentication and allows everyone (except root)
-# We can harden ssh by only allowing certain users to 
-# access the server using ONLY public-key based authentication
-# Enabling this option adds a tonne of options, some of which are
-#  - SSHFP records to NSD (which also enables DNSSEC)
-#      this can be toggled off per domain basis
-#  - disables password bsaed logins for everyone
-#  - enables pubkey access for specified users (the username value from above
-#      is added by default, no need to list it here again)
-#  - changes default port of sshd to specified value
-#  - only allows ssh access on the specified interfaces (by opening the firewall)
-ssh_harden: true
-ssh_interfaces:
-        - <change-me> # vio0 is the default egress interface for most VPS servers
-        - <change-me> # add any others, like virtual(!?) interfaces
-ssh_port: <change-me> # change this to something other than 22 (unless you want 
-                      # random attackers trying out your server for checks
-ssh_users:
-        - <change-me>
-        - <change-me>
-
-# Harden the default firewall PF
-# By default the firewall allows all ports to be accessed
-# though there does need to be a service making use of that 
-# port
-# This will disable access to all ports except the ones 
-# required by enabled services and those listed here
-# Currently the ports are opened on all interfaces
-# If you have complex networking setup, then you should
-# disable pf_harden and configure it yourself, like a good little kid
-pf_harden: true
-additional_tcp_ports:
-        - <change-me>
-        - <change-me>
-additional_udp_ports:
-        - <change-me>
-        - <change-me>
-
-#--- NSD config (if you want to run a stealth master configuration)
-# HIGHLY RECOMMENDED TO ENABLE
-# (this is going to be a bit long)
-
-nsd_enable: true
-
-# These nameservers are the ones to which we will be sending NOTIFY and AXFR
-# BEWARE: these are not the same as the ip's of the nameservers of the 
-#         DNS hosting provider, such as ns1.dnsmadeeasy.com. These have are
-#         given to you when you configure the DNS provider as a secondary 
-#         service, not when using as the primary 
-# For some reason these are currently only ipv4 (maybe I should read some more)
+# Secondary nameservers are those which are our `slaves` because these 
+# nameservers are the ones to which we will be sending NOTIFY and AXFR
+# NOTE: These are NOT the same as the ip's of the nameservers of the 
+#       DNS hosting provider, such as ns1.dnsmadeeasy.com. These are
+#       given to you when you configure the DNS provider as a secondary 
+#       service, not when using as the primary 
+# TODO: For some reason only ipv4 ones work correctly, even though you can
+#       add ipv6 names here (maybe I should read some more)
+# order doesn't matter
 secondary_nameservers:
-        - <change-me>
-        - <change-me>
+        - ipv4: <change-me> # e.g. 69.65.50.192 # freedns2 (afraid.org)
+        - ipv6: <change-me> # e.g. 2a00:1768:1001:9::31:1 # some cloudns server
+        - ipv4: <change-me> # add as many as you want... :)
 
 # These nameservers are used by others in the internet to find your servers
 # through DNS querying.
 # They are the ones that should resolve to ns1.dnsmadeeasy.com/ns1.<dns-provider.tld>
 # or something of that form, which makes it clear that they are DNS servers
-# You will also need to provide these for any additional domains that
-# you add in the following section
+# Each bullet point is one nameserver with at most one ipv4 and one ipv6
+# You can have a nameserver with an ipv4 and no ipv6 (also the other way around, 
+# but don't use any nameserver of this kind)
 public_nameservers:
-        - <change-me>
-        - <change-me>
-public_nameservers_ipv6:
-        - <change-me>
-        - <change-me>
+        - ipv4: <change-me>
+          ipv6: <change-me>
+        - ipv4: <change-me>
 
 
-# COMPLEX USAGE: allows you to do really complex things based off
-#                the automatic zone file configuration
-# If this is true, the above simple nsd config is not done
-# This makes the configuration ignore the following variables
-#   - secondary_nameservers
-#   - public_nameservers
-#   - public_nameservers_ipv6
-# You need to do complex nsd if you have more than one domain
-# that you want to configure here, and send emails for both 
-# of them from the same server, else it is fine to use the simple nsd config from above
-# There will be some example configurations in the examples/ directory
-# which show how to pick and choose domains for NSD and also how to disable
-# specific records that our NSD configuration adds
-# In essence, the configuration here can be thought of as a generator for each domain
-# You have to enable the first domain, which needs to be the same as the default one
-# but even there you can enable/disable certain configs
-nsd_complex: false
+#####-------- OPTIONAL SECTION
 
-# Additional domain names for which to configure the mail server
-# can be added here
-# Contains the default domain name listed above automatically
-# Each of them is going to allow users to send the emails as if sent from 
-# their domain name
-# If you are enabling multiple domain names, it is a good idea to read
-# up on the NSD config (not necessary)
-# Also you need to provide secondary_nameservers and public_nameserver(_ipv6)
-# for each of the additional domains seperately
-domain_list:
-        <domain-1>: # also change the domain name in domain-1
-                domain_name: <change-me>
-                # Do the certificates for this domain need to be generated and auto managed?
-                # If so, we will use the default httpd and acme-client to generate the certs
-                # specifically for ansimail.domain.tld
-                # valid options: true/false
-                manage_certs: <change-me>
-                # If you disable nsd for a domain, a zone file is still created to tell you
-                # what records you need to manually enter in your DNS host
-                enable_domain_nsd: <change-me>
-                # secondary nameservers for this specific domain
-                secondary_nameservers:
-                        - <change-me>
-                        - <change-me>
-                # These nameservers are used by others in the internet to find your servers
-                # through DNS querying.
-                # They are the ones that should resolve to ns1.dnsmadeeasy.com/ns1.<dns-provider.tld>
-                # or something of that form, which makes it clear that they are DNS servers
-                # You will also need to provide these for any additional domains that
-                # you add in the following section
-                # NEEDS: enable_domain_nsd: true
-                public_nameservers:
-                        - <change-me>
-                        - <change-me>
-                public_nameservers_ipv6:
-                        - <change-me>
-                        - <change-me>
-                # You can disable specific records if you want
-                # valid options are: sshfp, caa, tlsa
-                # NEEDS: enable_domain_nsd: true
-                disable_records:
-                        - <change-me>
-                        - <change-me>
+# Almost each option here is independant of others and it is fine to even delete the 
+# option and not even define it. AnsiMail has checks to see if the option is defined
+# and only then takes any steps.
 
+# SSH
+# It is most likely the case that you are installing this on a headless VPS with 
+# only ssh access in which case it is very advisable to change the port of ssh
+# to something other than the default 22, unless you like getting hackers constantly bombarding
+# your port to check out what you messed up
+#ssh_port: 2345
+
+# In addition to the ssh port if you want to open some extra TCP/UDP ports
+# you can define them here and 
+#additional_tcp_ports:
+#     - <change-me>
+#     - <change-me>
+#additional_tcp_ports:
+#     - <change-me>
+#     - <change-me>
+
+# Private interface
+# By default AnsiMail hardens your firewall to only allow the needed ports to communicate
+# with the internet and blocks all other ports from being accessed by others. This is a
+# safety check in case of vulnerabilities in any of the ported softwares.
+# If you have any interface that you want to open fully you can define it here.
+#private_interface: <change-me>  # on the off chance that this doesn't cover you use cases
+                                 # you should probably roll out your own firewall config
+                                 # as it is impossible for a small automated script as AnsiMail 
+                                 # to set up the cute beautiful beast that is pf
+
+# Complex: This section is bit more intricate and can be skipped
+# It may be that you have some extra subdomains not hosted on this machine or 
+# other nsd configuration, e.g. google-site-verification txt records or something
+# else that should be added to the default nsd config file. Any such configurations
+# can de added to a file and AnsiMail will dump the contents at the end of the default
+# config.
+# NOTE: Some subdomains are currently automatically configured to point to the current machine
+#       so make sure that those are not redefined in your addon file.
+# restricted subdomains: www, <hostname>, imap, smtp, pop3, autoconfig, 
+#                        autodiscover, wkd, mta-sts
+# HINT: first run do the install without the addon and see what is generated
+#       if you want to see if your addon is compatible (it most likely is)
+#nsd_addon: <change-me>
