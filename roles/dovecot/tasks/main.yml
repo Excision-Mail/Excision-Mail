@@ -1,7 +1,43 @@
+- name: Get ansimail UID
+  shell: id -u ansimail
+  register: ansimailUID
+
+- name: Create mail directory
+  file:
+          path: /var/ansimail
+          state: directory
+          owner: ansimail
+          group: ansimail
+          mode: '0770'
+
+- name: Create sieve-before directory
+  file:
+          path: /var/dovecot/sieve/before
+          state: directory
+          owner: ansimail
+          group: ansimail
+          mode: '0770'
+
+- name: Create sieve-pipe directory
+  file:
+          path: /var/dovecot/sieve-pipe
+          state: directory
+          owner: ansimail
+          group: ansimail
+          mode: '0770'
+
 - name: Copy dovecot local configs
   copy:
           src: etc_dovecot_confd/
           dest: /etc/dovecot/conf.d/
+          owner: ansimail
+          group: ansimail
+          mode: '0644'
+
+- name: Generate dovecot ssl local config
+  template:
+          src: 10-mail.conf.j2
+          dest: /etc/dovecot/conf.d/10-mail.conf
           owner: root
           group: wheel
           mode: '0644'
@@ -14,40 +50,40 @@
           group: wheel
           mode: '0644'
 
+- name: Set sieve directory permissions
+  file:
+          path: /usr/local/lib/dovecot/sieve
+          state: directory
+          owner: ansimail
+          group: ansimail
+          mode: '0770'
+
+- name: Add sievec scripts
+  copy:
+          src: sieve/
+          dest: /usr/local/lib/dovecot/sieve/
+          owner: ansimail
+          group: ansimail
+          mode: '0660'
+
+- name: Add sieve shell scripts
+  copy:
+          src: sieve-shell/
+          dest: /usr/local/lib/dovecot/sieve/
+          owner: ansimail
+          group: ansimail
+          mode: '0770'
+
+- name: Add sievec-before scripts
+  copy:
+          src: sieve-before/
+          dest: /var/dovecot/sieve/before/
+          owner: ansimail
+          group: ansimail
+          mode: '0660'
+
 - name: Restart dovecot
   service:
           name: dovecot
           state: restarted
-
-- name: Add sieve scripts for spam and ham
-  copy:
-          src: "{{ item.name }}"
-          dest: /usr/local/lib/dovecot/sieve/
-          owner: root
-          group: wheel
-          mode: '0644'
-  with_items: 
-          - { name: "report-ham.sieve" }
-          - { name: "report-spam.sieve" }
-
-- name: Add autolearn scripts for spam and ham
-  copy:
-          src: "{{ item.name }}"
-          dest: /usr/local/lib/dovecot/sieve/
-          owner: root
-          group: wheel
-          mode: '0755'
-  with_items: 
-          - { name: "sa-learn-ham.sh" }
-          - { name: "sa-learn-spam.sh" }
-
-- name: sievec report spam
-  shell: sievec report-spam.sieve
-  args:
-          chdir: /usr/local/lib/dovecot/sieve/
-
-- name: sievec report ham
-  shell: sievec report-ham.sieve
-  args:
-          chdir: /usr/local/lib/dovecot/sieve/
 
