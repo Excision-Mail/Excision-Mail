@@ -5,21 +5,23 @@ if [ $(id -u) -ne 0 ]; then
 	exit 1
 fi
 
-. /usr/local/lib/ansimail/helpers/variables
-
 echo "\n\n### Fixing permissions of AnsiMail config + script files\n\n"
 
 chown root:wheel /usr/local/lib/ansimail/fix-perms /usr/local/lib/ansimail/helpers/verbose-fix
 chmod 600 /usr/local/lib/ansimail/fix-perms /usr/local/lib/ansimail/helpers/verbose-fix
 
-find /usr/local/lib/ansimail -type d -exec sh /usr/local/lib/ansimail/helpers/verbose-fix root wheel 700 {} \;
-find /usr/local/lib/ansimail -type d -exec sh /usr/local/lib/ansimail/helpers/verbose-fix root wheel 600 {} \;
+# Now that bootstrapping is done
 
-find /etc/ansimail -type d -exec sh /usr/local/lib/ansimail/helpers/verbose-fix root wheel 755 {} \;
-find /etc/ansimail -type f -exec sh /usr/local/lib/ansimail/helpers/verbose-fix root wheel 644 {} \;
+. /usr/local/lib/ansimail/helpers/variables
 
-find /etc/ansimail/users -type d -exec sh /usr/local/lib/ansimail/helpers/verbose-fix root wheel 700 {} \;
-find /etc/ansimail/users -type f -exec sh /usr/local/lib/ansimail/helpers/verbose-fix root wheel 600 {} \;
+find $amscripts -type d -exec sh $vfix root wheel 700 {} \;
+find $amscripts -type f -exec sh $vfix root wheel 600 {} \;
+
+find $amconfig -path $user_home -prune -o -type d -exec sh $vfix root wheel 755 {} \;
+find $amconfig -path $user_home -prune -o -type f -exec sh $vfix root wheel 644 {} \;
+
+find $user_home -type d -exec sh $vfix root wheel 700 {} \;
+find $user_home -type f -exec sh $vfix root wheel 600 {} \;
 
 echo "\n\n### Fixing permissions of base install\n\n"
 
@@ -27,23 +29,21 @@ echo "\n\n### Fixing permissions of nsd files\n\n"
 
 echo "\n\n### Fixing permissions of OpenSMTPD files\n\n"
 
-
-
 echo "\n\n### Fixing permissions of httpd + acme files\n\n"
 
 echo "\n\n### Fixing permissions of OpenPGP WKS/WKD files\n\n"
 
 echo "\n\n### Fixing permissions of Dovecot files\n\n"
 
-find /etc/dovecot -type d -exec sh /usr/local/lib/ansimail/helpers/verbose-fix root wheel 755 {} \;
-find /etc/dovecot -type f -exec sh /usr/local/lib/ansimail/helpers/verbose-fix root wheel 644 {} \;
+find /etc/dovecot -type d -exec sh $vfix root wheel 755 {} \;
+find /etc/dovecot -type f -exec sh $vfix root wheel 644 {} \;
 
 echo "\n\n### Fixing permissions of Clamd files\n\n"
 
-sh /usr/local/lib/ansimail/helpers/verbose-fix root wheel 644 /etc/freshclam.conf
-sh /usr/local/lib/ansimail/helpers/verbose-fix root wheel 644 /etc/clamd.conf
+sh $vfix root wheel 644 /etc/freshclam.conf
+sh $vfix root wheel 644 /etc/clamd.conf
 
 echo "\n\n### Fixing permissions of Rspamd files\n\n"
 
-find /etc/rspamd -type d -exec sh /usr/local/lib/ansimail/helpers/verbose-fix root wheel 755 {} \;
-find /etc/rspamd -type f -exec sh /usr/local/lib/ansimail/helpers/verbose-fix root wheel 644 {} \;
+find /etc/rspamd -type d -exec sh $vfix root wheel 755 {} \;
+find /etc/rspamd -type f -exec sh $vfix root wheel 644 {} \;
