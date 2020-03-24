@@ -21,6 +21,14 @@ case "$1" in
 		/bin/sh /usr/local/lib/ansimail/add-alias $2;;
 	"add-user")
 		/bin/sh /usr/local/lib/ansimail/add-user $2;;
+	"change-passwd")
+		/bin/sh /usr/local/lib/ansimail/change-passwd $2;;
+	"daily-report")
+		/bin/sh /usr/local/lib/ansimail/daily-report $2;;
+	"userdb-check")
+		/bin/sh /usr/local/lib/ansimail/userdb-check $2;;
+	"fix-perms")
+		/bin/sh /usr/local/lib/ansimail/fix-perms $2;;
 	*)
 		echo "Unknow argument"
 		exit 1;;
