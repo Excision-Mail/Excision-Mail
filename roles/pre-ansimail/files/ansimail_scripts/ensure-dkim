@@ -1,9 +1,16 @@
 #!/bin/sh
 
+if [ $(id -u) -ne 0 ]; then
+	echo "This can only be run by root"
+	exit 1
+fi
+
+. /usr/local/lib/ansimail/helpers/variables
+
 domain=$1
-key_file="/etc/ansimail/dkim/private/ansimail.$domain.key"
-pub_file="/etc/ansimail/dkim/ansimail.$domain.pub"
-txt_file="/etc/ansimail/dkim/ansimail.$domain.txt"
+key_file="$dkim_home/private/ansimail.$domain.key"
+pub_file="$dkim_home/ansimail.$domain.pub"
+txt_file="$dkim_home/ansimail.$domain.txt"
 
 echo "##### Generating/Checking DKIM certificates for domain: $domain"
 

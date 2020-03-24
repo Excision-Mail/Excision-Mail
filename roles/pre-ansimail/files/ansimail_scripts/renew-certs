@@ -5,9 +5,9 @@ if [ $(id -u) -ne 0 ]; then
 	exit 1
 fi
 
-domain=$(head -n 1 /etc/mail/vdomains )
-
 . /usr/local/lib/ansimail/helpers/variables
+
+domain=$(head -n 1 /etc/mail/vdomains )
 
 echo "### Renewing acme certificates"
 acme-client -v -f $ssl_home/acme-client.conf $domain && {

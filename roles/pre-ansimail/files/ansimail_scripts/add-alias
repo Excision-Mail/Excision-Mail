@@ -2,6 +2,11 @@
 
 ### Creates a virtual alias $1 and forwards all messages to $2
 
+if [ $(id -u) -ne 0 ]; then
+	echo "This can only be run by root"
+	exit 1
+fi
+
 . /usr/local/lib/ansimail/helpers/variables
 
 alias=$1

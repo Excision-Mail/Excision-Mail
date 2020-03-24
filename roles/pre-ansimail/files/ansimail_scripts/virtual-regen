@@ -24,7 +24,7 @@ done
 
 cp $virtuals /etc/mail/virtual
 chmod 640 /etc/mail/virtual
-chown root:wheel /etc/mail/virtual
+chown root:_smtpd /etc/mail/virtual
 cp $user_home/passwd /etc/mail/passwd
 chmod 440 /etc/mail/passwd
 chown _smtpd:_dovecot /etc/mail/passwd
