@@ -17,11 +17,18 @@ chmod 600 /usr/local/lib/ansimail/fix-perms /usr/local/lib/ansimail/helpers/verb
 find $amscripts -type d -exec sh $vfix root wheel 700 {} \;
 find $amscripts -type f -exec sh $vfix root wheel 600 {} \;
 
-find $amconfig -path $user_home -prune -o -type d -exec sh $vfix root wheel 755 {} \;
-find $amconfig -path $user_home -prune -o -type f -exec sh $vfix root wheel 644 {} \;
+find $amconfig -path $user_home -prune -o -path $ssl_home/private -prune -o -path $dkim_home/private -prune -o -type d -exec sh $vfix root wheel 755 {} \;
+find $amconfig -path $user_home -prune -o -path $ssl_home/private -prune -o -path $dkim_home/private -prune -o -type f -exec sh $vfix root wheel 644 {} \;
 
 find $user_home -type d -exec sh $vfix root wheel 700 {} \;
 find $user_home -type f -exec sh $vfix root wheel 600 {} \;
+
+find $ssl_home/private -type d -exec sh $vfix root wheel 750 {} \;
+find $ssl_home/private -type f -exec sh $vfix root wheel 640 {} \;
+
+find $dkim_home/private -type d -exec sh $vfix root _rspamd 750 {} \;
+find $dkim_home/private -type f -exec sh $vfix root _rspamd 640 {} \;
+
 
 echo "\n\n### Fixing permissions of base install\n\n"
 

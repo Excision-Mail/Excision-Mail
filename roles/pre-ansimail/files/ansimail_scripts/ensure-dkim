@@ -7,7 +7,7 @@ fi
 
 . /usr/local/lib/ansimail/helpers/variables
 
-domain=$1
+domain=$( head -n 1 /etc/mail/vdomains )
 key_file="$dkim_home/private/ansimail.$domain.key"
 pub_file="$dkim_home/ansimail.$domain.pub"
 txt_file="$dkim_home/ansimail.$domain.txt"
