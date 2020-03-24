@@ -37,6 +37,8 @@ table	aliases \
 # Virtual host aliases
 table	virtuals \
 	file:/etc/mail/virtual
+table	revirt \
+	file:/etc/mail/revirt
 #
 # Virtual domains
 table	vdomains \
@@ -66,10 +68,12 @@ listen on egress \
 listen on egress port smtps \
 	smtps pki {{ domain }} \
 	auth <passwd> received-auth \
+	senders <revirt> \
 	filter rspamd 
 listen on egress port submission \
 	tls-require pki {{ domain }} \
 	auth <passwd> received-auth \
+	senders <revirt> \
 	filter rspamd 
 
 # Sending messages

@@ -39,14 +39,6 @@
   register: wks
   ignore_errors: yes
 
-- debug:
-        var: aadmin
-        verbosity: 2
-
-- debug:
-        var: wks
-        verbosity: 2
-
 - name: Add all the needed aliases for admin
   shell: ansimail add-alias "{{ item.name }}@{{ domain }}" "{{ admin }}@{{ domain }}"
   ignore_errors: yes
@@ -80,6 +72,7 @@
           - { name: "aliases", user: "root", group: "_smtpd",  perm: "0640" }
           - { name: "mailname", user: "root", group: "wheel", perm: "0644" }
           - { name: "virtual", user: "root", group: "_smtpd", perm: "0640" }
+          - { name: "revirt", user: "root", group: "_smtpd", perm: "0640" }
           - { name: "vdomains", user: "root", group: "wheel", perm: "0644" }
           - { name: "passwd", user: "_smtpd", group: "_dovecot", perm: "0440" }
 
