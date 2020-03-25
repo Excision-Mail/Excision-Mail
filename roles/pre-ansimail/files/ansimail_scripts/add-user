@@ -35,7 +35,6 @@ chmod 700 $user_home/user-data/$user
 
 printf "Password: "
 read password
-echo $password
 echo "\n"
 
 password=$( echo $password | smtpctl encrypt )
