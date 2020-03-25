@@ -16,11 +16,16 @@ The smaller ones are a bit too small for anything worthwhile, imho.
 
 #### Now that we have a server
 I am also assuming that you have a domain to your name and that you hold the power to configure everything related to that domain. This includes access to the domain registrar for setting primary nameservers, access to a horrible web-ui for doing "AdVanCEd" DNS condigurations and all that.  
-The first thing that we do is to 
+The first thing that we do is to start making preparations for our DNS setup, which we want to manage ourself.
 
 ## Prerequisites
+If you skipped to this section, the prerequisites are:
+ * OpenBSD 6.6 host with static ipv4 and ipv6, which also allows setting up reverse DNS
+ * Access to domain registrar for setting nameservers
+  
+#### Set up secondary nameservers
 
-## Set up secondary nameservers
+As 
 
 ## Set up variables file
 
@@ -29,3 +34,6 @@ The first thing that we do is to
 ## Run full installation playbook
 
 ## Post ansible finishing steps
+
+#### Credits
+
