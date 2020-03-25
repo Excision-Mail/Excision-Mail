@@ -18,4 +18,5 @@ cp -v /etc/installurl /etc/installurl.bak.$(date +%F_%R)
 echo "Now we change them to the standard configuration and add the needed ansible package"
 echo 'permit nopass :wheel' > /etc/doas.conf
 echo 'https://cdn.openbsd.org/pub/OpenBSD' > /etc/installurl
-pkg_add -xz ansible
+echo "In the package installation choose gnupg version 2"
+pkg_add -xz ansible gnupg
