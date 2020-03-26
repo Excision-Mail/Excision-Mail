@@ -54,3 +54,5 @@ See [INSTALLATION.md](INSTALLATION.md)
 ## Contact and support
 The primary mode of contact for reporting bugs would be GitHub but AnsiMail also has an IRC [#ansimail](https://webchat.freenode.net/?channels=ansimail) on freenode.  
 I am known as epsilonKNOT on freenode :)
+
+You can read the github wiki for some general purpose server maintenance commands that AnsiMail adds to the system. They are supremely helpful :)
