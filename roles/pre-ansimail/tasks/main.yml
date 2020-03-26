@@ -59,7 +59,7 @@
           dest: /var/ansimail-home/
           owner: ansimail
           group: ansimail
-          mode: 644
+          mode: "0644"
 
 - name: Create AnsiMail scripts directory
   file:
