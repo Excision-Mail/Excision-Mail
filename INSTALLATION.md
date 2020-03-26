@@ -33,8 +33,8 @@ For a secondary nameserver, the minimum requirements are to be able to accept NO
 Look at the pinned issue for a recommended list of secondary providers.
 
 The secondary DNS provider will give you two kinds of ip lists
- * public nameservers: These are the servers that other people on the internet will think are the primary nameservers of your domain. They will not know about the master DNS resolvers running on your computer (hence stealth master). Most probably each nameserver will have a name (like ns7.provider.tld), an ipv4 and an ipv6. Note these down because they are needed to generate the configuration file. Also go to your domain registrar and register each of the public nameservers as your primary nameservers.  
- * secondary nameservers: To find the nameserver ip addresses you might need to look around a bit and poke the buttons on the providers api. Note these down as well because they too are needed to generate the configuration file.
+ * *public nameservers*: These are the servers that other people on the internet will think are the primary nameservers of your domain. They will not know about the master DNS resolvers running on your computer (hence stealth master). Most probably each nameserver will have a name (like ns7.provider.tld), an ipv4 and an ipv6. Note these down because they are needed to generate the configuration file. Also go to your domain registrar and register each of the public nameservers as your primary nameservers.  
+ * *secondary nameservers*: To find the nameserver ip addresses you might need to look around a bit and poke the buttons on the providers api. Note these down as well because they too are needed to generate the configuration file.
 
 These two are the longest configuration options and everything after this is smooth sailing.
 
