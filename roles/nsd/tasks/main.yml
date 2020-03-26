@@ -10,6 +10,11 @@
           group: _nsd
           mode: '0640'
 
+- name: Copy mailname
+  template:
+          src: mailname.j2
+          dest: /etc/mail/mailname
+
 - name: Generate DKIM certs
   command: ansimail ensure-dkim {{ domain }}
 

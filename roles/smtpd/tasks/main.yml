@@ -3,11 +3,6 @@
           src: aliases.j2
           dest: /etc/mail/aliases
 
-- name: Copy mailname
-  template:
-          src: mailname.j2
-          dest: /etc/mail/mailname
-
 - name: Copy vdomains
   template:
           src: vdomains.j2
