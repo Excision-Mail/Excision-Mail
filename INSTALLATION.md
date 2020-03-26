@@ -91,7 +91,7 @@ Supposing that your adminstrator is called `notaisha` and your domain was `aisha
 
 ```sh
 ansimail change-passwd "notaisha@aisha.cc"
-ansimail virtua-regen
+ansimail virtual-regen
 rcctl restart smtpd dovecot
 ```
 
