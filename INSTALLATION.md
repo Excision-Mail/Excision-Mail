@@ -24,16 +24,96 @@ If you skipped to this section, the prerequisites are:
  * Access to domain registrar for setting nameservers
   
 #### Set up secondary nameservers
+One of the first things that we are going to do is to get a secondary nameserver service.  
+AnsiMail comes with a automated stealth master NSD configuration using the default NSD service in OpenBSD.  
+The advantage of this is to be able to modify complex DNS records easily via text configuration which is nicely documented, explaining each option. If anybody has ever tried to work with a web ui based dns configuration and tried to set SRV records, they will know how insanely tedious and complicated it really is.  
+Thankfully the worst part of the DNS configuration is automated leaving you with almost nothing to manage yourself (though you can if you want to).
 
-As 
+For a secondary nameserver, the minimum requirements are to be able to accept NOTIFY (which informs the secondary about any updates from your computer).  
+Look at the pinned issue for a recommended list of secondary providers.
+
+The secondary DNS provider will give you two kinds of ip lists
+ * public nameservers: These are the servers that other people on the internet will think are the primary nameservers of your domain. They will not know about the master DNS resolvers running on your computer (hence stealth master). Most probably each nameserver will have a name (like ns7.provider.tld), an ipv4 and an ipv6. Note these down because they are needed to generate the configuration file. Also go to your domain registrar and register each of the public nameservers as your primary nameservers.  
+ * secondary nameservers: To find the nameserver ip addresses you might need to look around a bit and poke the buttons on the providers api. Note these down as well because they too are needed to generate the configuration file.
+
+These two are the longest configuration options and everything after this is smooth sailing.
 
 ## Set up variables file
 
+The configuration file for AnsiMail is called `vars.yml` which is supposed to be the filled-in version of the `vars-sample.yml` file.  
+Read the `vars-sample.yml` file in depth because all the options have been explained in great detail, so please make sure that you understand each of them.  
+
+You will see that you need to enter the two lists of ip addresses in the two options provided for the stealth master configuration to work.
+
+First step that you need to do is to make sure that your system is bootstrapped correctly, to get ansible working.
+
+The assumption going forwarded is that you have downloaded and extracted AnsiMail to some directory and it is the current working directory.
+
+```sh
+sh scripts/bootstrap.sh
+```
+
+This installs the necessary packages, Ansible and GnuPG on your server.  
+(Currently GnuPG is to be installed manually because it cannot be installed through Ansible due to package ambiguity)
+
+
 ## Run preinstallation playbook
+
+After the system finishes bootstrapping you need to run the first playbook: `site-preinstall.yml`
+
+```sh
+ansible-playbook site-preinstall.yml
+```
+
+This is going to take a while because it installs quite a bit of packages, so I suggest going and getting some Kombucha.
+
+Also after running this playbook it is advisable to wait a couple of minutes for the site updates to propogate through the interwebs and letting your secondary nameservers update their configurations. Because even though they do accept NOTIFY, I have found that certain servers take some time to update the configuration. Generally 5-10 minuts is enough.
 
 ## Run full installation playbook
 
+Now that everyone on the webz knows about your new server names and services, it is time to install the full playbook:
+
+```sh
+ansible-playbook site-install.yml
+```
+
+After this finishes running you should reboot your server to make sure that all the services are going to be using the proper configurations.
+
+AND YOU ARE DONE!
+
+AnsiMail has finished installing on your system and you have a working mail server (which you are unable to access because you don't know the password of your email account :P)
+
 ## Post ansible finishing steps
 
-#### Credits
+Now that the server has been rebooted and AnsiMail is running, you need to reset the password of you admin account:
 
+Supposing that your adminstrator is called `notaisha` and your domain was `aisha.cc`, run the following command to change the password and reload the services
+
+```sh
+ansimail change-passwd "notaisha@aisha.cc"
+ansimail virtua-regen
+rcctl restart smtpd dovecot
+```
+
+#### Testing your email
+
+Now that you know your email address and password, its time to test out the shiny new email while it still has that new-email smell.
+
+There is no web-mail configured yet (it is going to be soon), you need to use an email client to access this server.
+
+Some recommended email clients are:
+ * Thunderbird
+ * KMail
+ * Evolution
+ * mutt/neomutt
+ * Lieterally anything in the world, AnsiMail is configured to make everyone autodetect all ports and domain setting automatically
+
+Your username is `<admin>@<domain.tld>`, where you fill your own credentials and your password is what you set in the previous step.
+
+Try sending mails to some other accounts and see if they reach correctly.
+
+A good test is to go on https://mail-tester.com and see what score you get. You should see a 10/10, cuz this setup is fire.
+
+Don't hesitate to ask any questions on IRC or github. I might not be able to respond immediately but I will try to be fast. 
+
+Take care, be safe and get back your privacy from Big Brother :)
