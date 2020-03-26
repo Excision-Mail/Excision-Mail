@@ -53,6 +53,14 @@
           shell: /bin/ksh
           home: /var/ansimail-home
 
+- name: Install gpg-wks init script
+  copy:
+          src: ansimail-wks-init
+          dest: /var/ansimail-home/
+          owner: ansimail
+          group: ansimail
+          mode: 644
+
 - name: Create AnsiMail scripts directory
   file:
           name: /usr/local/lib/ansimail/helpers

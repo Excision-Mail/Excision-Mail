@@ -1,0 +1,22 @@
+#!/bin/sh
+
+if [ $(id -u) -ne 0 ]; then
+	echo "This can only be run by root"
+	exit 1
+fi
+
+. /usr/local/lib/ansimail/helpers/variables
+
+wks_home="/var/lib/gnupg/wks"
+domain=$( head -n 1 /etc/mail/vdomains )
+
+mkdir -p $wks_home
+chown ansimail:ansimail $wks_home
+chmod 2750 $wks_home
+
+mkdir -p /var/www/openpgpkey
+ln -sfh /var/www/openpgpkey $wks_home/$domain
+
+chown -R ansimail:ansimail /var/www/openpgpkey
+
+su -l ansimail -c "sh /var/ansimail-home/ansimail-wks-init"
