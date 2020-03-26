@@ -7,7 +7,6 @@
 
   roles:
           - { role: acme,          tags: ['acme']           }
-          #- { role: gpg,           tags: ['gpg']            }
           - { role: rspamd,        tags: ['rspamd']         }
           - { role: clamav,        tags: ['clamav']         }
           - { role: smtpd,         tags: ['smtpd']          }
