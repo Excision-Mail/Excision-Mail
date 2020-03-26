@@ -94,6 +94,7 @@ ansimail change-passwd "notaisha@aisha.cc"
 ansimail virtual-regen
 rcctl restart smtpd dovecot
 ```
+You can read the github wiki for some general purpose server maintenance commands that AnsiMail adds to the system. They are supremely helpful :)
 
 #### Testing your email
 
