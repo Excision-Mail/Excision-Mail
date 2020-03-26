@@ -77,16 +77,8 @@
   file:
           name: /var/www/openpgpkey
           state: directory
-          owner: root
-          group: wheel
-          mode: '0755'
-
-- name: Copy OpenPGP submission address mail
-  template:
-          src: submission-address.j2
-          dest: /var/www/openpgpkey/submission-address
-          owner: root
-          group: wheel
+          owner: ansimail
+          group: ansimail
           mode: '0755'
 
 - name: Restart httpd
@@ -101,6 +93,9 @@
           owner: root
           group: wheel
           mode: '0644'
+
+- name: Initialize the gpg-wks-server
+  shell: ansimail ensure-gpg
 
 - name: Create acme certs
   command: acme-client -f /etc/ansimail/ssl/acme-client.conf {{ domain }}
