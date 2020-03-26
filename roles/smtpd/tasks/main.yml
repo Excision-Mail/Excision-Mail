@@ -3,11 +3,6 @@
           src: aliases.j2
           dest: /etc/mail/aliases
 
-- name: Copy vdomains
-  template:
-          src: vdomains.j2
-          dest: /etc/mail/vdomains
-
 - name: Make sure that passwd file exists
   file:
           path: /etc/ansimail/users/passwd

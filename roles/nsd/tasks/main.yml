@@ -15,6 +15,11 @@
           src: mailname.j2
           dest: /etc/mail/mailname
 
+- name: Copy vdomains
+  template:
+          src: vdomains.j2
+          dest: /etc/mail/vdomains
+
 - name: Generate DKIM certs
   command: ansimail ensure-dkim {{ domain }}
 
