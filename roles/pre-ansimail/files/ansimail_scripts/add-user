@@ -18,11 +18,11 @@ user_status=$( sh $amscripts/helpers/check-user $user )
 
 case $user_status in
 	1)
-		echo "User already exists as real user"
+		echo "User $user already exists as real user"
 		exit 1
 		;;
 	2)
-		echo "User already exists as an alias"
+		echo "User $user already exists as an alias"
 		exit 2
 		;;
 	*)
@@ -30,12 +30,12 @@ case $user_status in
 		;;
 esac
 
-touch $user_home/user-data/$user
-chmod 700 $user_home/user-data/$user
-
 printf "Password: "
 read password
 echo "\n"
+
+touch $user_home/user-data/$user
+chmod 700 $user_home/user-data/$user
 
 password=$( echo $password | smtpctl encrypt )
 
