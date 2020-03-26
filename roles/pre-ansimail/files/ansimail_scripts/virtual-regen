@@ -37,3 +37,6 @@ chown root:_smtpd /etc/mail/virtual /etc/mail/revirt
 cp $user_home/passwd /etc/mail/passwd
 chmod 440 /etc/mail/passwd
 chown _smtpd:_dovecot /etc/mail/passwd
+
+# Restart services
+/usr/sbin/rcctl restart smtpd dovecot
