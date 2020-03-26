@@ -5,10 +5,16 @@ if [ $(id -u) -ne 0 ] ; then
     exit 1
 fi
 
-echo "We are going to first prepare the OpenBSD install to support AnsiMail"
-echo "The following files are going to be changed:"
-echo "   /etc/installurl:\n   The default package url is going to be changed to https://cdn.openbsd.org/pub/OpenBSD"
-echo "   /etc/doas.conf:\n   We will permit all member of :wheel to doas without password, change this afterwards"
+cat << EOF
+We are going to first prepare the OpenBSD install to support AnsiMail
+The following files are going to be changed:
+
+  /etc/installurl:
+  The default package url is going to be changed to https://cdn.openbsd.org/pub/OpenBSD
+  
+  /etc/doas.conf:
+  We will permit all member of :wheel to doas without password, change this afterwards
+EOF
 
 echo "We will back them up"
 [[ -f /etc/doas.conf ]] || cp -v /etc/doas.conf /etc/doas.conf.bak.$(date +%F_%R)
