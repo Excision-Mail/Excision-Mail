@@ -10,6 +10,6 @@
   with_items:
           - { name: "clamd" }
           - { name: "freshclam" }
-  when: {enable_clamav is not defined) or (enable_clamav == false)
+  when: (enable_clamav is not defined) or (enable_clamav == false)
 
 - meta: flush_handlers
