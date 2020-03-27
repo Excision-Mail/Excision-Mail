@@ -1,6 +1,6 @@
 #!/bin/sh
 
-if [ $(id -u) -ne 0 ]; then
+if [ "$(id -u)" -ne 0 ]; then
 	echo "This can only be run by root"
 	exit 1
 fi
@@ -15,27 +15,27 @@ shift
 
 case "$command" in
 	"ensure-dkim")
-		/bin/sh /usr/local/lib/ansimail/ensure-dkim $@;;
+		/bin/sh /usr/local/lib/ansimail/ensure-dkim "$@";;
 	"renew-certs")
-		/bin/sh /usr/local/lib/ansimail/renew-certs $@;;
+		/bin/sh /usr/local/lib/ansimail/renew-certs "$@";;
 	"show-stats")
-		/bin/sh /usr/local/lib/ansimail/show-stats $@;;
+		/bin/sh /usr/local/lib/ansimail/show-stats "$@";;
 	"add-alias")
-		/bin/sh /usr/local/lib/ansimail/add-alias $@;;
+		/bin/sh /usr/local/lib/ansimail/add-alias "$@";;
 	"add-user")
-		/bin/sh /usr/local/lib/ansimail/add-user $@;;
+		/bin/sh /usr/local/lib/ansimail/add-user "$@";;
 	"change-passwd")
-		/bin/sh /usr/local/lib/ansimail/change-passwd $@;;
+		/bin/sh /usr/local/lib/ansimail/change-passwd "$@";;
 	"daily-report")
-		/bin/sh /usr/local/lib/ansimail/daily-report $@;;
+		/bin/sh /usr/local/lib/ansimail/daily-report "$@";;
 	"userdb-check")
-		/bin/sh /usr/local/lib/ansimail/userdb-check $@;;
+		/bin/sh /usr/local/lib/ansimail/userdb-check "$@";;
 	"fix-perms")
-		/bin/sh /usr/local/lib/ansimail/fix-perms $@;;
+		/bin/sh /usr/local/lib/ansimail/fix-perms "$@";;
 	"virtual-regen")
-		/bin/sh /usr/local/lib/ansimail/virtual-regen $@;;
+		/bin/sh /usr/local/lib/ansimail/virtual-regen "$@";;
 	"ensure-gpg")
-		/bin/sh /usr/local/lib/ansimail/ensure-gpg $@;;
+		/bin/sh /usr/local/lib/ansimail/ensure-gpg "$@";;
 	*)
 		echo "Unknown argument"
 		exit 3;;

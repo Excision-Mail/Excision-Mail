@@ -12,4 +12,4 @@ amconfig="/etc/ansimail"
 amscripts="/usr/local/lib/ansimail"
 amhelpers="/usr/local/lib/ansimail/helpers"
 
-vfix=$amhelpers/verbose-fix
+vfix="$amhelpers/verbose-fix"
