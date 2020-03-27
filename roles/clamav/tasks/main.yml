@@ -1,23 +1,5 @@
-- name: install clamd init script
-  copy:
-          src: clamd
-          dest: /etc/rc.d/clamd
-          mode: 0755
-          owner: root
-          group: bin
-
-- name: install freshclam conf
-  copy:
-          src: freshclam.conf
-          dest: /etc/freshclam.conf
-  notify:
-          - install freshclam list
-          - restart freshclam
-
-- name: install clamd conf
-  copy:
-          src: clamd.conf
-          dest: /etc/clamd.conf
-  notify: restart clamd
+- name: Include the optional clamav config if it is enabled
+  include: clamav_optional.yml
+  when: (enable_clamav is defined) and (enable_clamav == true)
 
 - meta: flush_handlers

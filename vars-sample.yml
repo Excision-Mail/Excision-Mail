@@ -48,6 +48,12 @@ admin: <change-me> # e.g. aisha
 
 #####-------- OPTIONAL SECTION
 
+# The clamav antivirus is used to detect virus signatures in emails
+# By default it is enabled and all the necessary services are loaded 
+# You can disable the installation of the antivirus if you are low on resources
+# and would rather rely on spamd and rspamd (which are generally enough)
+enable_clamav: true # set to false to disable
+
 # HIGHLY RECOMMENDED TO USE THIS
 #
 # Complex: This section is bit more intricate and can be skipped
