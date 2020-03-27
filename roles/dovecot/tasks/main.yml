@@ -38,6 +38,7 @@
   copy:
           src: etc_dovecot_confd/
           dest: /etc/dovecot/conf.d/
+          force: yes
           owner: ansimail
           group: ansimail
           mode: '0644'
@@ -62,6 +63,7 @@
   copy:
           src: sieve/
           dest: /usr/local/lib/dovecot/sieve/
+          force: yes
           owner: ansimail
           group: ansimail
           mode: '0660'
@@ -70,6 +72,7 @@
   copy:
           src: sieve-shell/
           dest: /usr/local/lib/dovecot/sieve/
+          force: yes
           owner: ansimail
           group: ansimail
           mode: '0770'
@@ -94,6 +97,7 @@
   copy:
           src: sieve-before/
           dest: /var/dovecot/sieve/before/
+          force: yes
           owner: ansimail
           group: ansimail
           mode: '0660'

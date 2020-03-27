@@ -2,14 +2,16 @@
   copy:
           src: clamd
           dest: /etc/rc.d/clamd
-          mode: 0755
+          force: yes
           owner: root
           group: bin
+          mode: '0755'
 
 - name: Copy antivirus configs into rspamd
   copy:
           src: "{{ item.name }}"
           dest: "/etc/rspamd/local.d/{{ item.name }}"
+          force: yes
           owner: root
           group: wheel
           mode: '0644'
@@ -21,6 +23,10 @@
   copy:
           src: freshclam.conf
           dest: /etc/freshclam.conf
+          force: yes
+          owner: root
+          group: wheel
+          mode: '0644'
   notify:
           - install freshclam list
           - restart freshclam
@@ -29,6 +35,10 @@
   copy:
           src: clamd.conf
           dest: /etc/clamd.conf
+          force: yes
+          owner: root
+          group: wheel
+          mode: '0644'
   notify: restart clamd
 
 - name: Reload rspamd

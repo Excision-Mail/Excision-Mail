@@ -26,7 +26,7 @@ $ORIGIN	{{ domain }}.
 
 ; we set the acceptable nameservers for this domain
 ; don't trust cloudflare
-{% if public_nameservers is defined %}
+{% if (public_nameservers is defined) and (public_nameservers|length > 0) %}
 {% for ps in public_nameservers %}
 @	IN	NS	ns{{ loop.index }}.{{ domain }}.
 {% if ps.ipv4 is defined %}

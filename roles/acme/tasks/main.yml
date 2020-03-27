@@ -18,6 +18,7 @@
   copy:
           src: index.html
           dest: /var/www/{{ domain }}/index.html
+          force: yes
           owner: root
           group: wheel
           mode: '0755'

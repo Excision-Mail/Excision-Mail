@@ -10,6 +10,7 @@
   copy:
           src: etc_rspamd_locald/
           dest: /etc/rspamd/local.d/
+          force: yes
           owner: root
           group: wheel
           mode: '0644'

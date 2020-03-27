@@ -24,6 +24,7 @@
           - { name: "dovecot" }
           - { name: "nsd" }
           - { name: "httpd" }
+          - { name: "spamd" }
 
 - name: Create AnsiMail config directories
   file:
@@ -57,6 +58,7 @@
   copy:
           src: ansimail-wks-init
           dest: /var/ansimail-home/
+          force: yes
           owner: ansimail
           group: ansimail
           mode: "0644"
@@ -65,6 +67,7 @@
   file:
           name: /usr/local/lib/ansimail/helpers
           state: directory
+          force: yes
           owner: root
           group: wheel
           mode: '0700'
@@ -73,6 +76,7 @@
   copy:
           src: ansimail
           dest: /usr/local/bin/
+          force: yes
           owner: root
           group: wheel
           mode: '0700'
@@ -81,6 +85,7 @@
   copy:
           src: ansimail_scripts/
           dest: /usr/local/lib/ansimail/
+          force: yes
           owner: root
           group: wheel
           mode: '0600'
