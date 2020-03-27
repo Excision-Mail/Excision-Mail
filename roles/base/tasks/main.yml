@@ -11,6 +11,7 @@
 - name: Make sure log files exist
   file:
           path: /var/log/{{ item }}
+          state: touch
           owner: root
           group: wheel
           mode: '0640'
