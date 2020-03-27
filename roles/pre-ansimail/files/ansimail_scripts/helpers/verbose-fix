@@ -10,8 +10,8 @@ group="$2"
 mode="$3"
 mfile="$4"
 
-old_stat=$(stat -f '%u %g %OLp' "$4")
-new_stat="$(id -u "$1") $(getent group "$2" | cut -d: -f3) $3"
+old_stat=$(stat -f '%u %g %OLp' "$mfile")
+new_stat="$(id -u "$owner") $(getent group "$group" | cut -d: -f3) $mode"
 
 if [ "$old_stat" != "$new_stat" ]; then
 	chown "$owner":"$group" "$mfile"
