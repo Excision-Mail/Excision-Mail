@@ -25,7 +25,7 @@ for user_file in "$user_home/user-data/"*; do
 	printf "%s\t\t\t\t%s" "$username" "$username" >> "$revirt"
 	while IFS= read -r alias; do
 		printf "%s\t\t\t\t%s" "$alias" "$username" >> "$virtuals"
-		printf ",%s", "$alias" >> $revirt
+		printf "%s", "$alias" >> $revirt
 	done < "$user_home/user-data/$username"
 	printf "\n" >> "$revirt"
 done
