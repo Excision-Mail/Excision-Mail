@@ -6,7 +6,7 @@
           - vars.yml
 
   roles:
-          - { role: pre-ansimail,  tags: ['pre-ansimail']   }
-          - { role: base,          tags: ['base']           }
+          #- { role: pre-ansimail,  tags: ['pre-ansimail']   }
+          #- { role: base,          tags: ['base']           }
           - { role: nsd,           tags: ['nsd']            }
 

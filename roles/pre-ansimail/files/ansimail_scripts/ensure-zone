@@ -1,0 +1,23 @@
+#!/bin/sh
+
+if [ $(id -u) -ne 0 ]; then
+	echo "This can only be run by root"
+	exit 1
+fi
+
+. /usr/local/lib/ansimail/helpers/variables
+
+domain="$( head -n 1 /etc/mail/vdomains )"
+zone_file="/var/nsd/zones/master/$domain.zone.tmp"
+
+sh "$amscripts/ensure-dkim"
+newserial=$(( $(date +%y%m%d%H%M) + 20000000 ))
+
+sed -e "s/ANSIMAILSERIAL/$newserial/g" "$nsd_home/$domain.zone" > "$zone_file"
+
+cat "$dkim_home/ansimail.$domain.txt" >> "$zone_file"
+
+[ -e "$nsd_home/$domain.zone.addon" ] && cat "$nsd_home/$domain.zone.addon" >> "$zone_file"
+
+sh $vfix root wheel 644 "$zone_file"
+

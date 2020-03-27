@@ -36,6 +36,8 @@ case "$command" in
 		/bin/sh /usr/local/lib/ansimail/virtual-regen "$@";;
 	"ensure-gpg")
 		/bin/sh /usr/local/lib/ansimail/ensure-gpg "$@";;
+	"ensure-zone")
+		/bin/sh /usr/local/lib/ansimail/ensure-zone "$@";;
 	*)
 		echo "Unknown argument"
 		exit 3;;

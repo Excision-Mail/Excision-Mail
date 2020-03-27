@@ -51,14 +51,24 @@ admin: <change-me> # e.g. aisha
 # HIGHLY RECOMMENDED TO USE THIS
 #
 # Complex: This section is bit more intricate and can be skipped
+#
+# If you want to make AnsiMail manage nsd on your behalf you should say yes here
+# It is really recommended to do this as configurin NSD manually is really really
+# hard given the horrible web interfaces used by service providers
+# In the worst case where you want to do it yourself, you can visit the wiki page 
+# and the NSD role for documentation. It is highly detailed and explains every step 
+# of the way. 
+# Be aware that configuring it yourself is going to take upwards of 7-8 hours, 
+# unless you are experiences with DNS setup
+#enable_nsd: true # or false ( but recommended to use stealth master configuration )
+#
+# We know that the standard NSD config doesn't cover all bases so we have an addon
+# config available in the highly likely chance that you have more subdomains to manage.
 # It may be that you have some extra subdomains not hosted on this machine or 
-# other nsd configuration, e.g. google-site-verification txt records or something
+# some other nsd configuration, e.g. google-site-verification txt records or something
 # else that should be added to the default nsd config file. Any such configurations
 # can de added to a file and AnsiMail will dump the contents at the end of the default
 # config.
-#
-#enable_nsd: true # or false ( but recommended to use stealth master configuration )
-
 # NOTE: Some subdomains are currently automatically configured to point to the current machine
 #       so make sure that those are not redefined in your addon file.
 # restricted subdomains: www, <hostname>, imap, smtp, pop3, autoconfig, 
@@ -66,7 +76,8 @@ admin: <change-me> # e.g. aisha
 # HINT: first run do the install without the addon and see what is generated
 #       if you want to see if your addon is compatible (it most likely is)
 #nsd_addon: <change-me>
-
+# 
+# The following two settings are needed if you enable_nsd
 # Secondary nameservers are those which are our `slaves` because these 
 # nameservers are the ones to which we will be sending NOTIFY and AXFR
 # NOTE: These are NOT the same as the ip's of the nameservers of the 

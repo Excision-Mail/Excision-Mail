@@ -4,7 +4,7 @@ $TTL	10800		; 3h ; used for all entries without ttl values, hence it can be over
 $ORIGIN	{{ domain }}.
 
 @	1d	SOA	ns1.{{ domain }}.	root.{{ domain }}. (
-	{{ nsdserial.stdout }}		; serial
+	ANSIMAILSERIAL		; serial
 	3h			; refresh
 	3m			; retry
 	1w			; expire
@@ -84,9 +84,5 @@ _pop3._tcp	IN	SRV	0	0	0	.
 _dmarc	IN	TXT	"v=DMARC1;p=reject;pct=100;rua=mailto:dmarcreports@{{ domain }};"
 ; these two are needed to finalize MTA-STS (along with publishing the policy in a mta-sts.txt file in httpd
 _smtp._tls	IN	TXT	"v=TLSRPTv1;rua=mailto:tlsreports@{{ domain }};"
-_mta-sts	IN	TXT	"v=STSv1;id={{ nsdserial.stdout }};"
+_mta-sts	IN	TXT	"v=STSv1;id=ANSIMAILSERIAL;"
 
-;>>>>>>>>>>ANSIMAIL-DKIM ; DO NOT REMOVE OR MODIFY THESE TWO LINES
-{{ nsddkim.stdout }}
-
-; ansible will add the SSHFP records here
