@@ -110,8 +110,6 @@
           group: ansimail
           mode: '0660'
 
-- name: Restart dovecot
-  service:
-          name: dovecot
-          state: restarted
+- name: Do virtual-regen to start dovecot and smtpd
+  shell: ansimail virtual-regen
 
