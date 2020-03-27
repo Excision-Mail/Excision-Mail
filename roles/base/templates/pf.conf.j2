@@ -1,5 +1,5 @@
 # read the file /etc/services to get an idea of predefined port names
-inbound_tcp = "{ smtp, smtps, submission, domain, sieve, imaps, pop3s, http, https}"
+inbound_tcp = "{ smtps, submission, domain, sieve, imaps, pop3s, http, https}"
 inbound_udp = "{ domain }"
 
 # check what port we want ssh to run on and open that specific one
@@ -18,6 +18,9 @@ additional_tcp_ports = "{ {{ additional_tcp_ports | join(', ') }} }"
 additional_udp_ports = "{ {{ additional_udp_ports | join(', ') }} }"
 {% endif %}
 
+table <spamd-white> persist
+table <nospamd> persist file "/etc/mail/nospamd.txt"
+
 # better not mess with the loopback interface
 set skip on lo
 
@@ -31,6 +34,9 @@ pass proto icmp6
 {% if private_interface is defined %}
 pass in on {{ private_interface }}
 {% endif %}
+
+pass in on egress proto tcp to port smtp divert-to 127.0.0.1 port spamd
+pass in on egress proto tcp from { <nospamd>, <spamd-white> } to port smtp
 
 pass in on egress proto tcp to port $ssh_port
 

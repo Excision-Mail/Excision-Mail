@@ -7,7 +7,7 @@ fi
 
 . /usr/local/lib/ansimail/helpers/variables
 
-domain=$(head -n 1 /etc/mail/vdomains)
+domain=$(head -n 1 /etc/mail/mailname)
 
 echo "### Renewing acme certificates"
 acme-client -v -f "$ssl_home/acme-client.conf" "$domain" && {
