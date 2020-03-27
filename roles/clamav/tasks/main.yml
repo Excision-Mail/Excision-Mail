@@ -2,4 +2,14 @@
   include: clamav_optional.yml
   when: (enable_clamav is defined) and (enable_clamav == true)
 
+- name: Disable services if we don't include clamav
+  service:
+          name: "{{ item.name }}"
+          enabled: no
+          state: stopped
+  with_items:
+          - { name: "clamd" }
+          - { name: "freshclam" }
+  when: {enable_clamav is not defined) or (enable_clamav == false)
+
 - meta: flush_handlers
