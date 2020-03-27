@@ -9,14 +9,12 @@
   notify: rebuild login database
 
 - name: Make sure log files exist
-  copy:
-          content: ""
-          dest: /var/log/{{ item }}
-          force: yes
+  file:
+          path: /var/log/{{ item }}
           owner: root
           group: wheel
           mode: '0640'
-  with_items: { nsd, httpd, doas, clamd, freshclam}
+  with_items: { nsd, httpd, doas, clamd, freshclam, spamd}
 
 - name: Generate syslog conf
   copy:
