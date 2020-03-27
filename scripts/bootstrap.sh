@@ -17,8 +17,8 @@ The following files are going to be changed:
 EOF
 
 echo "We will back them up"
-[[ -f /etc/doas.conf ]] || cp -v /etc/doas.conf /etc/doas.conf.bak.$(date +%F_%R)
-cp -v /etc/installurl /etc/installurl.bak.$(date +%F_%R)
+[ -f /etc/doas.conf ] || cp -v /etc/doas.conf "/etc/doas.conf.bak.$(date +%F_%R)"
+cp -v /etc/installurl "/etc/installurl.bak.$(date +%F_%R)"
 
 echo "Now we change them to the standard configuration and add the needed ansible package"
 echo 'permit nopass :wheel' > /etc/doas.conf
