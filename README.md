@@ -1,4 +1,8 @@
 # AnsiMail
+[![GitHub Actions](https://img.shields.io/endpoint.svg?url=https%3A%2F%2Factions-badge.atrox.dev%2Fatrox%2Fsync-dotenv%2Fbadge)](https://actions-badge.atrox.dev/AnsiMail/AnsiMail/goto)
+![GitHub release (latest SemVer including pre-releases)](https://img.shields.io/github/v/release/AnsiMail/AnsiMail?include_prereleases)
+![GitHub issues](https://img.shields.io/github/issues-raw/AnsiMail/AnsiMail)
+
 Fullstack,security focused mailserver based on OpenSMTPD for OpenBSD using ansible
 
 ## Functionality Goals
