@@ -1,6 +1,6 @@
 #!/bin/sh
 
-if [ $(id -u) -ne 0 ]; then
+if [ "$(id -u)" -ne 0 ]; then
 	echo "This can only be run by root"
 	exit 1
 fi
@@ -10,17 +10,17 @@ fi
 user=$1
 
 printf "Password: "
-read password
-echo "\n"
+read -r password
+printf "\n"
 
-password=$( echo $password | smtpctl encrypt )
-echo $password
+password=$(echo "$password" | smtpctl encrypt)
+echo "$password"
 
-sed -i "/$user/d" $user_home/passwd
+sed -i "/$user/d" "$user_home/passwd"
 
-echo "$user:$password::::::::" >> $user_home/passwd
+echo "$user:$password::::::::" >> "$user_home/passwd"
 
-cp $user_home/passwd /etc/mail/passwd
+cp "$user_home/passwd" /etc/mail/passwd
 chmod 440 /etc/mail/passwd
 chown _smtpd:_dovecot /etc/mail/passwd
 

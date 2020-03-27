@@ -1,6 +1,6 @@
 #!/bin/sh
 
-if [ $(id -u) -ne 0 ]; then
+if [ "$(id -u)" -ne 0 ]; then
 	echo "This can only be run by root"
 	exit 1
 fi
@@ -12,9 +12,9 @@ fi
 
 . /usr/local/lib/ansimail/helpers/variables
 
-user=$1
+user="$1"
 
-user_status=$( sh $amscripts/helpers/check-user $user )
+user_status=$(sh "$amscripts/helpers/check-user" "$user")
 
 case $user_status in
 	1)
@@ -31,12 +31,12 @@ case $user_status in
 esac
 
 printf "Password: "
-read password
-echo "\n"
+read -r password
+printf "\n"
 
-touch $user_home/user-data/$user
-chmod 700 $user_home/user-data/$user
+touch "$user_home/user-data/$user"
+chmod 700 "$user_home/user-data/$user"
 
-password=$( echo $password | smtpctl encrypt )
+password=$(echo "$password" | smtpctl encrypt)
 
-echo "$user:$password::::::::" >> $user_home/passwd
+echo "$user:$password::::::::" >> "$user_home/passwd"

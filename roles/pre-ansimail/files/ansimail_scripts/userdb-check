@@ -11,30 +11,30 @@
 
 # Check that the password database is in the correct format
 
-echo "### Checking format of passwd database\n"
+printf "### Checking format of passwd database\n"
 # DID I MENTION THIS IS DANGEROUS
-pwd_mkdb -c $user_home/passwd
+pwd_mkdb -c "$user_home/passwd"
 
 # Check that all users in user-data are in the password database
 
-echo "\n### Checking all users are in password database\n"
-for user_file in $user_home/user-data/*; do
-	[ -e $user_file ] || break
-	username=$( basename $user_file )
-	if ! grep -q "$username" $user_home/passwd; then
+printf "\n### Checking all users are in password database\n"
+for user_file in "$user_home/user-data/"*; do
+	[ -e "$user_file" ] || break
+	username=$(basename "$user_file")
+	if ! grep -q "$username" "$user_home/passwd"; then
 		echo "$username exists as a user but is not present in the password database. Please check."
 	fi
 done
 
 # Check every user in the password database is 
 # present in the user-data folder as a real file
-echo "\n### Checking all users in password database are actual users"
+printf "\n### Checking all users in password database are actual users"
 while IFS= read -r line; do
-	username=$( echo $line | cut -d: -f1 )
-	if [ ! -e $user_home/user-data/$username ]; then
+	username=$(echo "$line" | cut -d: -f1)
+	if [ ! -e "$user_home/user-data/$username" ]; then
 		echo "$username exists in the password database but is not a real user. Please check."
 	fi
-done < $user_home/passwd
+done < "$user_home/passwd"
 
 # you can speed this part up by doing graph theory for bipartite graphs
 # and checking cycles and the like 
@@ -46,14 +46,14 @@ done < $user_home/passwd
 
 # Now check that every alias is only an alias
 # (this also ensures that every use is only a user, due to bipartite-ness)
-for user_file in $user_home/user-data/*; do
-	[ -e $user_file ] || break
-	username=$( basename $user_file )
+for user_file in "$user_home/user-data/"*; do
+	[ -e "$user_file" ] || break
+	username=$(basename "$user_file")
 	while IFS= read -r alias; do
-		if [ -e $user_home/user-data/$alias ]; then
+		if [ -e "$user_home/user-data/$alias" ]; then
 			echo "$alias is an alias for $username but is also registered as a real user. Please check."
 		fi
-	done < $user_home/user-data/$username
+	done < "$user_home/user-data/$username"
 done
 
 

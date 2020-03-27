@@ -1,6 +1,6 @@
 #!/bin/sh
 
-if [ $(id -u) -ne 0 ]; then
+if [ "$(id -u)" -ne 0 ]; then
 	echo "This can only be run by root"
 	exit 1
 fi
@@ -14,37 +14,37 @@ txt_file="$dkim_home/ansimail.$domain.txt"
 
 echo "##### Generating/Checking DKIM certificates for domain: $domain"
 
-echo "\n\n### Making sure private key file exists"
-if [ ! -e $key_file ]; then 
-	openssl genrsa -out $key_file 2048
+printf "\n\n### Making sure private key file exists"
+if [ ! -e "$key_file" ]; then 
+	openssl genrsa -out "$key_file" 2048
 fi
 
-openssl rsa -in $key_file -check
+openssl rsa -in "$key_file" -check
 
 if [ $? -ne 0 ]; then
-	openssl genrsa -out $key_file 2048
+	openssl genrsa -out "$key_file" 2048
 fi
 
-echo "\n\n### Making sure public key file exists"
+printf "\n\n### Making sure public key file exists"
 
-openssl rsa -in $key_file -pubout -out $pub_file
+openssl rsa -in "$key_file" -pubout -out "$pub_file"
 
-echo "\n\n### Ensuring correct permissions on both files"
-chown root:_rspamd $key_file
-chmod 640 $key_file
+printf "\n\n### Ensuring correct permissions on both files"
+chown root:_rspamd "$key_file"
+chmod 640 "$key_file"
 
-chown root:wheel $pub_file
-chmod 644 $pub_file
+chown root:wheel "$pub_file"
+chmod 644 "$pub_file"
 
-echo "\n\n### Creating txt record from public key"
+printf "\n\n### Creating txt record from public key"
 
 txt_begin="ansimail._domainkey	IN	TXT	"
 
-publickey=$(awk 'NR>2 {print last} {last=$0}' ORS='' $pub_file)
+publickey=$(awk 'NR>2 {print last} {last=$0}' ORS='' "$pub_file")
 publickey="v=DKIM1;k=rsa;p=$publickey;"
-txt_end=$(echo $publickey | awk 'BEGIN {ORS=" "}{for (i=1;i<=length($0);i+=255) printf "\042%s\042 ",substr( $0, i, 255 ) } ')
+txt_end=$(echo "$publickey" | awk 'BEGIN {ORS=" "}{for (i=1;i<=length($0);i+=255) printf "\042%s\042 ",substr( $0, i, 255 ) } ')
 
-echo "$txt_begin( $txt_end)" | tee $txt_file
+echo "$txt_begin( $txt_end)" | tee "$txt_file"
 
-chown root:wheel $txt_file
-chmod 644 $txt_file
+chown root:wheel "$txt_file"
+chmod 644 "$txt_file"

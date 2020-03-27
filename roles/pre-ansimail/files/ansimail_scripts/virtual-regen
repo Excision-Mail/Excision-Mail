@@ -4,37 +4,37 @@
 
 . /usr/local/lib/ansimail/helpers/variables
 
-virtuals=$user_home/virtual
-revirt=$user_home/revirt
-bak=$( date +%Y%d%m%H%M )
+virtuals="$user_home/virtual"
+revirt="$user_home/revirt"
+bak=$(date +%Y%d%m%H%M)
 
-if [ -e $virtuals ]; then
-	mv $virtuals "$virtuals.$bak"
+if [ -e "$virtuals" ]; then
+	mv "$virtuals" "$virtuals.$bak"
 fi
-if [ -e $reivrt ]; then
-	mv $revirt "$revirt.$bak"
+if [ -e "$reivrt" ]; then
+	mv "$revirt" "$revirt.$bak"
 fi
 
-touch $virtuals $revirt
+touch "$virtuals" "$revirt"
 
 # Now check that every alias is only an alias
 # (this also ensures that every use is only a user, due to bipartite-ness)
-for user_file in $user_home/user-data/*; do
-	username=$( basename $user_file )
-	echo "\n$username\t\t\t\tansimail" >> $virtuals
-	printf "$username\t\t\t\t$username" >> $revirt
+for user_file in "$user_home/user-data/"*; do
+	username=$( basename "$user_file" )
+	echo "\n$username\t\t\t\tansimail" >> "$virtuals"
+	echo "$username\t\t\t\t$username" >> "$revirt"
 	while IFS= read -r alias; do
-		echo "$alias\t\t\t\t$username" >> $virtuals
-		printf ",$alias" >> $revirt
-	done < $user_home/user-data/$username
-	printf "\n" >> $revirt
+		echo "$alias\t\t\t\t$username" >> "$virtuals"
+		echo ",$alias" >> $revirt
+	done < "$user_home/user-data/$username"
+	printf "\n" >> "$revirt"
 done
 
-cp $virtuals /etc/mail/virtual
-cp $revirt /etc/mail/revirt
+cp "$virtuals" /etc/mail/virtual
+cp "$revirt" /etc/mail/revirt
 chmod 640 /etc/mail/virtual /etc/mail/revirt
 chown root:_smtpd /etc/mail/virtual /etc/mail/revirt
-cp $user_home/passwd /etc/mail/passwd
+cp "$user_home/passwd" /etc/mail/passwd
 chmod 440 /etc/mail/passwd
 chown _smtpd:_dovecot /etc/mail/passwd
 

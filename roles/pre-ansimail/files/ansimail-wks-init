@@ -15,5 +15,5 @@ fi
 
 fingerprint=$( gpg -K "wks@$domain" | sed "2q;d" )
 
-gpg-wks-server --install-key $fingerprint wks@$domain
+gpg-wks-server --install-key "$fingerprint" "wks@$domain"
 
