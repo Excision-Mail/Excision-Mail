@@ -8,7 +8,7 @@
 
 username="$1"
 
-if [ -e "$user_home/user-data/$1" ]; then
+if [ -e "$user_home/user-data/$username" ]; then
 	echo 1
  	exit 0;
 fi
