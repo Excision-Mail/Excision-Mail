@@ -25,3 +25,4 @@ echo 'permit nopass :wheel' > /etc/doas.conf
 echo 'https://cdn.openbsd.org/pub/OpenBSD' > /etc/installurl
 
 pkg_add ansible gnupg--%gnupg2
+ln -sfh /usr/local/bin/gpg2 /usr/local/bin/gpg
