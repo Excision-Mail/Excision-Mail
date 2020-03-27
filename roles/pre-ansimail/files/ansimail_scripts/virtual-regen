@@ -21,11 +21,11 @@ touch "$virtuals" "$revirt"
 # (this also ensures that every use is only a user, due to bipartite-ness)
 for user_file in "$user_home/user-data/"*; do
 	username=$( basename "$user_file" )
-	echo "\n$username\t\t\t\tansimail" >> "$virtuals"
-	echo "$username\t\t\t\t$username" >> "$revirt"
+	printf "\n%s\t\t\t\tansimail" "$username" >> "$virtuals"
+	printf "%s\t\t\t\t%s" "$username" "$username" >> "$revirt"
 	while IFS= read -r alias; do
-		echo "$alias\t\t\t\t$username" >> "$virtuals"
-		echo ",$alias" >> $revirt
+		printf "%s\t\t\t\t%s" "$alias" "$username" >> "$virtuals"
+		printf ",%s", "$alias" >> $revirt
 	done < "$user_home/user-data/$username"
 	printf "\n" >> "$revirt"
 done
