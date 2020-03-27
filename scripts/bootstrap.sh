@@ -1,6 +1,6 @@
 #!/bin/sh
 
-if [ $(id -u) -ne 0 ] ; then
+if [ "$(id -u)" -ne 0 ] ; then
     echo "You need to bootstrap the system as root or do the steps manually"
     exit 1
 fi
