@@ -30,8 +30,8 @@ printf "\n\n### Making sure public key file exists\n"
 openssl rsa -in "$key_file" -pubout -out "$pub_file"
 
 printf "\n\n### Ensuring correct permissions on both files\n"
-sh $vfix root _rspamd 640 "$key_file"
-sh $vfix root wheel 644 "$pub_file"
+sh "$vfix" root _rspamd 640 "$key_file"
+sh "$vfix" root wheel 644 "$pub_file"
 
 printf "\n\n### Creating txt record from public key\n"
 
@@ -43,4 +43,4 @@ txt_end=$(echo "$publickey" | awk 'BEGIN {ORS=" "}{for (i=1;i<=length($0);i+=255
 
 echo "$txt_begin( $txt_end)" | tee "$txt_file"
 
-sh $vfix root wheel 644 "$txt_file"
+sh "$vfix" root wheel 644 "$txt_file"

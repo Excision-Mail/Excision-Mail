@@ -19,5 +19,5 @@ cat "$dkim_home/ansimail.$domain.txt" >> "$zone_file"
 
 [ -e "$nsd_home/$domain.zone.addon" ] && cat "$nsd_home/$domain.zone.addon" >> "$zone_file"
 
-sh $vfix root wheel 644 "$zone_file"
+sh "$vfix" root wheel 644 "$zone_file"
 
