@@ -24,6 +24,10 @@ case "$command" in
 		/bin/sh /usr/local/lib/ansimail/add-alias $@;;
 	"add-user")
 		/bin/sh /usr/local/lib/ansimail/add-user $@;;
+	"delete-alias")
+		/bin/sh /usr/local/lib/ansimail/delete-alias $@;;
+	"delete-user")
+		/bin/sh /usr/local/lib/ansimail/delete-user $@;;
 	"change-passwd")
 		/bin/sh /usr/local/lib/ansimail/change-passwd $@;;
 	"daily-report")
