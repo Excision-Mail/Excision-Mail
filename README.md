@@ -18,6 +18,7 @@ Fullstack,security focused mailserver based on OpenSMTPD for OpenBSD using ansib
   * Spam classification and automatic learning using [Rspamd](https://rspamd.com)
   * Mozilla autoconfiguration manager for thunderbird and other opensource clients
   * GnuPG Web Key Server support for auto publishing of user public keys
+  * Maildir e-mail format
 
 Basically AnsiMail implements most features required from a private, secure, email server in a minimlistic fashion.
    
