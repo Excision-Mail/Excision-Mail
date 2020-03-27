@@ -6,9 +6,9 @@
           - vars.yml
 
   roles:
-          #- { role: acme,          tags: ['acme']           }
-          #- { role: rspamd,        tags: ['rspamd']         }
+          - { role: acme,          tags: ['acme']           }
+          - { role: rspamd,        tags: ['rspamd']         }
           - { role: clamav,        tags: ['clamav']         }
-            #- { role: smtpd,         tags: ['smtpd']          }
-            #- { role: dovecot,       tags: ['dovecot']        }
+          - { role: smtpd,         tags: ['smtpd']          }
+          - { role: dovecot,       tags: ['dovecot']        }
 
