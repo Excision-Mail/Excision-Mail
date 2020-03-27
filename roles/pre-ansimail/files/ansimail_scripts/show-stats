@@ -1,15 +1,15 @@
 #!/bin/sh
 
-if [ $(id -u) -ne 0 ]; then
+if [ "$(id -u)" -ne 0 ]; then
 	echo "This can only be run by root"
 	exit 1
 fi
 
-echo "\n### SMTPD statistics"
+printf "\n### SMTPD statistics"
 smtpctl show stats
 
-echo "\n### Rspamd statistics"
+printf "\n### Rspamd statistics"
 rspamc stat
 
-echo "\n### Dovecot statistics"
+printf "\n### Dovecot statistics"
 echo "TODO: get doveadm statistics"

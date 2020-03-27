@@ -5,7 +5,7 @@ Fullstack,security focused mailserver based on OpenSMTPD for OpenBSD using ansib
 
 * Complete email server 
   * Full encryption support, using MTA-STS
-  * All connections are TLS enforced, including pop3, imap, smtp and sieve.
+  * All connections are TLS enforced, including pop3s, imaps, smtp and sieve.
   * Server side filtering support and automatic filter management using `managesieve`
   * Tag support for `user+tag@...` getting automatically managed for both sending and receiving
   * Additional alias creation for both sending and receiving

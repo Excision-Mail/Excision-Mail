@@ -1,0 +1,12 @@
+name: ShellCheck Lint
+
+on: [push, pull_request]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@master
+    - name: Shellcheck
+      # replace "master" with any valid ref
+      uses: ludeeus/action-shellcheck@0.1.0
