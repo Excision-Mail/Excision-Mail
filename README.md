@@ -26,8 +26,8 @@ Fullstack, security focused mailserver based on OpenSMTPD for OpenBSD using ansi
 #### Flexible server and user management system
 
 * Daily report for system stats and email stats for server status checks.
+* Support for aliases using pseudo accounts in both sending and receiving emails.
 * User management scripts for adding users and aliases.
-* Automatic management of aliases support in both sending and receiving emails.
 * Automatic management and tag support for `user+tag@...` in both sending and receiving emails.
   * Option to change separating tag to non-default options, such as `.`, `-` or `_` for additional privacy.
 * Automatic management of TLS certificates from [Lets Encrypt](https://letsencrypt.org/).
@@ -78,7 +78,7 @@ There should be no differences between upgrading a previous install and starting
 Every part of the setup should be clear and explained.  
 
 AnsiMail tries to follow OpenBSD philosophy of being well documented and explaining all the choices that have been made.  
-**If it does not have good documentation, then it is still buggy, **
+**If it does not have good documentation, then it is still buggy**
 
 ## Requirements
 OpenBSD 6.6 (may run on -current, but it will not be prioritized)  
