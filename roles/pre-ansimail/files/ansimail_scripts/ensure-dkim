@@ -14,7 +14,7 @@ txt_file="$dkim_home/ansimail.$domain.txt"
 
 echo "##### Generating/Checking DKIM certificates for domain: $domain"
 
-printf "\n\n### Making sure private key file exists"
+printf "\n\n### Making sure private key file exists\n"
 if [ ! -e "$key_file" ]; then 
 	openssl genrsa -out "$key_file" 2048
 fi
@@ -25,18 +25,15 @@ if [ $? -ne 0 ]; then
 	openssl genrsa -out "$key_file" 2048
 fi
 
-printf "\n\n### Making sure public key file exists"
+printf "\n\n### Making sure public key file exists\n"
 
 openssl rsa -in "$key_file" -pubout -out "$pub_file"
 
-printf "\n\n### Ensuring correct permissions on both files"
-chown root:_rspamd "$key_file"
-chmod 640 "$key_file"
+printf "\n\n### Ensuring correct permissions on both files\n"
+sh "$vfix" root _rspamd 640 "$key_file"
+sh "$vfix" root wheel 644 "$pub_file"
 
-chown root:wheel "$pub_file"
-chmod 644 "$pub_file"
-
-printf "\n\n### Creating txt record from public key"
+printf "\n\n### Creating txt record from public key\n"
 
 txt_begin="ansimail._domainkey	IN	TXT	"
 
@@ -46,5 +43,4 @@ txt_end=$(echo "$publickey" | awk 'BEGIN {ORS=" "}{for (i=1;i<=length($0);i+=255
 
 echo "$txt_begin( $txt_end)" | tee "$txt_file"
 
-chown root:wheel "$txt_file"
-chmod 644 "$txt_file"
+sh "$vfix" root wheel 644 "$txt_file"

@@ -13,7 +13,8 @@ if [ $? -ne 0 ]; then
 	gpg --batch --passphrase "" --quick-gen-key "wks@$domain"
 fi
 
-fingerprint=$( gpg -K "wks@$domain" | sed "2q;d" )
+fingerprint=$(gpg -K "wks@$domain" | sed "2q;d")
+fingerprint=${fingerprint##*( )}
 
 gpg-wks-server --install-key "$fingerprint" "wks@$domain"
 

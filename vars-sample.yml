@@ -45,6 +45,45 @@ ipv6: <change-me> # e.g. dead:beef
 #       filtering in the appropriate section, so don't worry about that right now.
 admin: <change-me> # e.g. aisha
 
+
+#####-------- OPTIONAL SECTION
+
+# The clamav antivirus is used to detect virus signatures in emails
+# By default it is enabled and all the necessary services are loaded 
+# You can disable the installation of the antivirus if you are low on resources
+# and would rather rely on spamd and rspamd (which are generally enough)
+enable_clamav: true # set to false to disable
+
+# HIGHLY RECOMMENDED TO USE THIS
+#
+# Complex: This section is bit more intricate and can be skipped
+#
+# If you want to make AnsiMail manage nsd on your behalf you should say yes here
+# It is really recommended to do this as configurin NSD manually is really really
+# hard given the horrible web interfaces used by service providers
+# In the worst case where you want to do it yourself, you can visit the wiki page 
+# and the NSD role for documentation. It is highly detailed and explains every step 
+# of the way. 
+# Be aware that configuring it yourself is going to take upwards of 7-8 hours, 
+# unless you are experiences with DNS setup
+#enable_nsd: true # or false ( but recommended to use stealth master configuration )
+#
+# We know that the standard NSD config doesn't cover all bases so we have an addon
+# config available in the highly likely chance that you have more subdomains to manage.
+# It may be that you have some extra subdomains not hosted on this machine or 
+# some other nsd configuration, e.g. google-site-verification txt records or something
+# else that should be added to the default nsd config file. Any such configurations
+# can de added to a file and AnsiMail will dump the contents at the end of the default
+# config.
+# NOTE: Some subdomains are currently automatically configured to point to the current machine
+#       so make sure that those are not redefined in your addon file.
+# restricted subdomains: www, <hostname>, imap, smtp, pop3, autoconfig, 
+#                        autodiscover, wkd, mta-sts
+# HINT: first run do the install without the addon and see what is generated
+#       if you want to see if your addon is compatible (it most likely is)
+#nsd_addon: <change-me>
+# 
+# The following two settings are needed if you enable_nsd
 # Secondary nameservers are those which are our `slaves` because these 
 # nameservers are the ones to which we will be sending NOTIFY and AXFR
 # NOTE: These are NOT the same as the ip's of the nameservers of the 
@@ -54,10 +93,10 @@ admin: <change-me> # e.g. aisha
 # TODO: For some reason only ipv4 ones work correctly, even though you can
 #       add ipv6 names here (maybe I should read some more)
 # order doesn't matter
-secondary_nameservers:
-        - ipv4: <change-me> # e.g. 69.65.50.192 # freedns2 (afraid.org)
-        - ipv6: <change-me> # e.g. 2a00:1768:1001:9::31:1 # some cloudns server
-        - ipv4: <change-me> # add as many as you want... :)
+#secondary_nameservers:
+#        - ipv4: <change-me> # e.g. 69.65.50.192 # freedns2 (afraid.org)
+#        - ipv6: <change-me> # e.g. 2a00:1768:1001:9::31:1 # some cloudns server
+#        - ipv4: <change-me> # add as many as you want... :)
 
 # These nameservers are used by others in the internet to find your servers
 # through DNS querying.
@@ -66,17 +105,16 @@ secondary_nameservers:
 # Each bullet point is one nameserver with at most one ipv4 and one ipv6
 # You can have a nameserver with an ipv4 and no ipv6 (also the other way around, 
 # but don't use any nameserver of this kind)
-public_nameservers:
-        - ipv4: <change-me>
-          ipv6: <change-me>
-        - ipv4: <change-me>
+#public_nameservers:
+#        - ipv4: <change-me>
+#          ipv6: <change-me>
+#        - ipv4: <change-me>
 
-
-#####-------- OPTIONAL SECTION
 
 # Almost each option here is independant of others and it is fine to even delete the 
 # option and not even define it. AnsiMail has checks to see if the option is defined
 # and only then takes any steps.
+
 
 # SSH
 # It is most likely the case that you are installing this on a headless VPS with 
@@ -84,6 +122,8 @@ public_nameservers:
 # to something other than the default 22, unless you like getting hackers constantly bombarding
 # your port to check out what you messed up
 #ssh_port: 2345
+
+
 
 # In addition to the ssh port if you want to open some extra TCP/UDP ports
 # you can define them here and 
@@ -93,6 +133,8 @@ public_nameservers:
 #additional_tcp_ports:
 #     - <change-me>
 #     - <change-me>
+
+
 
 # Private interface
 # By default AnsiMail hardens your firewall to only allow the needed ports to communicate
@@ -104,16 +146,3 @@ public_nameservers:
                                  # as it is impossible for a small automated script as AnsiMail 
                                  # to set up the cute beautiful beast that is pf
 
-# Complex: This section is bit more intricate and can be skipped
-# It may be that you have some extra subdomains not hosted on this machine or 
-# other nsd configuration, e.g. google-site-verification txt records or something
-# else that should be added to the default nsd config file. Any such configurations
-# can de added to a file and AnsiMail will dump the contents at the end of the default
-# config.
-# NOTE: Some subdomains are currently automatically configured to point to the current machine
-#       so make sure that those are not redefined in your addon file.
-# restricted subdomains: www, <hostname>, imap, smtp, pop3, autoconfig, 
-#                        autodiscover, wkd, mta-sts
-# HINT: first run do the install without the addon and see what is generated
-#       if you want to see if your addon is compatible (it most likely is)
-#nsd_addon: <change-me>

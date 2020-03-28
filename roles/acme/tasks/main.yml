@@ -18,6 +18,7 @@
   copy:
           src: index.html
           dest: /var/www/{{ domain }}/index.html
+          force: yes
           owner: root
           group: wheel
           mode: '0755'
@@ -98,7 +99,7 @@
   shell: ansimail ensure-gpg
 
 - name: Create acme certs
-  command: acme-client -f /etc/ansimail/ssl/acme-client.conf {{ domain }}
+  command: acme-client -f /etc/ansimail/ssl/acme-client.conf "{{ hostname }}.{{ domain }}"
   ignore_errors: yes
 
 - name: Restart httpd

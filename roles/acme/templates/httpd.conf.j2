@@ -3,8 +3,7 @@
 # CREDIT: vedetta-com/caesonia
 # https://github.com/vedetta-com/caesonia
 
-server "{{ domain }}" {
-	alias "{{ hostname }}.{{ domain }}"
+server "{{ hostname }}.{{ domain }}" {
 	alias "autoconfig.{{ domain }}"
 	alias "autodiscover.{{ domain }}"
 	alias "wkd.{{ domain }}"
@@ -12,7 +11,10 @@ server "{{ domain }}" {
 	alias "imap.{{ domain }}"
 	alias "pop3.{{ domain }}"
 	alias "smtp.{{ domain }}"
+{% if (enable_nsd is defined) and (enable_nsd == true) %}
+	alias "{{ domain }}"
 	alias "www.{{ domain }}"
+{% endif %}
 
 	listen on * port http
 
@@ -36,8 +38,7 @@ server "{{ domain }}" {
 	}
 }
 
-server "{{ domain }}" {
-	alias "{{ hostname }}.{{ domain }}"
+server "{{ hostname }}.{{ domain }}" {
 	alias "autoconfig.{{ domain }}"
         alias "autodiscover.{{ domain }}"
         alias "wkd.{{ domain }}"
@@ -45,7 +46,10 @@ server "{{ domain }}" {
         alias "imap.{{ domain }}"
 	alias "pop3.{{ domain }}"
         alias "smtp.{{ domain }}"
-        alias "www.{{ domain }}"
+{% if (enable_nsd is defined) and (enable_nsd == true) %}
+	alias "{{ domain }}"
+	alias "www.{{ domain }}"
+{% endif %}
 
 	listen on * tls port https
 

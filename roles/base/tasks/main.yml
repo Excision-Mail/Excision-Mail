@@ -2,25 +2,26 @@
   copy:
           src: login.conf
           dest: /etc/login.conf
+          force: yes
           owner: root
           group: wheel
           mode: '0644'
   notify: rebuild login database
 
 - name: Make sure log files exist
-  copy:
-          content: ""
-          dest: /var/log/{{ item }}
-          force: no
+  file:
+          path: /var/log/{{ item }}
+          state: touch
           owner: root
           group: wheel
           mode: '0640'
-  with_items: { nsd, httpd, doas, clamd, freshclam}
+  with_items: { nsd, httpd, doas, clamd, freshclam, spamd}
 
 - name: Generate syslog conf
   copy:
           src: syslog.conf
           dest: /etc/syslog.conf
+          force: yes
           owner: root
           group: wheel
           mode: '0644'
@@ -30,10 +31,27 @@
   copy:
           src: newsyslog.conf
           dest: /etc/newsyslog.conf
+          force: yes
           owner: root
           group: wheel
           mode: '0644'
   notify: reload newsyslog
+
+- name: Make sure nospamd exists
+  file:
+          path: /etc/ansimail/spam/nospamd
+          state: touch
+          owner: root
+          group: wheel
+          mode: '0644'
+
+- name: Make sure bigmailers exists
+  file:
+          path: /etc/ansimail/spam/bigmailers
+          state: touch
+          owner: root
+          group: wheel
+          mode: '0644'
 
 - name: Generate pf config
   template:
@@ -48,6 +66,7 @@
   copy:
           src: cron
           dest: /var/cron/tabs/root
+          force: yes
           owner: ansimail
           group: crontab
           mode: '0600'

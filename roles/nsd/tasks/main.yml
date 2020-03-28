@@ -1,15 +1,3 @@
-- name: Generate serial for nsd
-  shell: echo $(( $(date +%y%m%d%H%M) + 20000000 ))
-  register: nsdserial
-
-- name: Generate nsd conf
-  template:
-          src: nsd.conf.j2
-          dest: /var/nsd/etc/nsd.conf
-          owner: root
-          group: _nsd
-          mode: '0640'
-
 - name: Copy mailname
   template:
           src: mailname.j2
@@ -20,30 +8,21 @@
           src: vdomains.j2
           dest: /etc/mail/vdomains
 
-- name: Generate DKIM certs
-  command: ansimail ensure-dkim {{ domain }}
-
-- name: Get DKIM record
-  shell: cat /etc/ansimail/dkim/ansimail.{{ domain }}.txt
-  register: nsddkim
-
 - name: Generate zone master file
   template:
           src: domain.zone.j2
-          dest: /var/nsd/zones/master/{{ domain }}.zone
+          dest: /etc/ansimail/nsd/{{ domain }}.zone
           owner: root
           group: wheel
           mode: '0644'
 
 - name: Add SSHFP records to zone master file
-  shell: ssh-keygen -r {{ hostname }} >> /var/nsd/zones/master/{{ domain }}.zone
+  shell: ssh-keygen -r {{ hostname }} >> /etc/ansimail/nsd/{{ domain }}.zone
 
-- name: Addon nsd config for extra domain not listed here
-  when: (nsd_addon is defined)
-  shell: cat {{ nsd_addon }} >> /var/nsd/zones/master/{{ domain }}.zone  
+- name: Copy addon file
+  shell: cat {{ nsd_addon }} > /etc/ansimail/nsd/{{ domain }}.zone.addon
+  when: nsd_addon is defined
 
-- name: Restart nsd
-  service: 
-          name: nsd
-          state: restarted
-
+- name: Actually generate the required config if the needed
+  include: nsd_optional.yml
+  when: (enable_nsd is defined) and (enable_nsd == true)

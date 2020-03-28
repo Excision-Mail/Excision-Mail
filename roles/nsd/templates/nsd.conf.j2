@@ -14,6 +14,7 @@ remote-control:
 zone:
   name: {{ domain }}
   zonefile: "master/{{ domain }}.zone"
+{% if (secondary_nameservers is defined) and (secondary_nameservers|length > 0) %}
 {% for ns in secondary_nameservers %}
 {% if ns.ipv4 is defined %}
   notify: {{ ns.ipv4 }} NOKEY
@@ -24,3 +25,4 @@ zone:
   provide-xfr: {{ ns.ipv6 }} NOKEY
 {% endif %}
 {% endfor %}
+{% endif %}

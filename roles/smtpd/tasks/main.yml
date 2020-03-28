@@ -46,9 +46,6 @@
           - { name: "ansimail" }
 
 
-- name: Generate smtpd data files (virtuals, aliases, passwd, mailname, vdomains)
-  shell: ansimail virtual-regen
-
 # Any items belonging to _smtpd group are 640 and wheel are 644
 # passwd is an exception as it needs to be read by both dovecot and smtpd
 - name: Make sure that needed files exist with proper permissions
@@ -74,7 +71,3 @@
           group: wheel
           mode: '0644'
 
-- name: Restart smtpd
-  service:
-          name: smtpd
-          state: restarted

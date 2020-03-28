@@ -10,8 +10,8 @@ authority letsencrypt-staging {
 	account key "/etc/acme/letsencrypt-staging-privkey.pem"
 }
 
-domain {{ domain }} {
-	alternative names { {{ hostname }}.{{ domain }} autoconfig.{{ domain }} autodiscover.{{ domain }} wkd.{{ domain }} imap.{{ domain }} pop3.{{ domain }} smtp.{{ domain }} mta-sts.{{ domain }} www.{{ domain }} }
+domain {{ hostname }}.{{ domain }} {
+	alternative names { autoconfig.{{ domain }} autodiscover.{{ domain }} wkd.{{ domain }} imap.{{ domain }} pop3.{{ domain }} smtp.{{ domain }} mta-sts.{{ domain }} {% if (enable_nsd is defined) and (enable_nsd == true) %}{{ domain }} www.{{ domain }}{% endif %} }
 	domain key "/etc/ansimail/ssl/private/{{ domain }}.key"
 	domain full chain certificate "/etc/ansimail/ssl/{{ domain }}.fullchain.pem"
 	sign with letsencrypt

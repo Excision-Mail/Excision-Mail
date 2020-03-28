@@ -1,0 +1,17 @@
+#!/bin/sh
+
+domain="$1"
+bigmailers="/etc/ansimail/spam/bigmailer-names"
+
+touch "$bigmailers"
+
+if grep -q "$domain" "$bigmailers"; then 
+	echo "$domain is already registered as a big mail corp"
+	exit 1
+else
+	echo "$domain" >> "$bigmailers"
+	echo "$domain" | smtpctl spf walk | pfctl -t bigmailers -T add -f -
+	# also do another backup
+	pfctl -t bigmailers -T show > "/etc/ansimail/spam/bigmailers"
+fi
+

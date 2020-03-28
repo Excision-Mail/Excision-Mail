@@ -10,6 +10,14 @@
           group: ansimail
           mode: '0770'
 
+- name: Set sieve directory permissions
+  file:
+          path: /usr/local/lib/dovecot/sieve
+          state: directory
+          owner: ansimail
+          group: ansimail
+          mode: '0770'
+
 - name: Create sieve-before directory
   file:
           path: /var/dovecot/sieve/before
@@ -30,6 +38,7 @@
   copy:
           src: etc_dovecot_confd/
           dest: /etc/dovecot/conf.d/
+          force: yes
           owner: ansimail
           group: ansimail
           mode: '0644'
@@ -50,18 +59,11 @@
           group: wheel
           mode: '0644'
 
-- name: Set sieve directory permissions
-  file:
-          path: /usr/local/lib/dovecot/sieve
-          state: directory
-          owner: ansimail
-          group: ansimail
-          mode: '0770'
-
 - name: Add sievec scripts
   copy:
           src: sieve/
           dest: /usr/local/lib/dovecot/sieve/
+          force: yes
           owner: ansimail
           group: ansimail
           mode: '0660'
@@ -70,6 +72,23 @@
   copy:
           src: sieve-shell/
           dest: /usr/local/lib/dovecot/sieve/
+          force: yes
+          owner: ansimail
+          group: ansimail
+          mode: '0770'
+
+- name: Add quota warning script
+  template:
+          src: quota-warning.sh.j2
+          dest: /usr/local/lib/dovecot/sieve/quota-warning.sh
+          owner: ansimail
+          group: ansimail
+          mode: '0770'
+
+- name: Add wks-server script
+  template:
+          src: wks-server.sh.j2
+          dest: /usr/local/lib/dovecot/sieve/wks-server.sh
           owner: ansimail
           group: ansimail
           mode: '0770'
@@ -78,12 +97,19 @@
   copy:
           src: sieve-before/
           dest: /var/dovecot/sieve/before/
+          force: yes
           owner: ansimail
           group: ansimail
           mode: '0660'
 
-- name: Restart dovecot
-  service:
-          name: dovecot
-          state: restarted
+- name: Add wks-server sievec-before script
+  template:
+          src: 00-wks.sieve.j2
+          dest: /var/dovecot/sieve/before/00-wks.sieve
+          owner: ansimail
+          group: ansimail
+          mode: '0660'
+
+- name: Do virtual-regen to start dovecot and smtpd
+  shell: ansimail virtual-regen
 

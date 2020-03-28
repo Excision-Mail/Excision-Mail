@@ -4,13 +4,19 @@ $TTL	10800		; 3h ; used for all entries without ttl values, hence it can be over
 $ORIGIN	{{ domain }}.
 
 @	1d	SOA	ns1.{{ domain }}.	root.{{ domain }}. (
-	{{ nsdserial.stdout }}		; serial
+	ANSIMAILSERIAL		; serial
 	3h			; refresh
 	3m			; retry
 	1w			; expire
 	1d			; minimum
 )
 
+;; ttl has been removed from all records in favor of the default ttl
+;; defined above, this makes the config a lot more understandable
+
+;; for record types definitions some nice links are
+;;   https://en.wikipedia.org/wiki/List_of_DNS_record_types (not that nice actually)
+;;   
 
 ; CAA
 ; this ensures that only certificates issues by letsencrypt should be trusted for this domain
@@ -20,6 +26,7 @@ $ORIGIN	{{ domain }}.
 
 ; we set the acceptable nameservers for this domain
 ; don't trust cloudflare
+{% if (public_nameservers is defined) and (public_nameservers|length > 0) %}
 {% for ps in public_nameservers %}
 @	IN	NS	ns{{ loop.index }}.{{ domain }}.
 {% if ps.ipv4 is defined %}
@@ -29,6 +36,7 @@ ns{{ loop.index }}	IN	A	{{ ps.ipv4 }}
 ns{{ loop.index }}	IN	AAAA	{{ ps.ipv6 }}
 {% endif %}
 {% endfor %}
+{% endif %}
 
 ; these are the domain names that will be accepted on this server
 @	IN	A	{{ ipv4 }}
@@ -64,6 +72,11 @@ wkd	IN	CNAME	{{ hostname }}.{{ domain }}.
 ; somewhat like DANE but doesn't need DNSSEC
 mta-sts	IN	CNAME	{{ hostname }}.{{ domain }}.
 
+;; SRV record format: https://en.wikipedia.org/wiki/SRV_record#Record_format
+;; service._proto	IN	SRV	priority	weight	port	address
+;;					(lower is used first)
+;;							(used for load balancing on client side, 
+;;							which makes it basically worthless)
 ; we also detail all the services used and the ports that they map to
 _openpgpkey._tcp	IN	SRV	0	0	443	wkd.{{ domain }}.
 ; we need autodiscover service >.> why so much???
@@ -71,7 +84,7 @@ _openpgpkey._tcp	IN	SRV	0	0	443	wkd.{{ domain }}.
 _autodiscover._tcp	IN	SRV	0	0	443	autodiscover.{{ domain }}.
 ; submission's' is the SSL/TLS port while without the 's' is the STARTTLS
 _submissions._tcp	IN	SRV	0	1	465	smtp.{{ domain }}. ; SSL/TLS
-_submission._tcp	IN	SRV	5	1	587	smtp.{{ domain }}. ; STARTTLS
+_submission._tcp	IN	SRV	5	1	587	smtp.{{ domain }}. ; STARTTLS (but enforced)
 _imaps._tcp	IN	SRV	0	1	993	imap.{{ domain }}.
 _pop3s._tcp	IN	SRV	0	1	995	pop3.{{ domain }}.
 ; we disable insecure POP3 and insecure IMAP from being automatically detected
@@ -84,9 +97,5 @@ _pop3._tcp	IN	SRV	0	0	0	.
 _dmarc	IN	TXT	"v=DMARC1;p=reject;pct=100;rua=mailto:dmarcreports@{{ domain }};"
 ; these two are needed to finalize MTA-STS (along with publishing the policy in a mta-sts.txt file in httpd
 _smtp._tls	IN	TXT	"v=TLSRPTv1;rua=mailto:tlsreports@{{ domain }};"
-_mta-sts	IN	TXT	"v=STSv1;id={{ nsdserial.stdout }};"
+_mta-sts	IN	TXT	"v=STSv1;id=ANSIMAILSERIAL;"
 
-;>>>>>>>>>>ANSIMAIL-DKIM ; DO NOT REMOVE OR MODIFY THESE TWO LINES
-{{ nsddkim.stdout }}
-
-; ansible will add the SSHFP records here

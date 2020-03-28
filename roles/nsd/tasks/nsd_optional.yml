@@ -1,0 +1,20 @@
+- name: Generate nsd conf
+  template:
+          src: nsd.conf.j2
+          dest: /var/nsd/etc/nsd.conf
+          owner: root
+          group: _nsd
+          mode: '0640'
+
+- name: Generate the temporary nsd zone file
+  shell: ansimail ensure-zone
+
+- name: Move the temporary file to proper one
+  shell: mv /var/nsd/zones/master/{{ domain }}.zone.tmp /var/nsd/zones/master/{{ domain }}.zone
+
+- name: Restart nsd
+  service:
+          name: nsd
+          state: restarted
+
+

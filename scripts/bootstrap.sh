@@ -1,6 +1,6 @@
 #!/bin/sh
 
-if [ $(id -u) -ne 0 ] ; then
+if [ "$(id -u)" -ne 0 ] ; then
     echo "You need to bootstrap the system as root or do the steps manually"
     exit 1
 fi
@@ -17,11 +17,12 @@ The following files are going to be changed:
 EOF
 
 echo "We will back them up"
-[[ -f /etc/doas.conf ]] || cp -v /etc/doas.conf /etc/doas.conf.bak.$(date +%F_%R)
-cp -v /etc/installurl /etc/installurl.bak.$(date +%F_%R)
+[ -f /etc/doas.conf ] || cp -v /etc/doas.conf "/etc/doas.conf.bak.$(date +%F_%R)"
+cp -v /etc/installurl "/etc/installurl.bak.$(date +%F_%R)"
 
 echo "Now we change them to the standard configuration and add the needed ansible package"
 echo 'permit nopass :wheel' > /etc/doas.conf
 echo 'https://cdn.openbsd.org/pub/OpenBSD' > /etc/installurl
 
 pkg_add ansible gnupg--%gnupg2
+ln -sfh /usr/local/bin/gpg2 /usr/local/bin/gpg
