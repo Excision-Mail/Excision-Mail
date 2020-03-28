@@ -19,7 +19,7 @@ additional_udp_ports = "{ {{ additional_udp_ports | join(', ') }} }"
 {% endif %}
 
 table <spamd-white> persist
-table <nospamd> persist file "/etc/mail/nospamd.txt"
+table <nospamd> persist file "/etc/mail/nospamd"
 
 # better not mess with the loopback interface
 set skip on lo
