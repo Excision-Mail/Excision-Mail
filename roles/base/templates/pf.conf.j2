@@ -32,6 +32,9 @@ table <bigmailers> persist file "/etc/ansimail/spam/bigmailers"
 # nospamd is the one where you manually add ips
 # of friends and others with misconfigured servers are added
 table <nospamd> persist file "/etc/ansimail/spam/nospamd"
+# bruteforce is a table that lists hosts trying to bruteforce
+# the server.
+table <bruteforce> persist
 
 # better not mess with the loopback interface
 set skip on lo
@@ -50,7 +53,11 @@ pass in on {{ private_interface }}
 pass in on egress proto tcp to port smtp divert-to 127.0.0.1 port spamd
 pass in on egress proto tcp from { <nospamd>, <bigmailers>, <spamd-white> } to port smtp
 
-pass in on egress proto tcp to port $ssh_port
+pass quick proto tcp from any to any port $ssh_port \
+   flags S/SA keep state \
+   (max-src-conn 15, max-src-conn-rate 5/3, \
+   overload <bruteforce> flush global)
+block quick from <bruteforce>
 
 pass in on egress proto tcp to port $inbound_tcp
 pass in on egress proto udp to port $inbound_udp
