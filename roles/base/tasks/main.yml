@@ -39,7 +39,7 @@
 
 - name: Make sure nospamd exists
   file:
-          path: /etc/mail/nospamd
+          path: /etc/ansimail/spam/nospamd
           state: touch
           owner: root
           group: wheel

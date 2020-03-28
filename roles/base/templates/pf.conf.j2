@@ -1,3 +1,8 @@
+# to get the contents of a table
+#    : pfctl -t tablename -T show
+#
+
+
 # read the file /etc/services to get an idea of predefined port names
 inbound_tcp = "{ smtps, submission, domain, sieve, imaps, pop3s, http, https}"
 inbound_udp = "{ domain }"
@@ -18,8 +23,15 @@ additional_tcp_ports = "{ {{ additional_tcp_ports | join(', ') }} }"
 additional_udp_ports = "{ {{ additional_udp_ports | join(', ') }} }"
 {% endif %}
 
+# spamd-white is the automatically managed table 
+# we should not touch that one
 table <spamd-white> persist
-table <nospamd> persist file "/etc/mail/nospamd"
+# bigmailers is going to  contain the ip addresses of 
+# big mail corps with multiple ip addresses 
+table <bigmailers> persist
+# nospamd is the one where you manually add ips
+# of friends and others with misconfigured 
+table <nospamd> persist file "/etc/ansimail/spam/nospamd"
 
 # better not mess with the loopback interface
 set skip on lo
@@ -36,7 +48,7 @@ pass in on {{ private_interface }}
 {% endif %}
 
 pass in on egress proto tcp to port smtp divert-to 127.0.0.1 port spamd
-pass in on egress proto tcp from { <nospamd>, <spamd-white> } to port smtp
+pass in on egress proto tcp from { <nospamd>, <bigmailers>, <spamd-white> } to port smtp
 
 pass in on egress proto tcp to port $ssh_port
 

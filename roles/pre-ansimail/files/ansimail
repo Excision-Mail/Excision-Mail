@@ -38,6 +38,10 @@ case "$command" in
 		/bin/sh /usr/local/lib/ansimail/ensure-gpg "$@";;
 	"ensure-zone")
 		/bin/sh /usr/local/lib/ansimail/ensure-zone "$@";;
+	"whitelist-bigmailer")
+		/bin/sh /usr/local/lib/ansimail/whitelist-bigmailer "$@";;
+	"whitelist-friend")
+		/bin/sh /usr/local/lib/ansimail/whitelist-friend "$@";;
 	*)
 		echo "Unknown argument"
 		exit 3;;
