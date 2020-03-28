@@ -45,6 +45,14 @@
           group: wheel
           mode: '0644'
 
+- name: Make sure bigmailers exists
+  file:
+          path: /etc/ansimail/spam/bigmailers
+          state: touch
+          owner: root
+          group: wheel
+          mode: '0644'
+
 - name: Generate pf config
   template:
           src: pf.conf.j2
