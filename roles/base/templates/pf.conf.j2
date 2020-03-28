@@ -4,7 +4,7 @@
 
 
 # read the file /etc/services to get an idea of predefined port names
-inbound_tcp = "{ smtps, submission, domain, sieve, imaps, pop3s, http, https}"
+inbound_tcp = "{ smtps, submission, domain, sieve, imaps, pop3s, http, https }"
 inbound_udp = "{ domain }"
 
 # check what port we want ssh to run on and open that specific one
@@ -28,9 +28,9 @@ additional_udp_ports = "{ {{ additional_udp_ports | join(', ') }} }"
 table <spamd-white> persist
 # bigmailers is going to  contain the ip addresses of 
 # big mail corps with multiple ip addresses 
-table <bigmailers> persist
+table <bigmailers> persist file "/etc/ansimail/spam/bigmailers"
 # nospamd is the one where you manually add ips
-# of friends and others with misconfigured 
+# of friends and others with misconfigured servers are added
 table <nospamd> persist file "/etc/ansimail/spam/nospamd"
 
 # better not mess with the loopback interface

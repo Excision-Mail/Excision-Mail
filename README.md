@@ -31,6 +31,10 @@ Fullstack, security focused mailserver based on OpenSMTPD for OpenBSD using ansi
 * Mozilla autoconfiguration manager for thunderbird and other opensource clients
 * Maildir e-mail format
 
+#### Flexible server and user management system
+
+
+#### Optional email features
    
 * Replicable and stable to build and upgrade  
 There should be no differences between upgrading a previous install and starting an install from scratch, if using the same configurations for both pathways.  

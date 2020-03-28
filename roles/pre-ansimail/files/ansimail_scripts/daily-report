@@ -5,7 +5,7 @@ if [ "$(id -u)" -ne 0 ]; then
 	exit 1
 fi
 
-printf "\n##### Pending syspatches\n"
+printf "##### Pending syspatches\n"
 syspatch -c
 
 printf "\n##### Pending package upgrades\n"
@@ -14,8 +14,12 @@ pkg_add -su
 printf "\n##### Pending acme certificates\n"
 /usr/local/bin/ansimail renew-certs
 
-printf"\n##### Pending user database checks\n"
+printf "\n##### Pending user database checks\n"
 /usr/local/bin/ansimail userdb-check
+
+printf "\n##### Fixing big mailers list\n"
+smtpctl spf walk < /etc/ansimail/spam/bigmailer-names | pfctl -t bigmailers -T add -f -
+pfctl -t bigmailers -T show > /etc/ansimail/spam/bigmailers
 
 printf "\n##### AnsiMail stats\n"
 /usr/local/bin/ansimail show-stats
