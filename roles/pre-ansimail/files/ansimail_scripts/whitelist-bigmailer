@@ -1,7 +1,14 @@
 #!/bin/sh
 
+if [ "$(id -u)" -ne 0 ]; then
+        echo "This can only be run by root"
+        exit 1
+fi
+
+. /usr/local/lib/ansimail/helpers/variables
+
 domain="$1"
-bigmailers="/etc/ansimail/spam/bigmailer-names"
+bigmailers="$spam_home/bigmailer-names"
 
 touch "$bigmailers"
 
@@ -12,6 +19,6 @@ else
 	echo "$domain" >> "$bigmailers"
 	echo "$domain" | smtpctl spf walk | pfctl -t bigmailers -T add -f -
 	# also do another backup
-	pfctl -t bigmailers -T show > "/etc/ansimail/spam/bigmailers"
+	pfctl -t bigmailers -T show > "$spam_home/bigmailers"
 fi
 

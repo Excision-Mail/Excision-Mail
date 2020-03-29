@@ -4,6 +4,7 @@ dkim_home="/etc/ansimail/dkim"
 ssl_home="/etc/ansimail/ssl"
 nsd_home="/etc/ansimail/nsd"
 user_home="/etc/ansimail/users"
+spam_home="/etc/ansimail/spam"
 
 amhome="/var/ansimail-home"
 ammails="/var/ansimail"
