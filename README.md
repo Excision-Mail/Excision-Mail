@@ -18,13 +18,14 @@ Fullstack, security focused mailserver based on OpenSMTPD for OpenBSD using ansi
 * Email subsystem separate from base operating system and managed by non-privileged account.
   * Useful in case of a compromised user account.
 * Spam classification and automatic learning using [Rspamd](https://rspamd.com).
+* Multi-domain support for handling emails sent to more than one domain.
 * Server side filtering support and filter management using `managesieve`.
-* Email stored in **maildir** format for easy server side management.
 * Mozilla auto-configuration for thunderbird and other opensource clients.
 
 #### Flexible server and user management system
 
 * Daily report for system stats and email stats for server status checks.
+* Email stored in **maildir** format for easy server side management.
 * Support for aliases using pseudo accounts in both sending and receiving emails.
 * User management scripts for adding users and aliases.
 * Automatic management and tag support for `user+tag@...` in both sending and receiving emails.
@@ -39,7 +40,6 @@ Fullstack, security focused mailserver based on OpenSMTPD for OpenBSD using ansi
   * Automatic configuration of **DKIM**, **SPF**, **DMARC**, **SSHFP**, **CAA** and other records.
 * Optional [spamd(8)](https://www.openbsd.org/spamd/) set up for highly effecient spam deferral and false email rejection.
 * Optional antivirus using **Clamav** for additional security of users on Windows systems.
-
  
 ## Architecture Goals
  
