@@ -54,6 +54,13 @@ admin: <change-me> # e.g. aisha
 # and would rather rely on spamd and rspamd (which are generally enough)
 enable_clamav: true # set to false to disable
 
+# If you are hosting more than a single domain you can add the additional ones
+# here. Each of them will be using the same DKIM key for validation which makes
+# it easy to manage in case something goes wrong
+#additional_domains:
+#         - domain2
+#         - domain3 # as many as you want
+
 # HIGHLY RECOMMENDED TO USE THIS
 #
 # Complex: This section is bit more intricate and can be skipped
@@ -65,7 +72,7 @@ enable_clamav: true # set to false to disable
 # and the NSD role for documentation. It is highly detailed and explains every step 
 # of the way. 
 # Be aware that configuring it yourself is going to take upwards of 7-8 hours, 
-# unless you are experiences with DNS setup
+# unless you are experienced with DNS setup
 #enable_nsd: true # or false ( but recommended to use stealth master configuration )
 #
 # We know that the standard NSD config doesn't cover all bases so we have an addon

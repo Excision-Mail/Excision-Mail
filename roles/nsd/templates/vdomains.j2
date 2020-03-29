@@ -1,1 +1,6 @@
 {{ domain }}
+{% if additional_domains %}
+{% for adomain in additional_domains %}
+{{ adomain }}
+{% endfor %}
+{% endif %}
