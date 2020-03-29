@@ -9,19 +9,18 @@ Fullstack, security focused mailserver based on OpenSMTPD for OpenBSD using ansi
 
 #### Full featured email server with modern encryption standards enforced
 
-* Full encryption support, using `mta-sts`.
 * All connections are TLS enforced, including `pop3s`, `imaps`, `smtps`.
   * `smtp` and `sieve` are **STARTTLS** with enforced TLS escalation.
   * Insecure versions of `pop3` and `imap` are disabled for additional security.
 * **OpenPGP** and **GnuPG** *Web Key Service* and *Web Key Directory* support for automatic publishing of public keys.
   * Server only contains public keys of user, so encrypted emails can only be decrypted by the user.
+* `mta-sts` for fully encrypted email transfer channels.
 * Email subsystem separate from base operating system and managed by non-privileged account.
   * Useful in case of a compromised user account.
-* Effecient deferral of spam with native [spamd(8)](https://www.openbsd.org/spamd/).
 * Spam classification and automatic learning using [Rspamd](https://rspamd.com).
 * Server side filtering support and filter management using `managesieve`.
 * Email stored in **maildir** format for easy server side management.
-* Mozilla auto-configuration manager for thunderbird and other opensource clients.
+* Mozilla auto-configuration for thunderbird and other opensource clients.
 
 #### Flexible server and user management system
 
@@ -38,7 +37,7 @@ Fullstack, security focused mailserver based on OpenSMTPD for OpenBSD using ansi
 * Optional hidden **Authoritative DNS server** using  [nsd(8)](https://man.openbsd.org/nsd) for a *stealth master* configuration using secondary DNS providers.
   * Handles complex DNS setup for publicizing all encryption options to senders.
   * Automatic configuration of **DKIM**, **SPF**, **DMARC**, **SSHFP**, **CAA** and other records.
-
+* Optional [spamd(8)](https://www.openbsd.org/spamd/) set up for highly effecient spam deferral and false email rejection.
 * Optional antivirus using **Clamav** for additional security of users on Windows systems.
 
  
@@ -66,7 +65,7 @@ We will also use it for dkim signing of outgoing mail.
 Secure `imaps`, `pop3s` and `sieve` server to allow access from clients outside the server.
 * [ClamAV](https://www.clamav.net/)  
 Open source antivirus tools to check email attachments.
-* [GnuPG](https://gnupg.org/)
+* [GnuPG](https://gnupg.org/)  
 Make a *Web Key Server* and *Web Key Directory* using `gpg-wks-server`.
 
 ## Design goals
