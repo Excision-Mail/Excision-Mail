@@ -19,7 +19,7 @@ enable_spamd: false
 # rspamd
 
 # clamav
-enable_clamav: true
+enable_clamav: false
 
 # smtpd
 

@@ -26,15 +26,6 @@ domain: <change-me> # e.g. aisha.cc
 #       mail.aisha.cc
 hostname: mail # can change it if you so prefer, but this is a nice one
 
-# ipv4/ipv6 address of this server
-# We need to get this manually instead of automatically in the case
-# that this server is behind a NAT and is only reachable via forwarded ports
-# TODO: currently the configuration is not configurable if you don't have an
-#       ipv6, but it should be done very soon. Given that most hosting providers
-#       give an ipv6 you shouldn't be worried about it too much.
-ipv4: <change-me> # e.g. 1.2.3.4
-ipv6: <change-me> # e.g. dead:beef
-
 # This is the user that will be created and all server information emails
 # daily reports and outside domain reports will be send to admin@domain.tld
 # This is not an actualy system user, but an email only user 
@@ -52,7 +43,7 @@ admin: <change-me> # e.g. aisha
 # By default it is enabled and all the necessary services are loaded 
 # You can disable the installation of the antivirus if you are low on resources
 # and would rather rely on spamd and rspamd (which are generally enough)
-enable_clamav: true # set to false to disable
+#enable_clamav: true # set to false to disable
 
 # If you are hosting more than a single domain you can add the additional ones
 # here. Each of them will be using the same DKIM key for validation which makes
@@ -74,6 +65,14 @@ enable_clamav: true # set to false to disable
 # Be aware that configuring it yourself is going to take upwards of 7-8 hours, 
 # unless you are experienced with DNS setup
 #enable_nsd: true # or false ( but recommended to use stealth master configuration )
+# ipv4/ipv6 address of this server
+# We need to get this manually instead of automatically in the case
+# that this server is behind a NAT and is only reachable via forwarded ports
+# TODO: currently the configuration is not configurable if you don't have an
+#       ipv6, but it should be done very soon. Given that most hosting providers
+#       give an ipv6 you shouldn't be worried about it too much.
+#ipv4: <change-me> # e.g. 1.2.3.4
+#ipv6: <change-me> # e.g. dead:beef
 #
 # We know that the standard NSD config doesn't cover all bases so we have an addon
 # config available in the highly likely chance that you have more subdomains to manage.
@@ -104,7 +103,7 @@ enable_clamav: true # set to false to disable
 #        - ipv4: <change-me> # e.g. 69.65.50.192 # freedns2 (afraid.org)
 #        - ipv6: <change-me> # e.g. 2a00:1768:1001:9::31:1 # some cloudns server
 #        - ipv4: <change-me> # add as many as you want... :)
-
+#        
 # These nameservers are used by others in the internet to find your servers
 # through DNS querying.
 # They are the ones that should resolve to ns1.dnsmadeeasy.com/ns1.<dns-provider.tld>

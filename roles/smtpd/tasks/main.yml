@@ -30,7 +30,7 @@
   ignore_errors: yes
 
 - name: Add all the needed aliases for admin
-  shell: ansimail add-alias "{{ item.name }}@{{ domain }}" "{{ admin }}@{{ domain }}"
+  command: ansimail add-alias "{{ item.name }}@{{ domain }}" "{{ admin }}@{{ domain }}"
   ignore_errors: yes
   with_items:
           - { name: "postmaster" }
