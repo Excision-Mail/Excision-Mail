@@ -5,7 +5,6 @@
   with_items: 
           - { name: "dovecot" }
           - { name: "dovecot-pigeonhole" }
-          - { name: "clamav" }
           - { name: "rspamd" }
           - { name: "opensmtpd-filter-rspamd" }
           - { name: "opensmtpd-filter-senderscore" }
@@ -18,8 +17,6 @@
           enabled: yes
   with_items:
           - { name: "redis" }
-          - { name: "freshclam" }
-          - { name: "clamd" }
           - { name: "rspamd" }
           - { name: "dovecot" }
           - { name: "nsd" }

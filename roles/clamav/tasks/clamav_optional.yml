@@ -1,3 +1,16 @@
+- name: Install clamav package
+  openbsd_pkg:
+          name: clamav
+          state: present
+
+- name: Enable clamav services
+  service:
+          name: "{{ item.name }}"
+          enabled: yes
+  with_items:
+          - { name: "clamd" }
+          - { name: "freshclam" }
+        
 - name: install clamd init script
   copy:
           src: clamd

@@ -7,10 +7,14 @@
           mode: '0640'
 
 - name: Generate the temporary nsd zone file
-  shell: ansimail ensure-zone
+  command: ansimail ensure-zone
 
 - name: Move the temporary file to proper one
-  shell: mv /var/nsd/zones/master/{{ domain }}.zone.tmp /var/nsd/zones/master/{{ domain }}.zone
+  copy: 
+          src: /var/nsd/zones/master/{{ domain }}.zone.tmp 
+          dest: /var/nsd/zones/master/{{ domain }}.zone
+          remote_src: yes
+          mode: preserve
 
 - name: Restart nsd
   service:
