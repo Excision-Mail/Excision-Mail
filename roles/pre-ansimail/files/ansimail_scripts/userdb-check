@@ -21,14 +21,14 @@ printf "\n### Checking all users are in password database\n"
 for user_file in "$user_home/user-data/"*; do
 	[ -e "$user_file" ] || break
 	username=$(basename "$user_file")
-	if ! grep -q "$username" "$user_home/passwd"; then
+	if ! grep -q "^$username:" "$user_home/passwd"; then
 		echo "$username exists as a user but is not present in the password database. Please check."
 	fi
 done
 
 # Check every user in the password database is 
 # present in the user-data folder as a real file
-printf "\n### Checking all users in password database are actual users"
+printf "\n### Checking all users in password database are actual users\n"
 while IFS= read -r line; do
 	username=$(echo "$line" | cut -d: -f1)
 	if [ ! -e "$user_home/user-data/$username" ]; then
