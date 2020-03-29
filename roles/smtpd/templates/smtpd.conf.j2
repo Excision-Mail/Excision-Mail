@@ -23,7 +23,7 @@ filter check_rdns phase connect match !rdns junk
 filter check_fcrdns phase connect match !fcrdns junk
 
 # junk and slow those below a sender score of 70
-filter senderscore proc-exec "filter-senderscore -junkBelow 70 -slowFactor 100"
+filter senderscore proc-exec "filter-senderscore -junkBelow 70 -slowFactor 1000 -whitelist /etc/ansimail/spam/nospamd"
 
 # also use the rspamd filter
 filter rspamd proc-exec "filter-rspamd"
