@@ -5,6 +5,61 @@ if [ "$(id -u)" -ne 0 ]; then
 	exit 1
 fi
 
+HELP=$(cat <<-END
+Available options are:
+    ensure-dkim
+        Regenerate DKIM txt record and store it in /etc/ansimail/dkim
+
+    renew-certs
+        Renews certificates using acme-client
+
+    show-stats
+        Show statistics of email services
+
+    add-alias "alias@domain.tld" "user@domain.tld"
+        Add alias for user
+
+    add-user "user@domain.tld"
+        Add new user "user@domain.tld"
+
+    change-passdw "user@domain.tld"
+        Change the existing password for "user@domain.tld"
+
+    daily-report
+        Daily maintenance for AnsiMail
+
+    userdb-check
+        Check consistency of user database
+
+    fix-perms
+        Fix permissions for AnsiMail related folders
+
+    virtual-regen
+        Assuming that userdb-check has returned correct, recreate the smtpd tables
+        and reload smtpd. 
+        MUST RUN "userdb-check" MANUALLY
+
+    ensure-gpg
+        Do the bare minimum gpg fixing so that newer keys can be published using WKS
+
+    ensure-zone
+        Creates an example zone file backup in /var/nsd/zones/master/domain.zone.bak
+        DOES NOT DEPEND ON OR AFFECT CURRENT NSD CONFIG
+
+    whitelist-bigmailer "domain"
+        Finds and whitelists all ips associated with "domain", for spamd
+
+    whitelist-friend "ip"
+        Whitelists "ip" for spamd
+END
+)
+
+
+if [ $# -lt 1 ]; then
+	echo "$HELP"
+	exit 2
+fi
+
 command=$1
 shift
 
@@ -38,18 +93,6 @@ case "$command" in
 	"whitelist-friend")
 		/bin/sh /usr/local/lib/ansimail/whitelist-friend "$@";;
 	*)
-		echo "ansimail ensure-dkim"
-		echo "ansimail renew-certs"
-		echo "ansimail show-stats"
-		echo "ansimail add-alias <alias> <user>"
-		echo "ansimail add-user <user>"
-		echo "ansimail change-passwd <user>"
-		echo "ansimail daily-report"
-		echo "ansimail userdb-check"
-		echo "ansimail fix-perms"
-		echo "ansimail ensure-gpg"
-		echo "ansimail ensure-zone"
-		echo "ansimail whitelist-bigmailer <domain>"
-		echo "ansimail whitelist-friend <ip>"
+		echo "$HELP"
 		exit 3;;
 esac
