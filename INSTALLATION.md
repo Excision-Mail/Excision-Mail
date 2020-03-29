@@ -1,5 +1,14 @@
 # Installation
 
+## Assumptions
+This is a install guide for the common human, who has just learned that she wants to set up and email server.  
+She know nothing about anything related to setting up a mail server and only has a domain name and couple of bucks (<\$10) in her hand.
+
+We will use those \$10 to do some really cool things:
+* Buy a small VPS (with both ipv4 and ipv6)  
+* Buy a secondary DNS provider
+* Set up AnsiMail on the server
+
 ## General Information
 
 Hosting your own email is not going to be free.   
@@ -13,6 +22,8 @@ One of the first things that you need to understand is that you are going to nee
 
 You can select the lowest plan for $5 per month, which gives you the enough computing power to try out AnsiMail without turning off any features :)  
 The smaller ones are a bit too small for anything worthwhile, imho.
+
+You server requirements:
 
 #### Now that we have a server
 I am also assuming that you have a domain to your name and that you hold the power to configure everything related to that domain. This includes access to the domain registrar for setting primary nameservers, access to a horrible web-ui for doing "AdVanCEd" DNS condigurations and all that.  

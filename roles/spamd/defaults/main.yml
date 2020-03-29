@@ -1,4 +1,3 @@
----
-spamd_passtime: 2     # delivery can be retried after 2 minutes
+spamd_passtime: 15    # delivery can be retried after 15 minutes
 spamd_greyexp: 6      # greylisted entries expire after 6 hours
 spamd_whiteexp: 2190  # whitelisted entries expire after 3 months

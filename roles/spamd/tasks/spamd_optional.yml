@@ -1,0 +1,35 @@
+- name: enable daemon
+  lineinfile:
+          dest: /etc/rc.conf.local
+          regexp: ^spamd_flags=
+          line: spamd_flags="-G {{ spamd_passtime }}:{{ spamd_greyexp }}:{{ spamd_whiteexp }} -h {{ hostname }}.{{ domain }} -C /etc/ansimail/ssl/{{ domain }}.fullchain.pem -K /etc/ansimail/ssl/private/{{ domain }}.key"
+          create: yes
+
+- name: Restart spamd
+  service:
+          name: spamd
+          state: restarted
+
+- name: Add big mail corps
+  command: ansimail whitelist-bigmailer "{{ item.name }}"
+  with_items:
+          - { name: "aliexpress.com" }
+          - { name: "amazon.com" }
+          - { name: "ebay.com" }
+          - { name: "github.com" }
+          - { name: "google.com" }
+          - { name: "icloud.com" }
+          - { name: "kijiji.com" }
+          - { name: "linkedin.com" }
+          - { name: "mandrillapp.com" }
+          - { name: "mailchimp.com" }
+          - { name: "microsoft.com" }
+          - { name: "outlook.com" }
+          - { name: "paypal.com" }
+          - { name: "sendgrid.net" }
+          - { name: "t-mobile.com" }
+          - { name: "verizon.com" }
+          - { name: "yahoo.com" }
+          - { name: "intuit.com" }
+          - { name: "facebookmail.com" }
+  ignore_errors: yes

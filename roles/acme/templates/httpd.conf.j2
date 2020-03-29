@@ -11,7 +11,7 @@ server "{{ hostname }}.{{ domain }}" {
 	alias "imap.{{ domain }}"
 	alias "pop3.{{ domain }}"
 	alias "smtp.{{ domain }}"
-{% if (enable_nsd is defined) and (enable_nsd == true) %}
+{% if enable_nsd == true %}
 	alias "{{ domain }}"
 	alias "www.{{ domain }}"
 {% endif %}
@@ -46,7 +46,7 @@ server "{{ hostname }}.{{ domain }}" {
         alias "imap.{{ domain }}"
 	alias "pop3.{{ domain }}"
         alias "smtp.{{ domain }}"
-{% if (enable_nsd is defined) and (enable_nsd == true) %}
+{% if enable_nsd == true %}
 	alias "{{ domain }}"
 	alias "www.{{ domain }}"
 {% endif %}

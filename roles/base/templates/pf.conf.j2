@@ -4,15 +4,8 @@
 
 
 # read the file /etc/services to get an idea of predefined port names
-inbound_tcp = "{ smtps, submission, domain, sieve, imaps, pop3s, http, https }"
+inbound_tcp = "{ {% if enable_spamd == false %} smtp, {%- endif %} smtps, submission, domain, sieve, imaps, pop3s, http, https, {{ ssh_port }} }"
 inbound_udp = "{ domain }"
-
-# check what port we want ssh to run on and open that specific one
-{% if ssh_port is defined %}
-ssh_port = "{ {{ ssh_port }} }"
-{% else %}
-ssh_port = "{ ssh }"
-{% endif %}
 
 # we will also need to open the additional ports defined by the user
 {% if additional_tcp_ports is defined %}
@@ -23,6 +16,7 @@ additional_tcp_ports = "{ {{ additional_tcp_ports | join(', ') }} }"
 additional_udp_ports = "{ {{ additional_udp_ports | join(', ') }} }"
 {% endif %}
 
+{% if enable_spamd == true %}
 # spamd-white is the automatically managed table 
 # we should not touch that one
 table <spamd-white> persist
@@ -32,6 +26,7 @@ table <bigmailers> persist file "/etc/ansimail/spam/bigmailers"
 # nospamd is the one where you manually add ips
 # of friends and others with misconfigured servers are added
 table <nospamd> persist file "/etc/ansimail/spam/nospamd"
+{% endif %}
 
 # better not mess with the loopback interface
 set skip on lo
@@ -47,10 +42,10 @@ pass proto icmp6
 pass in on {{ private_interface }}
 {% endif %}
 
+{% if enable_spamd == true %}
 pass in on egress proto tcp to port smtp divert-to 127.0.0.1 port spamd
 pass in on egress proto tcp from { <nospamd>, <bigmailers>, <spamd-white> } to port smtp
-
-pass in on egress proto tcp to port $ssh_port
+{% endif %}
 
 pass in on egress proto tcp to port $inbound_tcp
 pass in on egress proto udp to port $inbound_udp
