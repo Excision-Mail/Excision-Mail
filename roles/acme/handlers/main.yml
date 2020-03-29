@@ -1,0 +1,11 @@
+- name: restart httpd
+  service:
+          name: httpd
+          state: restarted
+
+- name: initialize gpg-wks-server
+  command: ansimail ensure-gpg
+
+- name: create acme certs
+  command: acme-client -f /etc/ansimail/ssl/acme-client.conf "{{ hostname }}.{{ domain }}"
+  ignore_errors: true

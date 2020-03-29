@@ -1,11 +1,3 @@
-- name: Create httpd config
-  template:
-          src: httpd.conf.j2
-          dest: /etc/httpd.conf
-          owner: root
-          group: wheel
-          mode: '0644'
-
 - name: Create httpd domain directory
   file:
           name: /var/www/{{ domain }}
@@ -81,11 +73,16 @@
           owner: ansimail
           group: ansimail
           mode: '0755'
+  notify: initialize gpg-wks-server
 
-- name: Restart httpd
-  service:
-          name: httpd
-          state: restarted
+- name: Create httpd config
+  template:
+          src: httpd.conf.j2
+          dest: /etc/httpd.conf
+          owner: root
+          group: wheel
+          mode: '0644'
+  notify: restart httpd
 
 - name: Create acme config
   template:
@@ -94,17 +91,6 @@
           owner: root
           group: wheel
           mode: '0644'
-
-- name: Initialize the gpg-wks-server
-  shell: ansimail ensure-gpg
-
-- name: Create acme certs
-  command: acme-client -f /etc/ansimail/ssl/acme-client.conf "{{ hostname }}.{{ domain }}"
-  ignore_errors: yes
-
-- name: Restart httpd
-  service:
-          name: httpd
-          state: restarted
+  notify: create acme certs
 
 - meta: flush_handlers

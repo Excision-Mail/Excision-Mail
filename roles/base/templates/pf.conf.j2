@@ -4,7 +4,7 @@
 
 
 # read the file /etc/services to get an idea of predefined port names
-inbound_tcp = "{ {% if enable_spamd == false %} smtp, {%- endif %} smtps, submission, domain, sieve, imaps, pop3s, http, https, {{ ssh_port }} }"
+inbound_tcp = "{ {% if enable_spamd == false -%} smtp, {%- endif %} smtps, submission, domain, sieve, imaps, pop3s, http, https, {{ ssh_port }} }"
 inbound_udp = "{ domain }"
 
 # we will also need to open the additional ports defined by the user
