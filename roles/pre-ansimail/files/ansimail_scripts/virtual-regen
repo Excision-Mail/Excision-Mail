@@ -6,6 +6,7 @@
 
 virtuals="$user_home/virtual"
 revirt="$user_home/revirt"
+allowed="$user_home/spamd.alloweddomains"
 bak=$(date +%Y%d%m%H%M)
 
 if [ -e "$virtuals" ]; then
@@ -14,6 +15,9 @@ fi
 if [ -e "$revirt" ]; then
 	mv "$revirt" "$revirt.$bak"
 fi
+if [ -e "$allowed" ]; then
+	mv "$allowed" "$allowed.$bak"
+fi
 
 touch "$virtuals" "$revirt"
 
@@ -21,17 +25,20 @@ for user_file in "$user_home/user-data/"*; do
 	username=$( basename "$user_file" )
 	printf "\n%s\t\t\t\tansimail" "$username" >> "$virtuals"
 	printf "\n%s\t\t\t\t%s" "$username" "$username" >> "$revirt"
+	printf "%s\n" "$username" >> "$allowed"
 	while IFS= read -r alias; do
 		printf "\n%s\t\t\t\t%s" "$alias" "$username" >> "$virtuals"
 		printf ",%s" "$alias" >> $revirt
+		printf "%s\n" "$alias" >> "$allowed"
 	done < "$user_home/user-data/$username"
 	printf "\n" >> "$revirt"
 done
 
 cp "$virtuals" /etc/mail/virtual
 cp "$revirt" /etc/mail/revirt
-chmod 640 /etc/mail/virtual /etc/mail/revirt
-chown root:_smtpd /etc/mail/virtual /etc/mail/revirt
+cp "$allowed" /etc/mail/spamd.alloweddomains
+chmod 640 /etc/mail/virtual /etc/mail/revirt /etc/mail/spamd.alloweddomains
+chown root:_smtpd /etc/mail/virtual /etc/mail/revirt /etc/mail/spamd.alloweddomains
 cp "$user_home/passwd" /etc/mail/passwd
 chmod 440 /etc/mail/passwd
 chown _smtpd:_dovecot /etc/mail/passwd

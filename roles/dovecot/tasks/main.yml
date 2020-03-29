@@ -111,5 +111,5 @@
           mode: '0660'
 
 - name: Do virtual-regen to start dovecot and smtpd
-  shell: ansimail virtual-regen
+  command: ansimail virtual-regen
 
