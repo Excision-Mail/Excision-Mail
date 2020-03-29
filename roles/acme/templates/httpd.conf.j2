@@ -4,6 +4,10 @@
 # https://github.com/vedetta-com/caesonia
 
 server "{{ hostname }}.{{ domain }}" {
+{% if enable_nsd == true %}
+	alias "{{ domain }}"
+	alias "www.{{ domain }}"
+{% endif %}
 	alias "autoconfig.{{ domain }}"
 	alias "autodiscover.{{ domain }}"
 	alias "wkd.{{ domain }}"
@@ -11,26 +15,29 @@ server "{{ hostname }}.{{ domain }}" {
 	alias "imap.{{ domain }}"
 	alias "pop3.{{ domain }}"
 	alias "smtp.{{ domain }}"
-{% if enable_nsd == true %}
-	alias "{{ domain }}"
-	alias "www.{{ domain }}"
+{% if additional_domains is defined %}
+{% for adomain in additional_domains %}
+	alias "autoconfig.{{ adomain }}"
+        alias "autodiscover.{{ adomain }}"
+        alias "wkd.{{ adomain }}"
+        alias "mta-sts.{{ adomain }}"
+        alias "imap.{{ adomain }}"
+	alias "pop3.{{ adomain }}"
+        alias "smtp.{{ adomain }}"
+{% endfor %}
 {% endif %}
 
-	listen on * port http
+	listen on egress port http
 
 	tcp nodelay
+
+	connection { max requests 500, timeout 3600 }
+
+	log { access "access.log", error "error.log" }
 
 	location "/.well-known/acme-challenge/*" {
 		root "/acme"
 		request strip 2
-	}
-
-	location "/mail/*" {
-		block return 302 "https://autoconfig.{{ domain }}$REQUEST_URI"
-	}
-
-	location "/autodiscover/*" {
-		block return 302 "https://autodiscover.{{ domain }}$REQUEST_URI"
 	}
 
 	location "/*" {
@@ -38,7 +45,12 @@ server "{{ hostname }}.{{ domain }}" {
 	}
 }
 
+
 server "{{ hostname }}.{{ domain }}" {
+{% if enable_nsd == true %}
+	alias "{{ domain }}"
+	alias "www.{{ domain }}"
+{% endif %}
 	alias "autoconfig.{{ domain }}"
         alias "autodiscover.{{ domain }}"
         alias "wkd.{{ domain }}"
@@ -46,12 +58,19 @@ server "{{ hostname }}.{{ domain }}" {
         alias "imap.{{ domain }}"
 	alias "pop3.{{ domain }}"
         alias "smtp.{{ domain }}"
-{% if enable_nsd == true %}
-	alias "{{ domain }}"
-	alias "www.{{ domain }}"
+{% if additional_domains is defined %}
+{% for adomain in additional_domains %}
+	alias "autoconfig.{{ adomain }}"
+        alias "autodiscover.{{ adomain }}"
+        alias "wkd.{{ adomain }}"
+        alias "mta-sts.{{ adomain }}"
+        alias "imap.{{ adomain }}"
+	alias "pop3.{{ adomain }}"
+        alias "smtp.{{ adomain }}"
+{% endfor %}
 {% endif %}
 
-	listen on * tls port https
+	listen on egress tls port https
 
 	hsts {
 		subdomains
@@ -63,6 +82,10 @@ server "{{ hostname }}.{{ domain }}" {
 	}
 
 	tcp nodelay
+
+	connection { max requests 500, timeout 3600 }
+
+	log { access "access.log", error "error.log" }
 
 	# SMTP MTA Strict Transport Security
 	location "/.well-known/mta-sts.txt" {
@@ -81,6 +104,27 @@ server "{{ hostname }}.{{ domain }}" {
 	}
 
 }
+
+
+# IP defender (!) must be last server
+server "nonexistent" {
+	alias match "%d+%.%d+%.%d+%.%d+" # IPv4 or IPv6
+	alias match "%w*::*" # IPv6
+
+	listen on egress port http
+	listen on egress port https # (!) no TLS
+
+	tcp nodelay
+	connection { max requests 500, timeout 3600 }
+
+	log syslog
+
+	block # nothing to see here
+
+	root "/nonexistent"
+	directory no index
+}
+
 
 types {
 	include "/usr/share/misc/mime.types"
