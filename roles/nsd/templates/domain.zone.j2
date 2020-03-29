@@ -72,6 +72,7 @@ smtp	IN	CNAME	{{ hostname }}.{{ domain }}.
 ; without doing anything on the client side
 ; gives an extra layer of encryption
 wkd	IN	CNAME	{{ hostname }}.{{ domain }}.
+openpgpkey	IN	CNAME	{{ hostname }}.{{ domain }}.
 ; strict transport security
 ; somewhat like DANE but doesn't need DNSSEC
 mta-sts	IN	CNAME	{{ hostname }}.{{ domain }}.

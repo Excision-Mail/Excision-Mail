@@ -10,6 +10,7 @@ server "{{ hostname }}.{{ domain }}" {
 {% endif %}
 	alias "autoconfig.{{ domain }}"
 	alias "autodiscover.{{ domain }}"
+        alias "openpgpkey.{{ domain }}"
 	alias "wkd.{{ domain }}"
 	alias "mta-sts.{{ domain }}"
 	alias "imap.{{ domain }}"
@@ -19,6 +20,7 @@ server "{{ hostname }}.{{ domain }}" {
 {% for adomain in additional_domains %}
 	alias "autoconfig.{{ adomain }}"
         alias "autodiscover.{{ adomain }}"
+        alias "openpgpkey.{{ adomain }}"
         alias "wkd.{{ adomain }}"
         alias "mta-sts.{{ adomain }}"
         alias "imap.{{ adomain }}"
@@ -53,6 +55,7 @@ server "{{ hostname }}.{{ domain }}" {
 {% endif %}
 	alias "autoconfig.{{ domain }}"
         alias "autodiscover.{{ domain }}"
+        alias "openpgpkey.{{ domain }}"
         alias "wkd.{{ domain }}"
         alias "mta-sts.{{ domain }}"
         alias "imap.{{ domain }}"
@@ -62,6 +65,7 @@ server "{{ hostname }}.{{ domain }}" {
 {% for adomain in additional_domains %}
 	alias "autoconfig.{{ adomain }}"
         alias "autodiscover.{{ adomain }}"
+        alias "openpgpkey.{{ adomain }}"
         alias "wkd.{{ adomain }}"
         alias "mta-sts.{{ adomain }}"
         alias "imap.{{ adomain }}"
