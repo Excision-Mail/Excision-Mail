@@ -19,9 +19,7 @@
           - { name: "redis" }
           - { name: "rspamd" }
           - { name: "dovecot" }
-          - { name: "nsd" }
           - { name: "httpd" }
-          - { name: "spamd" }
 
 - name: Create AnsiMail config directories
   file:

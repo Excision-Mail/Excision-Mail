@@ -19,6 +19,7 @@
 - name: Restart nsd
   service:
           name: nsd
+          enabled: yes
           state: restarted
 
 
