@@ -12,7 +12,7 @@ Fullstack, security focused mailserver based on OpenSMTPD for OpenBSD using ansi
 * All connections are TLS enforced, including `pop3s`, `imaps`, `smtps`.
   * `smtp` and `sieve` are **STARTTLS** with enforced TLS escalation.
   * Insecure versions of `pop3` and `imap` are disabled for additional security.
-* **OpenPGP** and **GnuPG** *Web Key Service* and *Web Key Directory* support for automatic publishing of public keys.
+* **OpenPGP** and **GnuPG** *Web Key Service* and *Web Key Directory* support for automatic publishing of public keys in a multi-domain server setting.
   * Server only contains public keys of user, so encrypted emails can only be decrypted by the user.
 * `mta-sts` for fully encrypted email transfer channels.
 * Email subsystem separate from base operating system and managed by non-privileged account.
