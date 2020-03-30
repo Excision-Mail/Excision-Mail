@@ -85,14 +85,6 @@
           group: ansimail
           mode: '0770'
 
-- name: Add wks-server script
-  template:
-          src: wks-server.sh.j2
-          dest: /usr/local/lib/dovecot/sieve/wks-server.sh
-          owner: ansimail
-          group: ansimail
-          mode: '0770'
-
 - name: Add sievec-before scripts
   copy:
           src: sieve-before/

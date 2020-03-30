@@ -29,6 +29,11 @@
   register: wks
   ignore_errors: yes
 
+- name: Add all the other wks users with random passwords
+  shell: openssl rand -hex 32 | ansimail add-user "wks@{{ item }}"
+  with_items: "{{ additional_domains }}"
+  ignore_errors: yes
+
 - name: Add all the needed aliases for admin
   command: ansimail add-alias "{{ item.name }}@{{ domain }}" "{{ admin }}@{{ domain }}"
   ignore_errors: yes

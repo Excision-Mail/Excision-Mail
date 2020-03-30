@@ -8,10 +8,21 @@ if envelope :all :contains ["To"] "wks@{{ domain }}" {
   # wks@{{ domain }} should not be the sender (self emails are not done)
   # X-WKS-Loop should not be present
   if allof (NOT envelope :all :contains "From" "wks@{{ domain }}",
-            NOT header :is ["X-WKS-Loop"] ["wks.{{ domain }}"]) {
+            NOT header :is ["X-WKS-Loop"] ["wks.multidomain.loop"]) {
     pipe "wks-server" [ "wks@{{ domain }}" ];
   }
   # keep filing the email (now that it has been processed)
   # We don't discard it, because we want to keep all requests
   # on file (just in case)
 }
+
+{% if additional_domains is defined %}
+{% for adomain in additional_domains %}
+if envelope :all :contains ["To"] "wks@{{ adomain }}" {
+  if allof (NOT envelope :all :contains "From" "wks@{{ adomain }}",
+            NOT header :is ["X-WKS-Loop"] ["wks.multidomain.loop"]) {
+    pipe "wks-server" [ "wks@{{ adomain }}" ];
+  }
+}
+{% endfor %}
+{% endif %}

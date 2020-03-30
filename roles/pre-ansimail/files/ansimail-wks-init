@@ -1,20 +1,22 @@
 #!/bin/sh
 
 wks_home="/var/lib/gnupg/wks"
-domain=$( head -n 1 /etc/mail/vdomains )
 
 gpg-wks-server --list-domains
 
-echo "wks@$domain" > "$wks_home/$domain/submission-address"
+while read -r domain; do
 
-gpg -K "wks@$domain"
+	echo "wks@$domain" > "$wks_home/$domain/submission-address"
 
-if [ $? -ne 0 ]; then
-	gpg --batch --passphrase "" --quick-gen-key "wks@$domain"
-fi
+	gpg -K "wks@$domain"
 
-fingerprint=$(gpg -K "wks@$domain" | sed "2q;d")
-fingerprint=${fingerprint##*( )}
+	if [ $? -ne 0 ]; then
+		gpg --batch --passphrase "" --quick-gen-key "wks@$domain"
+	fi
 
-gpg-wks-server --install-key "$fingerprint" "wks@$domain"
+	fingerprint=$(gpg -K "wks@$domain" | sed "2q;d")
+	fingerprint=${fingerprint##*( )}
+
+	gpg-wks-server --install-key "$fingerprint" "wks@$domain"
+done < /etc/mail/vdomains
 

@@ -8,14 +8,19 @@ fi
 . /usr/local/lib/ansimail/helpers/variables
 
 wks_home="/var/lib/gnupg/wks"
-domain=$( head -n 1 /etc/mail/vdomains )
 
 mkdir -p "$wks_home"
 chown ansimail:ansimail "$wks_home"
 chmod 2750 "$wks_home"
 
 mkdir -p /var/www/openpgpkey
-ln -sfh /var/www/openpgpkey "$wks_home/$domain"
+[ -f "$spam_home/submission-address" ] && rm "$spam_home/submission-address"
+
+while read -r domain; do
+	mkdir -p "/var/www/openpgpkey/$domain"
+	ln -sfh "/var/www/openpgpkey/$domain" "$wks_home/$domain"
+	echo "wks@$domain" >> "$spam_home/submission-address"
+done < /etc/mail/vdomains
 
 chown -R ansimail:ansimail /var/www/openpgpkey
 
