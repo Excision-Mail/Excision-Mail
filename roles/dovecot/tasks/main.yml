@@ -43,7 +43,7 @@
           group: ansimail
           mode: '0644'
 
-- name: Generate dovecot ssl local config
+- name: Generate dovecot mail local config
   template:
           src: 10-mail.conf.j2
           dest: /etc/dovecot/conf.d/10-mail.conf
@@ -55,6 +55,22 @@
   template:
           src: 10-ssl.conf.j2
           dest: /etc/dovecot/conf.d/10-ssl.conf
+          owner: root
+          group: wheel
+          mode: '0644'
+
+- name: Generate dovecot sieve local config
+  template:
+          src: 15-lda.conf.j2
+          dest: /etc/dovecot/conf.d/15-lda.conf
+          owner: root
+          group: wheel
+          mode: '0644'
+
+- name: Generate dovecot lda local config
+  template:
+          src: 90-sieve.conf.j2
+          dest: /etc/dovecot/conf.d/90-sieve.conf
           owner: root
           group: wheel
           mode: '0644'

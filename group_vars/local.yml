@@ -22,5 +22,6 @@ enable_spamd: false
 enable_clamav: false
 
 # smtpd
+username_delimiter: "+"
 
 # dovecot
