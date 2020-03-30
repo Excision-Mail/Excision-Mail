@@ -26,3 +26,4 @@ echo 'https://cdn.openbsd.org/pub/OpenBSD' > /etc/installurl
 
 pkg_add ansible gnupg--%gnupg2
 ln -sfh /usr/local/bin/gpg2 /usr/local/bin/gpg
+ln -sfh /usr/sbin/mailwrapper /usr/lib/sendmail
