@@ -32,4 +32,4 @@ bigmailers:
         - { name: "protonmail.com" }
         - { name: "mailgun.net" }
         - { name: "fastmail.com" }
-
+        - { name: "steampowered.com" }
