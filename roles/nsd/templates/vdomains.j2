@@ -1,5 +1,5 @@
 {{ domain }}
-{% if additional_domains %}
+{% if additional_domains is defined %}
 {% for adomain in additional_domains %}
 {{ adomain }}
 {% endfor %}
