@@ -66,14 +66,8 @@
           group: wheel
           mode: '0755'
 
-- name: Create OpenPGP directory for WKD
-  file:
-          name: /var/www/openpgpkey
-          state: directory
-          owner: ansimail
-          group: ansimail
-          mode: '0755'
-  notify: initialize gpg-wks-server
+- name: Make gpg-wks-server hierarchy
+  command: ansimail ensure-gpg
 
 - name: Create httpd config
   template:
