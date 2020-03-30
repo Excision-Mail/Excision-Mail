@@ -5,11 +5,11 @@ if [ "$(id -u)" -ne 0 ]; then
 	exit 1
 fi
 
-printf "\n### SMTPD statistics"
+printf "\n### SMTPD statistics\n"
 smtpctl show stats
 
-printf "\n### Rspamd statistics"
-rspamc stat
+printf "\n### Rspamd statistics\n"
+/usr/local/bin/rspamc stat
 
-printf "\n### Dovecot statistics"
-echo "TODO: get doveadm statistics"
+printf "\n### Dovecot statistics\n"
+su -l ansimail -c "/usr/local/bin/doveadm -f pager quota get -A | tr -d '\f'"
