@@ -21,4 +21,7 @@ printf "\n##### Fixing big mailers list\n"
 smtpctl spf walk < /etc/ansimail/spam/bigmailer-names | pfctl -t bigmailers -T add -f -
 pfctl -t bigmailers -T show > /etc/ansimail/spam/bigmailers
 
+printf "\n##### Cleaning pending gpg requests\n"
+find /var/www/openpgpkey/*/pending/ -type f -delete
+
 /usr/local/bin/ansimail show-stats
