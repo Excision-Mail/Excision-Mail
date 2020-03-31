@@ -35,21 +35,17 @@
   ignore_errors: yes
 
 - name: Add all the needed aliases for admin
-  command: ansimail add-alias "{{ item.name }}@{{ domain }}" "{{ admin }}@{{ domain }}"
+  command: ansimail add-alias "{{ item }}@{{ domain }}" "{{ admin }}@{{ domain }}"
   ignore_errors: yes
-  with_items:
-          - { name: "postmaster" }
-          - { name: "abuse" }
-          - { name: "noc" }
-          - { name: "security" }
-          - { name: "hostmaster" }
-          - { name: "usenet" }
-          - { name: "news" }
-          - { name: "webmaster" }
-          - { name: "dmarcreports" }
-          - { name: "tlsreports" }
-          - { name: "ansimail" }
+  with_items: "{{ rfc_aliases }}"
 
+- name: Add all the needed aliases for additional vdomains
+  command: ansimail add-alias "{{ item[0] }}@{{ item[1] }}" "{{ admin }}@{{ domain }}"
+  ignore_errors: yes
+  with_nested:
+          - "{{ rfc_aliases }}"
+          - "{{ additional_domains }}"
+  when: additional_domains is defined
 
 # Any items belonging to _smtpd group are 640 and wheel are 644
 # passwd is an exception as it needs to be read by both dovecot and smtpd

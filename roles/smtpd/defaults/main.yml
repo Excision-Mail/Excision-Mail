@@ -1,0 +1,12 @@
+rfc_aliases:
+        - "postmaster"
+        - "abuse"
+        - "noc"
+        - "security"
+        - "hostmaster"
+        - "usenet"
+        - "news"
+        - "webmaster"
+        - "dmarcreports"
+        - "tlsreports"
+        - "ansimail"
