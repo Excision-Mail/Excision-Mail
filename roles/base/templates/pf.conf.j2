@@ -4,7 +4,7 @@
 
 
 # read the file /etc/services to get an idea of predefined port names
-inbound_tcp = "{ {% if enable_spamd == false -%} smtp, {%- endif %} smtps, submission, domain, sieve, imaps, pop3s, http, https, {{ ssh_port }} }"
+inbound_tcp = "{ {% if enable_spamd == false -%} smtp, {%- endif %} smtps, submission, domain, sieve, imaps, pop3s, http, https }"
 inbound_udp = "{ domain }"
 
 # we will also need to open the additional ports defined by the user
@@ -28,6 +28,9 @@ table <bigmailers> persist file "/etc/ansimail/spam/bigmailers"
 table <nospamd> persist file "/etc/ansimail/spam/nospamd"
 {% endif %}
 
+# stop bruteforce attackers that try to hug out ssh_port
+table <bruteforce> persist
+
 # better not mess with the loopback interface
 set skip on lo
 
@@ -41,6 +44,13 @@ pass proto icmp6
 {% if private_interface is defined %}
 pass in on {{ private_interface }}
 {% endif %}
+
+block quick from <bruteforce>
+
+pass in on egress proto tcp from any to any port {{ ssh_port }} \
+	flags S/SA keep state \
+	(max-src-conn 15, max-src-conn-rate 10/5, \
+	overload <bruteforce> flush global)
 
 {% if enable_spamd == true %}
 pass in on egress proto tcp to port smtp divert-to 127.0.0.1 port spamd
