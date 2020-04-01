@@ -4,8 +4,12 @@
 
 
 # read the file /etc/services to get an idea of predefined port names
-inbound_tcp = "{ {% if enable_spamd == false -%} smtp, {%- endif %} smtps, submission, domain, sieve, imaps, pop3s, http, https }"
+inbound_tcp = "{ {% if enable_spamd == false -%} smtp, {%- endif %} domain, http, https }"
 inbound_udp = "{ domain }"
+# these are all the ports where people can try to do bruteforce password attacks
+# as they are password login protected
+# We will enable bruteforce blockers for these
+password_tcp = "{ {{ ssh_port }}, smtps, submission, sieve, imaps, pop3s }"
 
 # we will also need to open the additional ports defined by the user
 {% if additional_tcp_ports is defined %}
@@ -28,7 +32,7 @@ table <bigmailers> persist file "/etc/ansimail/spam/bigmailers"
 table <nospamd> persist file "/etc/ansimail/spam/nospamd"
 {% endif %}
 
-# stop bruteforce attackers that try to hug out ssh_port
+# stop bruteforce attackers that try to hug of death
 table <bruteforce> persist
 
 # better not mess with the loopback interface
@@ -47,9 +51,9 @@ pass in on {{ private_interface }}
 
 block quick from <bruteforce>
 
-pass in on egress proto tcp from any to any port {{ ssh_port }} \
+pass in on egress proto tcp from any to any port $password_tcp \
 	flags S/SA keep state \
-	(max-src-conn 15, max-src-conn-rate 5/3, \
+	(max-src-conn 100, max-src-conn-rate 15/3, \
 	overload <bruteforce> flush global)
 
 {% if enable_spamd == true %}
