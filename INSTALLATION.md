@@ -41,7 +41,7 @@ The advantage of this is to be able to modify complex DNS records easily via tex
 Thankfully the worst part of the DNS configuration is automated leaving you with almost nothing to manage yourself (though you can if you want to).
 
 For a secondary nameserver, the minimum requirements are to be able to accept NOTIFY (which informs the secondary about any updates from your computer).  
-Look at the pinned issue for a recommended list of secondary providers.
+Look at the pinned issue for a recommended list of secondary providers. Most services are really cheap at < $2 per month, for more than 10 domains at a time. So if you have a friend it is useful to do this together, as AnsiMail also supports multiple domain email handling.
 
 The secondary DNS provider will give you two kinds of ip lists
  * *public nameservers*: These are the servers that other people on the internet will think are the primary nameservers of your domain. They will not know about the master DNS resolvers running on your computer (hence stealth master). Most probably each nameserver will have a name (like ns7.provider.tld), an ipv4 and an ipv6. Note these down because they are needed to generate the configuration file. Also go to your domain registrar and register each of the public nameservers as your primary nameservers.  
@@ -103,7 +103,6 @@ Supposing that your adminstrator is called `notaisha` and your domain was `aisha
 ```sh
 ansimail change-passwd "notaisha@aisha.cc"
 ansimail virtual-regen
-rcctl restart smtpd dovecot
 ```
 You can read the github wiki for some general purpose server maintenance commands that AnsiMail adds to the system. They are supremely helpful :)
 
@@ -118,7 +117,7 @@ Some recommended email clients are:
  * KMail
  * Evolution
  * mutt/neomutt
- * Lieterally anything in the world, AnsiMail is configured to make everyone autodetect all ports and domain setting automatically
+ * Lieterally anything in the world, AnsiMail is configured to make everyone autodetect all ports and domain settings automatically
 
 Your username is `<admin>@<domain.tld>`, where you fill your own credentials and your password is what you set in the previous step.
 
