@@ -35,8 +35,17 @@ table <nospamd> persist file "/etc/ansimail/spam/nospamd"
 # stop bruteforce attackers that try to hug of death
 table <bruteforce> persist
 
+# options for pf performance
+set loginterface egress
+set optimization normal
+set block-policy drop
+set syncookies adaptive (start 25%, end 12%)
+
 # better not mess with the loopback interface
 set skip on lo
+
+# Block spoofed traffic
+antispoof log quick for { (egress) lo0 }
 
 # this enables blocking all packets without logging them
 # because we don't really care about random ports
