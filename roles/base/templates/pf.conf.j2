@@ -49,7 +49,7 @@ block quick from <bruteforce>
 
 pass in on egress proto tcp from any to any port {{ ssh_port }} \
 	flags S/SA keep state \
-	(max-src-conn 15, max-src-conn-rate 10/5, \
+	(max-src-conn 15, max-src-conn-rate 5/3, \
 	overload <bruteforce> flush global)
 
 {% if enable_spamd == true %}
