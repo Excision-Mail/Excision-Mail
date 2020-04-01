@@ -4,7 +4,7 @@
 
 
 # read the file /etc/services to get an idea of predefined port names
-inbound_tcp = "{ {% if enable_spamd == false -%} smtp, {%- endif %} domain, http, https }"
+inbound_tcp = "{ {% if enable_spamd == false -%} smtp, {% endif %}domain, http, https }"
 inbound_udp = "{ domain }"
 # these are all the ports where people can try to do bruteforce password attacks
 # as they are password login protected
@@ -43,6 +43,13 @@ set syncookies adaptive (start 25%, end 12%)
 
 # better not mess with the loopback interface
 set skip on lo
+
+# Sanitizing packet content
+# no-df + random-id = unique IP identifiers
+# max-mss must match net.inet.tcp.mssdflt in /etc/sysctl.conf
+anchor "scrub" in {
+	match in all scrub (no-df random-id)
+}
 
 # Block spoofed traffic
 antispoof log quick for { (egress) lo0 }
