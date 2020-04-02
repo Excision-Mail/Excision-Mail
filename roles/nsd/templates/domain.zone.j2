@@ -83,7 +83,7 @@ mta-sts	IN	CNAME	{{ hostname }}.{{ domain }}.
 ;;							(used for load balancing on client side, 
 ;;							which makes it basically worthless)
 ; we also detail all the services used and the ports that they map to
-_openpgpkey._tcp	IN	SRV	0	0	443	wkd.{{ domain }}.
+_openpgpkey._tcp	IN	SRV	0	0	443	openpgpkey.{{ domain }}.
 ; we need autodiscover service >.> why so much???
 ; damn you microsoft
 _autodiscover._tcp	IN	SRV	0	0	443	autodiscover.{{ domain }}.
