@@ -2,11 +2,17 @@
   template:
           src: mailname.j2
           dest: /etc/mail/mailname
+          owner: root
+          group: wheel
+          mode: '0644'
 
 - name: Copy vdomains
   template:
           src: vdomains.j2
           dest: /etc/mail/vdomains
+          owner: root
+          group: wheel
+          mode: '0644'
 
 - name: Generate zone master file
   template:
