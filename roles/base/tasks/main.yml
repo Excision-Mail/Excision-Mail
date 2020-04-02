@@ -1,3 +1,12 @@
+- name: Make sure log files exist
+  file:
+          path: /var/log/{{ item }}
+          state: touch
+          owner: root
+          group: wheel
+          mode: '0640'
+  with_items: { nsd, httpd, doas, clamd, freshclam, spamd}
+
 - name: Generate login.conf
   copy:
           src: login.conf
@@ -7,15 +16,6 @@
           group: wheel
           mode: '0644'
   notify: rebuild login database
-
-- name: Make sure log files exist
-  file:
-          path: /var/log/{{ item }}
-          state: touch
-          owner: root
-          group: wheel
-          mode: '0640'
-  with_items: { nsd, httpd, doas, clamd, freshclam, spamd}
 
 - name: Generate syslog conf
   copy:
@@ -37,21 +37,14 @@
           mode: '0644'
   notify: reload newsyslog
 
-- name: Make sure nospamd exists
+- name: Make sure pf table files exists
   file:
-          path: /etc/ansimail/spam/nospamd
+          path: /etc/ansimail/spam/{{ item }}
           state: touch
           owner: root
           group: wheel
           mode: '0644'
-
-- name: Make sure bigmailers exists
-  file:
-          path: /etc/ansimail/spam/bigmailers
-          state: touch
-          owner: root
-          group: wheel
-          mode: '0644'
+  with_items: { nospamd, bigmailers }
 
 - name: Generate pf config
   template:
