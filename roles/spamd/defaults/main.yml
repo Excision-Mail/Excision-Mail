@@ -33,3 +33,4 @@ bigmailers:
         - { name: "mailgun.net" }
         - { name: "fastmail.com" }
         - { name: "steampowered.com" }
+        - { name: "email.gog.com" }
