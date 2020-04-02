@@ -67,11 +67,19 @@ pass in on {{ private_interface }}
 
 block quick from <bruteforce>
 
+# we do a nice bruteforce block on every password protected port
+# by allowing only 100 connections from every ip
+# and also making sure that no more than 100 connections are established in
+# 10 seconds, if you violate the constraints you get put into timeout
+# <bruteforce> for two days
 pass in on egress proto tcp from any to any port $password_tcp \
 	flags S/SA keep state \
-	(max-src-conn 100, max-src-conn-rate 15/3, \
+	(max-src-conn 100, max-src-conn-rate 100/10, \
 	overload <bruteforce> flush global)
 
+# be careful when you are using an ipv6 only interface
+# currently spamd only supports a ipv4 interface so if you have only ipv6
+# you should disable spamd
 {% if enable_spamd == true %}
 pass in on egress proto tcp to port smtp divert-to 127.0.0.1 port spamd
 pass in on egress proto tcp from { <nospamd>, <bigmailers>, <spamd-white> } to port smtp
