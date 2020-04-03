@@ -21,12 +21,10 @@
 
 - name: Add admin user with random password (ignore if already exists)
   shell: openssl rand -hex 32 | ansimail add-user "{{ admin }}@{{ domain }}"
-  register: aadmin
   ignore_errors: yes
 
 - name: Add wks user with random password (ignore if already exists)
   shell: openssl rand -hex 32 | ansimail add-user "wks@{{ domain }}"
-  register: wks
   ignore_errors: yes
 
 - name: Add all the other wks users with random passwords
