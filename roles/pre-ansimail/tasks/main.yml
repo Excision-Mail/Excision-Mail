@@ -61,7 +61,7 @@
 
 - name: Create AnsiMail scripts directory
   file:
-          name: /usr/local/lib/ansimail/helpers
+          path: /usr/local/lib/ansimail/helpers
           state: directory
           force: yes
           owner: root
