@@ -5,6 +5,7 @@
           owner: root
           group: _nsd
           mode: '0640'
+  when: generate_nsd_conf == true
 
 - name: Generate the temporary nsd zone file
   command: ansimail ensure-zone
