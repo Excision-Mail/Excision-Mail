@@ -1,31 +1,14 @@
 - name: Create httpd domain directory
   file:
-          name: /var/www/{{ domain }}
+          path: /var/www/{{ domain }}
           state: directory
           owner: root
           group: wheel
           mode: '0755'
 
-- name: Create domain index file with Hello, World!
-  copy:
-          src: index.html
-          dest: /var/www/{{ domain }}/index.html
-          force: yes
-          owner: root
-          group: wheel
-          mode: '0755'
-
-- name: Create mail directory in httpd domain
+- name: Create mail directory for mozilla autoconfig
   file:
-          name: /var/www/{{ domain }}/mail
-          state: directory
-          owner: root
-          group: wheel
-          mode: '0755'
-
-- name: Create autodiscover directory in httpd domain
-  file:
-          name: /var/www/{{ domain }}/Autodiscover
+          path: /var/www/{{ domain }}/mail
           state: directory
           owner: root
           group: wheel
@@ -36,6 +19,14 @@
   template:
           src: config-v1.1.xml.j2
           dest: /var/www/{{ domain }}/mail/config-v1.1.xml
+          owner: root
+          group: wheel
+          mode: '0755'
+
+- name: Create autodiscover directory for microsoft autodiscover
+  file:
+          path: /var/www/{{ domain }}/Autodiscover
+          state: directory
           owner: root
           group: wheel
           mode: '0755'
@@ -52,7 +43,7 @@
 
 - name: Create mta-sts directory
   file:
-          name: /var/www/mta-sts
+          path: /var/www/mta-sts
           state: directory
           owner: root
           group: wheel
