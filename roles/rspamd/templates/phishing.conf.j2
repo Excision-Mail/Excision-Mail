@@ -1,0 +1,12 @@
+# https://rspamd.com/doc/modules/phishing.html
+
+openphish_enabled = true;
+openphish_premium = false;
+openphish_map = "https://www.openphish.com/feed.txt";
+# Requires >1GB RAM
+{% if rspamd_enable_phishtank == true %}
+phishtank_enabled = true;
+{% else %}
+phishtank_enabled = false;
+{% endif %}
+phishtank_map = "https://maps.rspamd.com/phishtank/online-valid.json.zst";

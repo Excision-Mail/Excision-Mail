@@ -1,0 +1,10 @@
+# https://rspamd.com/doc/modules/surbl.html
+
+{% if rspamd_enable_surbl == true %}                                           
+enabled = true;
+{% else %}
+enabled = false;
+{% endif %}
+
+# Use of URL redirectors: https://rspamd.com/doc/modules/url_redirector.html
+redirector_hosts_map = "/etc/rspamd/redirectors.inc";

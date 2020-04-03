@@ -1,0 +1,3 @@
+rspamd_enable_pretrain:   false
+rspamd_enable_phishtank:  false
+rspamd_enable_surbl:      true

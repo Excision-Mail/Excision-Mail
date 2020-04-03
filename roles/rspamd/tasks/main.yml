@@ -17,8 +17,24 @@
 
 - name: Create dkim_signing config
   template:
-          src: local.d/dkim_signing.conf.j2
+          src: dkim_signing.conf.j2
           dest: /etc/rspamd/local.d/dkim_signing.conf
+          owner: root
+          group: wheel
+          mode: '0644'
+
+- name: Create phishing config
+  template:
+          src: phishing.conf.j2
+          dest: /etc/rspamd/local.d/phishing.conf
+          owner: root
+          group: wheel
+          mode: '0644'
+
+- name: Create surbl config
+  template:
+          src: surbl.conf.j2
+          dest: /etc/rspamd/local.d/surbl.conf
           owner: root
           group: wheel
           mode: '0644'
@@ -37,3 +53,7 @@
   service:
           name: rspamd
           state: reloaded
+
+- name: Download pretrained datasets
+  include: bayes_pretrain.yml
+  when: rspamd_enable_pretrain == true
