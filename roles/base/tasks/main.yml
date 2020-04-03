@@ -55,13 +55,11 @@
           mode: '0600'
   notify: reload pf
 
-- name: Install new root crontab file
-  copy:
-          src: cron
-          dest: /var/cron/tabs/root
-          force: yes
-          owner: ansimail
-          group: crontab
-          mode: '0600'
+- name: Add AnsiMail daily cron job
+  cron:
+          name: AnsiMail daily-report
+          job: "/usr/local/bin/ansimail daily-report"
+          user: root
+          hour: "7"
 
 - meta: flush_handlers
