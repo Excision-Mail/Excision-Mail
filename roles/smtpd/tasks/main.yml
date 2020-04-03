@@ -57,7 +57,7 @@
           group: "{{ item.group }}"
           mode: "{{ item.perm }}"
   with_items:
-          - { name: "aliases", user: "root", group: "_smtpd",  perm: "0640" }
+          - { name: "aliases", user: "root", group: "wheel",  perm: "0644" }
           - { name: "mailname", user: "root", group: "wheel", perm: "0644" }
           - { name: "virtual", user: "root", group: "_smtpd", perm: "0640" }
           - { name: "revirt", user: "root", group: "_smtpd", perm: "0640" }
