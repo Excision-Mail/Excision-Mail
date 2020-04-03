@@ -1,6 +1,6 @@
 - name: Create rspamd local.d directory
   file:
-          name: /etc/rspamd/local.d/
+          path: /etc/rspamd/local.d/
           state: directory
           owner: root
           group: wheel
