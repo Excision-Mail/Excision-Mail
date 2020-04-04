@@ -132,6 +132,6 @@
 
 - name: Create acme certs
   command: ansimail renew-certs
-  ignore-errors: true
+  ignore_errors: true
 
 - meta: flush_handlers
