@@ -18,10 +18,10 @@ if envelope :all :contains ["To"] "wks@{{ domain }}" {
 
 {% if additional_domains is defined %}
 {% for adomain in additional_domains %}
-if envelope :all :contains ["To"] "wks@{{ adomain }}" {
-  if allof (NOT envelope :all :contains "From" "wks@{{ adomain }}",
+if envelope :all :contains ["To"] "wks@{{ adomain.name }}" {
+  if allof (NOT envelope :all :contains "From" "wks@{{ adomain.name }}",
             NOT header :is ["X-WKS-Loop"] ["wks.multidomain.loop"]) {
-    pipe "wks-server" [ "wks@{{ adomain }}" ];
+    pipe "wks-server" [ "wks@{{ adomain.name }}" ];
   }
 }
 {% endfor %}

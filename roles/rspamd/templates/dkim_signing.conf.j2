@@ -7,7 +7,7 @@ domain {
     }
 {% if additional_domains is defined %}
 {% for adomain in additional_domains %}
-    {{ adomain }} {
+    {{ adomain.name }} {
         path = "/etc/ansimail/dkim/private/ansimail.{{ domain }}.key";
         selector = "ansimail";
     }

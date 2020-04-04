@@ -3,31 +3,19 @@
 # CREDIT: vedetta-com/caesonia
 # https://github.com/vedetta-com/caesonia
 
-server "{{ hostname }}.{{ domain }}" {
+server "openpgpkey.{{ domain }}" {
 {% if enable_nsd == true %}
 	alias "{{ domain }}"
 	alias "www.{{ domain }}"
 {% endif %}
+        alias "{{ hostname }}.{{ domain }}"
 	alias "autoconfig.{{ domain }}"
 	alias "autodiscover.{{ domain }}"
-        alias "openpgpkey.{{ domain }}"
 	alias "wkd.{{ domain }}"
 	alias "mta-sts.{{ domain }}"
 	alias "imap.{{ domain }}"
 	alias "pop3.{{ domain }}"
 	alias "smtp.{{ domain }}"
-{% if additional_domains is defined %}
-{% for adomain in additional_domains %}
-	alias "autoconfig.{{ adomain }}"
-        alias "autodiscover.{{ adomain }}"
-        alias "openpgpkey.{{ adomain }}"
-        alias "wkd.{{ adomain }}"
-        alias "mta-sts.{{ adomain }}"
-        alias "imap.{{ adomain }}"
-	alias "pop3.{{ adomain }}"
-        alias "smtp.{{ adomain }}"
-{% endfor %}
-{% endif %}
 
 	listen on egress port http
 
@@ -48,31 +36,19 @@ server "{{ hostname }}.{{ domain }}" {
 }
 
 
-server "{{ hostname }}.{{ domain }}" {
+server "openpgpkey.{{ domain }}" {
 {% if enable_nsd == true %}
 	alias "{{ domain }}"
 	alias "www.{{ domain }}"
 {% endif %}
+        alias "{{ hostname }}.{{ domain }}"
 	alias "autoconfig.{{ domain }}"
         alias "autodiscover.{{ domain }}"
-        alias "openpgpkey.{{ domain }}"
         alias "wkd.{{ domain }}"
         alias "mta-sts.{{ domain }}"
         alias "imap.{{ domain }}"
 	alias "pop3.{{ domain }}"
         alias "smtp.{{ domain }}"
-{% if additional_domains is defined %}
-{% for adomain in additional_domains %}
-	alias "autoconfig.{{ adomain }}"
-        alias "autodiscover.{{ adomain }}"
-        alias "openpgpkey.{{ adomain }}"
-        alias "wkd.{{ adomain }}"
-        alias "mta-sts.{{ adomain }}"
-        alias "imap.{{ adomain }}"
-	alias "pop3.{{ adomain }}"
-        alias "smtp.{{ adomain }}"
-{% endfor %}
-{% endif %}
 
 	listen on egress tls port https
 
@@ -103,12 +79,110 @@ server "{{ hostname }}.{{ domain }}" {
 		request strip 2
 	}
 
-	location "/*" {
-		root "/{{ domain }}"
+	# Autodiscover file for Microsoft 
+	location "/Autodiscover/*" {
+		root "/Autodiscover/{{ domain }}"
+		request strip 1
 	}
 
+	# OpenPGP Web Key Directory
+	location "/mail/*" {
+		root "/mail/{{ domain }}"
+		request strip 1
+	}
+	# rest of the files are queried in their respective folders
+	location "/*" {
+		root "/htdocs/{{ domain }}"
+	}
 }
 
+{% if additional_domains is defined %}
+{% for adomain in additional_domains %}
+
+server "openpgpkey.{{ adomain.name }}" {
+	alias "autoconfig.{{ adomain.name }}"
+        alias "autodiscover.{{ adomain.name }}"
+        alias "wkd.{{ adomain.name }}"
+        alias "mta-sts.{{ adomain.name }}"
+        alias "imap.{{ adomain.name }}"
+	alias "pop3.{{ adomain.name }}"
+        alias "smtp.{{ adomain.name }}"
+
+	listen on egress port http
+
+	tcp nodelay
+
+	connection { max requests 500, timeout 3600 }
+
+	log { access "access.log", error "error.log" }
+
+	location "/.well-known/acme-challenge/*" {
+		root "/acme"
+		request strip 2
+	}
+
+	location "/*" {
+		block return 302 "https://$HTTP_HOST$REQUEST_URI"
+	}
+}
+
+server "openpgpkey.{{ adomain.name }}" {
+	alias "autoconfig.{{ adomain.name }}"
+        alias "autodiscover.{{ adomain.name }}"
+        alias "wkd.{{ adomain.name }}"
+        alias "mta-sts.{{ adomain.name }}"
+        alias "imap.{{ adomain.name }}"
+	alias "pop3.{{ adomain.name }}"
+        alias "smtp.{{ adomain.name }}"
+
+	listen on egress tls port https
+
+	hsts {
+		subdomains
+	}
+
+	tls {
+		certificate "/etc/ansimail/ssl/{{ adomain.name }}.fullchain.pem"
+		key "/etc/ansimail/ssl/private/{{ adomain.name }}.key"
+	}
+
+	tcp nodelay
+
+	connection { max requests 500, timeout 3600 }
+
+	log { access "access.log", error "error.log" }
+
+	# SMTP MTA Strict Transport Security
+	location "/.well-known/mta-sts.txt" {
+		root "/mta-sts"
+		request strip 1
+	}
+
+	# OpenPGP Web Key Directory
+	location "/.well-known/openpgpkey/*" {
+		root "/openpgpkey"
+		request strip 2
+	}
+
+	# Autodiscover file for Microsoft 
+	location "/Autodiscover/*" {
+		root "/Autodiscover/{{ adomain.name }}"
+		request strip 1
+	}
+
+	# OpenPGP Web Key Directory
+	location "/mail/*" {
+		root "/mail/{{ adomain.name }}"
+		request strip 1
+	}
+	# rest of the files are queried in their respective folders
+	location "/*" {
+		root "/htdocs/{{ adomain.name }}"
+	}
+}
+
+{% endfor %}
+{% endif %}
 
 # IP defender (!) must be last server
 server "nonexistent" {
@@ -128,7 +202,6 @@ server "nonexistent" {
 	root "/nonexistent"
 	directory no index
 }
-
 
 types {
 	include "/usr/share/misc/mime.types"

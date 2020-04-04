@@ -2,27 +2,27 @@
 <Autodiscover xmlns="http://schemas.microsoft.com/exchange/autodiscover/responseschema/2006">
 	<Response xmlns="http://schemas.microsoft.com/exchange/autodiscover/outlook/responseschema/2006a">
 		<User>
-			<DisplayName>AnsiMail</DisplayName>
+			<DisplayName>AnsiMail - {{ item.name }}</DisplayName>
 		</User>
 		<Account>
 			<AccountType>email</AccountType>
 			<Action>settings</Action>
-			<ServiceHome>https://autodiscover.{{ domain }}</ServiceHome>
+			<ServiceHome>https://autodiscover.{{ item.name }}</ServiceHome>
 			<Protocol>
 				<Type>IMAP</Type>
-				<Server>imap.{{ domain }}</Server>
+				<Server>imap.{{ item.name }}</Server>
 				<Port>993</Port>
 				<LoginName></LoginName>
 			</Protocol>
 			<Protocol>
 				<Type>POP3</Type>
-				<Server>pop3.{{ domain }}</Server>
+				<Server>pop3.{{ item.name }}</Server>
 				<Port>995</Port>
 				<LoginName></LoginName>
 			</Protocol>
 			<Protocol>
 				<Type>SMTP</Type>
-				<Server>smtp.{{ domain }}</Server>
+				<Server>smtp.{{ item.name }}</Server>
 				<Port>465</Port>
 				<LoginName></LoginName>
 			</Protocol>

@@ -1,6 +1,6 @@
 {{ domain }}
 {% if additional_domains is defined %}
 {% for adomain in additional_domains %}
-{{ adomain }}
+{{ adomain.name }}
 {% endfor %}
 {% endif %}

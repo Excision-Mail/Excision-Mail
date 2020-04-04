@@ -4,5 +4,5 @@
           state: restarted
 
 - name: create acme certs
-  command: acme-client -f /etc/ansimail/ssl/acme-client.conf "{{ hostname }}.{{ domain }}"
+  command: ansimail renew-certs
   ignore_errors: true

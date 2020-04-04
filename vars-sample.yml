@@ -43,7 +43,7 @@ admin: <change-me> # e.g. aisha
 # Is set to + by default can by set to any single character
 # NOTE: If you set it to some ascii character (such as 'a') a lot of 
 # users will stop getting their mails if they have this character in 
-# their username. Use with care, + . - _ are good choices
+# their username. Use with care, but + . - _ are good choices
 #username_delimiter: +
 
 # The clamav antivirus is used to detect virus signatures in emails
@@ -64,8 +64,8 @@ admin: <change-me> # e.g. aisha
 # here. Each of them will be using the same DKIM key for validation which makes
 # it easy to manage in case something goes wrong
 #additional_domains:
-#         - domain2
-#         - domain3 # as many as you want
+#         - name: "domain2"
+#         - name: "domain3" # as many as you want
 
 # HIGHLY RECOMMENDED TO USE THIS SECTION
 #
