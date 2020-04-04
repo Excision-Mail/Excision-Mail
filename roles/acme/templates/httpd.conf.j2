@@ -74,9 +74,9 @@ server "openpgpkey.{{ domain }}" {
 	}
 
 	# OpenPGP Web Key Directory
-	location "/.well-known/openpgpkey/*" {
-		root "/openpgpkey"
-		request strip 2
+	location "/.well-known/openpgpkey/{{ domain }}/*" {
+		root "/openpgpkey/{{ domain }}"
+		request strip 3
 	}
 
 	# Autodiscover file for Microsoft 
@@ -159,9 +159,9 @@ server "openpgpkey.{{ adomain.name }}" {
 	}
 
 	# OpenPGP Web Key Directory
-	location "/.well-known/openpgpkey/*" {
-		root "/openpgpkey"
-		request strip 2
+	location "/.well-known/openpgpkey/{{ adomain.name }}/*" {
+		root "/openpgpkey/{{ adomain.name }}"
+		request strip 3
 	}
 
 	# Autodiscover file for Microsoft 
