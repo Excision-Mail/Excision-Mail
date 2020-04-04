@@ -129,6 +129,9 @@
           owner: root
           group: wheel
           mode: '0644'
-  notify: create acme certs
+
+- name: Create acme certs
+  command: ansimail renew-certs
+  ignore-errors: true
 
 - meta: flush_handlers

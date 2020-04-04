@@ -2,7 +2,3 @@
   service:
           name: httpd
           state: restarted
-
-- name: create acme certs
-  command: ansimail renew-certs
-  ignore_errors: true
