@@ -14,6 +14,7 @@
           group: wheel
           mode: '0755'
   with_items: "{{ additional_domains }}"
+  when: additional_domains is defined
 
 - name: Create mail directory for mozilla autoconfig
   file:
