@@ -31,6 +31,7 @@
   shell: openssl rand -hex 32 | ansimail add-user "wks@{{ item }}"
   with_items: "{{ additional_domains }}"
   ignore_errors: yes
+  when: additional_domains is defined
 
 - name: Add all the needed aliases for admin (ignore if already exist)
   command: ansimail add-alias "{{ item }}@{{ domain }}" "{{ admin }}@{{ domain }}"
