@@ -16,6 +16,18 @@ server "openpgpkey.{{ domain }}" {
 	alias "imap.{{ domain }}"
 	alias "pop3.{{ domain }}"
 	alias "smtp.{{ domain }}"
+{% if additional_domains is defined %}
+{% for adomain in additional_domains %}
+	alias "openpgpkey.{{ adomain.name }}"
+	alias "autoconfig.{{ adomain.name }}"
+        alias "autodiscover.{{ adomain.name }}"
+        alias "wkd.{{ adomain.name }}"
+        alias "mta-sts.{{ adomain.name }}"
+        alias "imap.{{ adomain.name }}"
+	alias "pop3.{{ adomain.name }}"
+        alias "smtp.{{ adomain.name }}"
+{% endfor %}
+{% endif %}
 
 	listen on egress port http
 
@@ -108,33 +120,6 @@ server "openpgpkey.{{ adomain.name }}" {
 	alias "pop3.{{ adomain.name }}"
         alias "smtp.{{ adomain.name }}"
 
-	listen on egress port http
-
-	tcp nodelay
-
-	connection { max requests 500, timeout 3600 }
-
-	log { access "access.log", error "error.log" }
-
-	location "/.well-known/acme-challenge/*" {
-		root "/acme"
-		request strip 2
-	}
-
-	location "/*" {
-		block return 302 "https://$HTTP_HOST$REQUEST_URI"
-	}
-}
-
-server "openpgpkey.{{ adomain.name }}" {
-	alias "autoconfig.{{ adomain.name }}"
-        alias "autodiscover.{{ adomain.name }}"
-        alias "wkd.{{ adomain.name }}"
-        alias "mta-sts.{{ adomain.name }}"
-        alias "imap.{{ adomain.name }}"
-	alias "pop3.{{ adomain.name }}"
-        alias "smtp.{{ adomain.name }}"
-
 	listen on egress tls port https
 
 	hsts {
@@ -142,8 +127,8 @@ server "openpgpkey.{{ adomain.name }}" {
 	}
 
 	tls {
-		certificate "/etc/ansimail/ssl/{{ adomain.name }}.fullchain.pem"
-		key "/etc/ansimail/ssl/private/{{ adomain.name }}.key"
+		certificate "/etc/ansimail/ssl/{{ domain }}.fullchain.pem"
+		key "/etc/ansimail/ssl/private/{{ domain }}.key"
 	}
 
 	tcp nodelay

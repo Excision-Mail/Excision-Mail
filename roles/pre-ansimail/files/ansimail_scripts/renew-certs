@@ -7,10 +7,10 @@ fi
 
 . /usr/local/lib/ansimail/helpers/variables
 
+domain=$(head -n 1 /etc/mail/vdomains)
+
 echo "### Renewing acme certificates"
-while read -r domain; do
-	acme-client -v -f "$ssl_home/acme-client.conf" "openpgpkey.$domain" 
-done < /etc/mail/vdomains
+acme-client -v -f "$ssl_home/acme-client.conf" "openpgpkey.$domain" 
 
 echo "\n### Reloading services"
 rcctl reload httpd dovecot

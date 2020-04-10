@@ -13,23 +13,16 @@ authority letsencrypt-staging {
 domain openpgpkey.{{ domain }} {
 	alternative names { {{ hostname }}.{{ domain }} autoconfig.{{ domain }} autodiscover.{{ domain }} \
 			wkd.{{ domain }} imap.{{ domain }} pop3.{{ domain }} smtp.{{ domain }} \
-			mta-sts.{{ domain }} {% if enable_nsd == true -%} {{ domain }} www.{{ domain }} {%- endif %} }
+			mta-sts.{{ domain }} {% if enable_nsd == true -%} {{ domain }} www.{{ domain }} {%- endif %} \
+{%if additional_domains is defined %}
+{% for adomain in additional_domains %}
+			openpgpkey.{{ adomain.name }} autoconfig.{{ adomain.name }} autodiscover.{{ adomain.name }} wkd.{{ adomain.name }} \
+			imap.{{ adomain.name }} pop3.{{ adomain.name }} smtp.{{ adomain.name }} mta-sts.{{ adomain.name }} \
+{% endfor %}
+{% endif %}
+	}
 	domain key "/etc/ansimail/ssl/private/{{ domain }}.key"
 	domain full chain certificate "/etc/ansimail/ssl/{{ domain }}.fullchain.pem"
 	sign with letsencrypt
 }
 
-{%if additional_domains is defined %}
-{% for adomain in additional_domains %}
-
-domain openpgpkey.{{ adomain.name }} {
-	alternative names { autoconfig.{{ adomain.name }} autodiscover.{{ adomain.name }} wkd.{{ adomain.name }} \
-			imap.{{ adomain.name }} pop3.{{ adomain.name }} smtp.{{ adomain.name }} mta-sts.{{ adomain.name }} }
-	domain key "/etc/ansimail/ssl/private/{{ adomain.name }}.key"
-	domain full chain certificate "/etc/ansimail/ssl/{{ adomain.name }}.fullchain.pem"
-	sign with letsencrypt
-
-}
-
-{% endfor %}
-{% endif %}
