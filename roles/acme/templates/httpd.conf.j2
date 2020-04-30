@@ -4,10 +4,6 @@
 # https://github.com/vedetta-com/caesonia
 
 server "openpgpkey.{{ domain }}" {
-{% if enable_nsd == true %}
-	alias "{{ domain }}"
-	alias "www.{{ domain }}"
-{% endif %}
         alias "{{ hostname }}.{{ domain }}"
 	alias "autoconfig.{{ domain }}"
 	alias "autodiscover.{{ domain }}"
@@ -49,10 +45,6 @@ server "openpgpkey.{{ domain }}" {
 
 
 server "openpgpkey.{{ domain }}" {
-{% if enable_nsd == true %}
-	alias "{{ domain }}"
-	alias "www.{{ domain }}"
-{% endif %}
         alias "{{ hostname }}.{{ domain }}"
 	alias "autoconfig.{{ domain }}"
         alias "autodiscover.{{ domain }}"

@@ -17,6 +17,20 @@
           remote_src: yes
           mode: preserve
 
+- name: Generate temporary zone file for others
+  command: ansimail ensure-zone "{{ item.name }}"
+  with_items: "{{ additional_domains }}"
+  when: additional_domains is defined
+
+- name: Move temporary files to proper one for others
+  copy: 
+          src: /var/nsd/zones/master/{{ domain }}.zone.tmp 
+          dest: /var/nsd/zones/master/{{ domain }}.zone
+          remote_src: yes
+          mode: preserve
+  with_items: "{{ additional_domains }}"
+  when: additional_domains is defined
+
 - name: Restart nsd
   service:
           name: nsd
