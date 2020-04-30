@@ -61,5 +61,6 @@
           job: "/usr/local/bin/ansimail daily-report"
           user: root
           hour: "7"
+          minute: "30"
 
 - meta: flush_handlers
