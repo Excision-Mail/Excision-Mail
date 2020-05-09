@@ -12,7 +12,9 @@ domain=$(head -n 1 /etc/mail/vdomains)
 echo "### Renewing acme certificates"
 acme-client -v -f "$ssl_home/acme-client.conf" "openpgpkey.$domain" 
 
-echo "\n### Reloading services"
-rcctl reload httpd dovecot
-rcctl restart smtpd spamd
+if [ $? -eq 0 ]; then
+	echo "\n### Reloading services"
+	rcctl reload httpd dovecot
+	rcctl restart smtpd spamd
+fi
 
