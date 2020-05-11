@@ -44,7 +44,7 @@ admin: <change-me> # e.g. aisha
 # NOTE: If you set it to some ascii character (such as 'a') a lot of 
 # users will stop getting their mails if they have this character in 
 # their username. Use with care, but + . - _ are good choices
-#username_delimiter: +
+#username_delimiter: "+"
 
 # The clamav antivirus is used to detect virus signatures in emails
 # By default it is enabled and all the necessary services are loaded 
@@ -65,7 +65,9 @@ admin: <change-me> # e.g. aisha
 # it easy to manage in case something goes wrong
 #additional_domains:
 #         - name: "domain2"
+#           nsd: true
 #         - name: "domain3" # as many as you want
+#           #nsd: false # if no value for nsd is defined it is treated as false
 
 # HIGHLY RECOMMENDED TO USE THIS SECTION
 #
