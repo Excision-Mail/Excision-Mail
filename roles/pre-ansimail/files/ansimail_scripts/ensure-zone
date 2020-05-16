@@ -1,13 +1,10 @@
 #!/bin/sh
 
-if [ "$(id -u)" -ne 0 ]; then
-	echo "This can only be run by root"
-	exit 1
-fi
-
 . /usr/local/lib/ansimail/helpers/variables
 
-echo "$#"
+# this script creates a zone file for the given
+# domain, assuming that the template zone file 
+# exists in the /etc/ansimail/nsd folder
 
 if [ "$#" -eq 0 ]; then
 	domain=$(head -n 1 /etc/mail/vdomains)
@@ -17,6 +14,8 @@ fi
 
 maindomain=$(head -n 1 /etc/mail/vdomains)
 
+# by default, we don't install it
+# up to the admin to make sure that it gets installed 
 zone_file="/var/nsd/zones/master/$domain.zone.tmp"
 
 sh "$amscripts/ensure-dkim"
@@ -26,6 +25,8 @@ sed -e "s/ANSIMAILSERIAL/$newserial/g" "$nsd_home/$domain.zone" > "$zone_file"
 
 cat "$dkim_home/ansimail.$maindomain.txt" >> "$zone_file"
 
+# if we had an addon file, we also add its contents
+# very useful for hosting your other dynamic DNS websites
 [ -e "$nsd_home/$domain.zone.addon" ] && cat "$nsd_home/$domain.zone.addon" >> "$zone_file"
 
 sh "$vfix" root wheel 644 "$zone_file"
