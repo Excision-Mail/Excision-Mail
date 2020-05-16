@@ -13,6 +13,8 @@
 
 printf "### Checking format of passwd database\n"
 # DID I MENTION THIS IS DANGEROUS
+# really follow the pwd_mkdb changes 
+# (if -c gets removed/changed ... damn)
 pwd_mkdb -c "$user_home/passwd"
 
 # Check that all users in user-data are in the password database
