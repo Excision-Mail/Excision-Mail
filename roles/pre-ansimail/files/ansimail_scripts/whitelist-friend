@@ -1,11 +1,11 @@
 #!/bin/sh
 
-if [ "$(id -u)" -ne 0 ]; then
-       echo "This can only be run by root"
-        exit 1
-fi
-
 . /usr/local/lib/ansimail/helpers/variables
+
+if [ "$#" -eq 0 ]; then
+	echo "Error: no friend ip specified"
+	exit 255
+fi
 
 ip="$1"
 nospamd="$spam_home/nospamd"
