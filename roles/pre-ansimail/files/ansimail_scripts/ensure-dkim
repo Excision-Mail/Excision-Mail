@@ -2,11 +2,6 @@
 
 . /usr/local/lib/ansimail/helpers/variables
 
-if [ "$#" -ne 0 ]; then
-	echo "Incorrect number of arguments passed, no arguments expected"
-	exit 255
-fi
-
 # first we set the proper variables needed
 domain=$( head -n 1 /etc/mail/vdomains )
 key_file="$dkim_home/private/ansimail.$domain.key"
