@@ -6,6 +6,8 @@ nsd_home="/etc/ansimail/nsd"
 user_home="/etc/ansimail/users"
 spam_home="/etc/ansimail/spam"
 
+wks_home="/var/lib/gnupg/wks"
+
 amhome="/var/ansimail-home"
 ammails="/var/ansimail"
 amconfig="/etc/ansimail"
