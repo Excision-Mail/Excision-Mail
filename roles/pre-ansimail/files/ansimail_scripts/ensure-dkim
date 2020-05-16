@@ -1,39 +1,42 @@
 #!/bin/sh
 
-if [ "$(id -u)" -ne 0 ]; then
-	echo "This can only be run by root"
-	exit 1
-fi
-
 . /usr/local/lib/ansimail/helpers/variables
 
+if [ "$#" -ne 0 ]; then
+	echo "Incorrect number of arguments passed, no arguments expected"
+	exit 255
+fi
+
+# first we set the proper variables needed
 domain=$( head -n 1 /etc/mail/vdomains )
 key_file="$dkim_home/private/ansimail.$domain.key"
 pub_file="$dkim_home/ansimail.$domain.pub"
 txt_file="$dkim_home/ansimail.$domain.txt"
 
-echo "##### Generating/Checking DKIM certificates for domain: $domain"
+echo "### Generating/Checking DKIM certificates for domain: $domain\n"
 
 printf "\n\n### Making sure private key file exists\n"
+
+# if it doesn't exist then we create it
 if [ ! -e "$key_file" ]; then 
 	openssl genrsa -out "$key_file" 2048
-fi
+else
+	# now lets make sure that if it exists then it 
+	# is a proper key file
+	openssl rsa -in "$key_file" -check
 
-openssl rsa -in "$key_file" -check
-
-if [ $? -ne 0 ]; then
-	openssl genrsa -out "$key_file" 2048
+	# an error exit code means that it was an incorrect 
+	# key file, so we create it
+	if [ $? -ne 0 ]; then
+		openssl genrsa -out "$key_file" 2048
+	fi
 fi
 
 printf "\n\n### Making sure public key file exists\n"
 
 openssl rsa -in "$key_file" -pubout -out "$pub_file"
 
-printf "\n\n### Ensuring correct permissions on both files\n"
-sh "$vfix" root _rspamd 640 "$key_file"
-sh "$vfix" root wheel 644 "$pub_file"
-
-printf "\n\n### Creating txt record from public key\n"
+printf "\n\n### Creating txt record file from public key\n"
 
 txt_begin="ansimail._domainkey	IN	TXT	"
 
@@ -43,4 +46,8 @@ txt_end=$(echo "$publickey" | awk 'BEGIN {ORS=" "}{for (i=1;i<=length($0);i+=255
 
 echo "$txt_begin( $txt_end)" | tee "$txt_file"
 
+# these are inline with the fix-perms
+printf "\n\n### Ensuring correct permissions on all three files\n"
+sh "$vfix" root _rspamd 640 "$key_file"
+sh "$vfix" root wheel 644 "$pub_file"
 sh "$vfix" root wheel 644 "$txt_file"
