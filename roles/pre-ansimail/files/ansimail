@@ -36,14 +36,14 @@ Available options are:
 
     virtual-regen
         Assuming that userdb-check has returned correct, recreate the smtpd tables
-        and reload smtpd. 
+        and reload all services depending on the passwor database. 
         MUST RUN "userdb-check" MANUALLY
 
     ensure-gpg
         Do the bare minimum gpg fixing so that newer keys can be published using WKS
 
     ensure-zone
-        Creates an example zone file backup in /var/nsd/zones/master/domain.zone.bak
+        Creates an example zone file backup in /var/nsd/zones/master/domain.zone.tmp
         DOES NOT DEPEND ON OR AFFECT CURRENT NSD CONFIG
 
     whitelist-bigmailer "domain"
