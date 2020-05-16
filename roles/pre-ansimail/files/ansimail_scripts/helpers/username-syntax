@@ -3,13 +3,17 @@
 # Output: 0 -> Valid username
 #         1 -> Invalid username
 
-#. /usr/local/lib/ansimail/helpers/variables
+# error code: 0 -> username valid + proper syntax
+#             1 -> username improper syntax (contains more than one @)
+#             2 -> username not valid due to incorrect domain
+
+. /usr/local/lib/ansimail/helpers/variables
 
 username="$1"
 set -- $(echo $username | sed -e "s/@/ /g")
 
 if [ $# -gt 2 ]; then
-	echo "1"
+	echo 1
 	exit 1
 elif grep -q "^$2$" "/etc/mail/vdomains"; then
 	echo 0
