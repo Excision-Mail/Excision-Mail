@@ -44,4 +44,7 @@ chmod 440 /etc/mail/passwd
 chown _smtpd:_dovecot /etc/mail/passwd
 
 # Restart services
-/usr/sbin/rcctl restart smtpd dovecot spamd
+#supposedly dovecot automatically reloads the changes
+#but lets not trust anything
+rcctl reload dovecot
+rcctl restart smtpd spamd
