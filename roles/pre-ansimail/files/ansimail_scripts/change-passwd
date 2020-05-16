@@ -1,13 +1,29 @@
 #!/bin/sh
 
-if [ "$(id -u)" -ne 0 ]; then
-	echo "This can only be run by root"
-	exit 1
-fi
-
 . /usr/local/lib/ansimail/helpers/variables
 
+if [ "$#" -ne 1 ]; then
+	echo "Incorrect number of arguments to change-passwd: user@domain"
+	exit 255
+fi
+
 user=$1
+
+user_status=$(sh "$amscripts/helpers/check-user" "$user")
+
+case $user_status in
+	1)
+		echo "User $user exists as real user, continuing..."
+		;;
+	2)
+		echo "Error: user $user exists as an alias"
+		exit 1
+		;;
+	*)
+		echo "Error: user $user currently not in system"
+		exit 2
+		;;
+esac
 
 printf "Password: "
 read -r password
@@ -19,8 +35,4 @@ echo "$password"
 sed -i "/$user/d" "$user_home/passwd"
 
 echo "$user:$password::::::::" >> "$user_home/passwd"
-
-cp "$user_home/passwd" /etc/mail/passwd
-chmod 440 /etc/mail/passwd
-chown _smtpd:_dovecot /etc/mail/passwd
 
