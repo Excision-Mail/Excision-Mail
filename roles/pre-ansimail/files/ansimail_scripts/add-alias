@@ -2,16 +2,18 @@
 
 ### Creates a virtual alias $1 and forwards all messages to $2
 
-if [ "$(id -u)" -ne 0 ]; then
-	echo "This can only be run by root"
-	exit 1
-fi
-
 . /usr/local/lib/ansimail/helpers/variables
+
+# make sure that we are only getting two inputs
+if [ "$#" -ne 2 ]; then
+	echo "Incorrect number of arguments to add-alias: alias@domain2 user@domain1"
+	exit 255
+fi
 
 alias=$1
 user=$2
 
+# first we get the status of the current inputs
 alias_status=$( sh "$amscripts/helpers/check-user" "$alias" )
 user_status=$( sh "$amscripts/helpers/check-user" "$user" )
 
