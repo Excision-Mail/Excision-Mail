@@ -1,20 +1,34 @@
 #!/bin/sh
 
+# this is only run by the ansimail unpriv
+# user, so we have to define the folder we want
 wks_home="/var/lib/gnupg/wks"
 
+# this part ensures proper basic permissions
+# for each domain directory
 gpg-wks-server --list-domains
 
 while read -r domain; do
-
+	# create the WKS mail submission address
 	echo "wks@$domain" > "$wks_home/$domain/submission-address"
+	# now we need to make sure that the wks@domain has a proper
+	# gpg key
 
-	gpg -K "wks@$domain"
-
+	# first check if it already exists
+	gpg2 -K "wks@$domain"
+	# if not then we create a key that lasts for a
 	if [ $? -ne 0 ]; then
-		gpg --batch --passphrase "" --quick-gen-key "wks@$domain"
+		gpg2 --batch --passphrase "" --quick-gen-key "wks@$domain"
 	fi
 
-	fingerprint=$(gpg -K "wks@$domain" | sed "2q;d")
+	# I think I did some black bagic voodoo here !!??
+
+	# get the fingerprint, with the blank space
+	# (this part will break on gpg output format change, so
+	#   keep track of gnupg releases)
+	fingerprint=$(gpg2 -K "wks@$domain" | sed "2q;d")
+
+	# now remove the empty space at the end
 	fingerprint=${fingerprint##*( )}
 
 	gpg-wks-server --install-key "$fingerprint" "wks@$domain"
