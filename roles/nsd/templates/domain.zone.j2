@@ -94,7 +94,7 @@ _imap._tcp	IN	SRV	0	0	0	.
 _pop3._tcp	IN	SRV	0	0	0	.
 
 ; we also need to setup the acceptable mail server in the SPF record
-@	IN	TXT	"v=spf1 mx -all"
+@	IN	TXT	"v=spf1 mx ~all"
 _dmarc	IN	TXT	"v=DMARC1;p=reject;pct=100;rua=mailto:dmarcreports@{{ domain }};"
 ; these two are needed to finalize MTA-STS (along with publishing the policy in a mta-sts.txt file in httpd
 _smtp._tls	IN	TXT	"v=TLSRPTv1;rua=mailto:tlsreports@{{ domain }};"
