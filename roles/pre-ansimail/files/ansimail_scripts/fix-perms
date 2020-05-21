@@ -39,7 +39,15 @@ printf "\n\n### Fixing permissions of base install\n\n"
 printf "\n\n### Fixing permissions of nsd files\n\n"
 
 printf "\n\n### Fixing permissions of OpenSMTPD files\n\n"
-sh "$vfix" _smtpd:_dovecot 440 /etc/mail/passwd
+sh "$vfix" root wheel 644 /etc/mail/aliases
+sh "$vfix" root wheel 644 /etc/mail/mailname
+sh "$vfix" _smtpd _dovecot 440 /etc/mail/passwd
+sh "$vfix" root _smtpd 640 /etc/mail/revirt
+sh "$vfix" root wheel 644 /etc/mail/smtpd.conf
+sh "$vfix" root _smtpd 640 /etc/mail/spamd.alloweddomains
+sh "$vfix" root wheel 644 /etc/mail/spamd.conf
+sh "$vfix" root wheel 644 /etc/mail/vdomains
+sh "$vfix" root _smtpd 640 /etc/mail/virtual
 
 printf "\n\n### Fixing permissions of httpd + acme files\n\n"
 
@@ -59,3 +67,4 @@ printf "\n\n### Fixing permissions of Rspamd files\n\n"
 
 find /etc/rspamd -type d -exec sh "$vfix" root wheel 755 {} \;
 find /etc/rspamd -type f -exec sh "$vfix" root wheel 644 {} \;
+
