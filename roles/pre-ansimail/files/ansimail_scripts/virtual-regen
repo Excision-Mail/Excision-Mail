@@ -43,8 +43,11 @@ cp "$user_home/passwd" /etc/mail/passwd
 chmod 440 /etc/mail/passwd
 chown _smtpd:_dovecot /etc/mail/passwd
 
-# Restart services
+# Reload information for services
 #supposedly dovecot automatically reloads the changes
 #but lets not trust anything
 rcctl reload dovecot
-rcctl restart smtpd spamd
+smtpctl update table passwd
+smtpctl update table virtuals
+smtpctl update table revirt 
+/usr/libexec/spamd-setup

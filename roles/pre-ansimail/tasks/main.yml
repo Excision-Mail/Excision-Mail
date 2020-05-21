@@ -43,12 +43,32 @@
 - name: Make AnsiMail user
   user:
           name: ansimail
-          comment: AnsiMail manager
+          comment: AnsiMail general manager
           group: ansimail
           groups: ""
           login_class: daemon
           shell: /bin/ksh
           home: /var/ansimail-home
+
+- name: Make AnsiMail password managing user
+  user:
+          name: ansimail-passwd
+          comment: AnsiMail password manager 
+          group: ansimail
+          groups: ""
+          login_class: default
+          shell: /bin/ksh
+          home: /var/ansimail-passwd
+
+- name: Allow ansimail-passwd to execute proper command
+  lineinfile:
+          path: /etc/doas.conf
+          create: yes
+          owner: root
+          group: wheel
+          mode: '0600'
+          state: present
+          line: permit nopass ansimail-passwd as root cmd /usr/local/bin/ansimail-change-user-passwd
 
 - name: Install gpg-wks init script
   copy:
@@ -57,7 +77,7 @@
           force: yes
           owner: ansimail
           group: ansimail
-          mode: "0644"
+          mode: '0644'
 
 - name: Create AnsiMail scripts directory
   file:
@@ -70,12 +90,15 @@
 
 - name: Install `ansimail` command
   copy:
-          src: ansimail
+          src: "{{ item.name }}"
           dest: /usr/local/bin/
           force: yes
           owner: root
           group: wheel
           mode: '0700'
+  with_items:
+          - name: ansimail
+          - name: ansimail-change-user-passwd
 
 - name: Install AnsiMail scripts
   copy:

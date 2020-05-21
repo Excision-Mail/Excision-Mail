@@ -39,6 +39,7 @@ printf "\n\n### Fixing permissions of base install\n\n"
 printf "\n\n### Fixing permissions of nsd files\n\n"
 
 printf "\n\n### Fixing permissions of OpenSMTPD files\n\n"
+sh "$vfix" _smtpd:_dovecot 440 /etc/mail/passwd
 
 printf "\n\n### Fixing permissions of httpd + acme files\n\n"
 

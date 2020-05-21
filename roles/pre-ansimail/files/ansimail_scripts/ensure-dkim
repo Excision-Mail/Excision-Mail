@@ -46,3 +46,6 @@ printf "\n\n### Ensuring correct permissions on all three files\n"
 sh "$vfix" root _rspamd 640 "$key_file"
 sh "$vfix" root wheel 644 "$pub_file"
 sh "$vfix" root wheel 644 "$txt_file"
+
+# also reload rspamd (don't need to restart)
+rcctl reload rspamd

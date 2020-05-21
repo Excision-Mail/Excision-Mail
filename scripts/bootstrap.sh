@@ -14,6 +14,11 @@ The following files are going to be changed:
   
   /etc/doas.conf:
   We will permit all member of :wheel to doas without password, change this afterwards
+
+  The installation also adds the ansimail-passwd user who is allowed to run the
+      ansimail change-passwd 
+  command without needing a password. It is important that you keep this line in the 
+  doas.conf even if you change other permissions.
 EOF
 
 echo "We will back them up"

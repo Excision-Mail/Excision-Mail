@@ -1,0 +1,18 @@
+#!/bin/sh
+
+. /usr/local/lib/ansimail/helpers/variables
+
+# this is a simple invoker for 
+# changing passwords for the ansimail-passwd
+# user
+
+# this is not thread safe, atomic, or any of that 
+# really nice things that people want
+# aim is to be simple and understandable
+
+# someone can try to integrate ldap if they
+# really want to, but at that point just
+# make your own email setup, ldap is
+# more complex than this whole setup put together
+
+sh "$amscripts/change-passwd" "$@"

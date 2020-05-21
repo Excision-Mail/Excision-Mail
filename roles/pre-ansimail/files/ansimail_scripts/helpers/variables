@@ -9,10 +9,14 @@ spam_home="/etc/ansimail/spam"
 wks_home="/var/lib/gnupg/wks"
 
 amhome="/var/ansimail-home"
+ampasswd="/var/ansimail-passwd"
 ammails="/var/ansimail"
 amconfig="/etc/ansimail"
 
 amscripts="/usr/local/lib/ansimail"
 amhelpers="/usr/local/lib/ansimail/helpers"
+
+ampasswdfile="$ampasswd/.ssh/authorized_keys"
+ampasswdtempfile="$user_home/authorized_keys"
 
 vfix="$amhelpers/verbose-fix"

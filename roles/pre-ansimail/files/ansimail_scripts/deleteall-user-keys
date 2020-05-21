@@ -1,0 +1,16 @@
+#!/bin/sh
+
+if [ "$#" -ne 1 ]; then
+	echo "Error: incorrect number of arguments: user@domain"
+fi
+
+. /usr/local/lib/ansimail/helpers/variables
+
+user="$1"
+
+# make a backup of the current keys file
+bak=$(date +%Y%d%m%H%M)
+cp "$ampasswdtempfile" "$ampasswdtempfile.$bak"
+
+# then replace all lines containing the user
+sed -i -e "/^.*\<$user\>.*$/d" "$ampasswdtempfile"
