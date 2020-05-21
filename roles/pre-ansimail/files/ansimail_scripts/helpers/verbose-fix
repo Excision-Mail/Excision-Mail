@@ -1,8 +1,9 @@
 #!/bin/sh
 
-if [ "$(id -u)" -ne 0 ]; then
-	echo "This can only be run by root"
-	exit 1
+if [ "$#" -lt 4 ]; then
+	echo "Error: incorrect number of arguments"
+	echo "     verbose-fix owner group mode file1 [ file2 file3 ... ]"
+	exit 255
 fi
 
 owner="$1"
