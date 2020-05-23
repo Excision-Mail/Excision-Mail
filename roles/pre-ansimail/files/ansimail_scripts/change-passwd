@@ -32,7 +32,7 @@ printf "\n"
 password=$(echo "$password" | smtpctl encrypt)
 echo "$password"
 
-sed -i "/$user/d" "$user_home/passwd"
+sed -i "/\<$user\>/d" "$user_home/passwd"
 
 echo "$user:$password::::::::" >> "$user_home/passwd"
 
