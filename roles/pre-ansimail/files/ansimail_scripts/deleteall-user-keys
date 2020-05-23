@@ -13,4 +13,7 @@ bak=$(date +%Y%d%m%H%M)
 cp "$ampasswdtempfile" "$ampasswdtempfile.$bak"
 
 # then replace all lines containing the user
-sed -i -e "/^.*\<$user\>.*$/d" "$ampasswdtempfile"
+sed -i -e "/\<$user\>/d" "$ampasswdtempfile"
+
+cp "$ampasswdtempfile" "$ampasswdfile"
+
