@@ -40,7 +40,6 @@ printf "\n"
 # if we don't want the funtionality to change password
 # we can skip this part
 if [ "$2" -eq 1 ]; then
-	# we run the set-user-key
 	sh "$amscripts/add-user-key" "$user"
 fi
 

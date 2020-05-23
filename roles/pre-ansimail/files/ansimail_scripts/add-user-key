@@ -8,7 +8,7 @@
 . /usr/local/lib/ansimail/helpers/variables
 
 if [ "$#" -ne 1 ]; then
-	echo "Incorrect number of arguments to set-user-key: user@domain"
+	echo "Incorrect number of arguments to add-user-key: user@domain"
 	exit 255
 fi
 
