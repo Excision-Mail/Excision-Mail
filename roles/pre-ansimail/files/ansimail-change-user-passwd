@@ -16,3 +16,5 @@
 # more complex than this whole setup put together
 
 sh "$amscripts/change-passwd" "$@"
+
+sh "$amscripts/virtual-regen"
