@@ -94,6 +94,6 @@ For a more complex install for your particular use case, please see the topics i
 
 ## Contact and support
 The primary mode of contact for reporting bugs and getting support is through GitHub.  
-Excision also has an IRC [#excision](https://webchat.freenode.net/?channels=excision) on freenode.  
+Excision also has an IRC [#excision-mail](https://webchat.freenode.net/?channels=#excision-mail) on freenode.  
 I am known as epsilonKNOT on freenode :)
 
