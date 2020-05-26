@@ -1,4 +1,4 @@
-- name: Install/Upgrade AnsiMail on this machine
+- name: Install/Upgrade Excision on this machine
 
   hosts: local
 
