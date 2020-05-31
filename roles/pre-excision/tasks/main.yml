@@ -21,7 +21,7 @@
           - { name: "dovecot" }
           - { name: "httpd" }
 
-- name: Create AnsiMail config directories
+- name: Create Excision config directories
   file:
           name: "{{ item.name }}"
           state: directory
@@ -29,38 +29,38 @@
           group: wheel
           mode: "{{ item.perm }}"
   with_items:
-          - { name: "/etc/ansimail/dkim/private", perm: "0755" }
-          - { name: "/etc/ansimail/ssl/private", perm: "0755" }
-          - { name: "/etc/ansimail/nsd", perm: "0755" }
-          - { name: "/etc/ansimail/spam", perm: "0755" }
-          - { name: "/etc/ansimail/users", perm: "0700" }
-          - { name: "/etc/ansimail/users/user-data", perm: "0700" }
+          - { name: "/etc/excision/dkim/private", perm: "0755" }
+          - { name: "/etc/excision/ssl/private", perm: "0755" }
+          - { name: "/etc/excision/nsd", perm: "0755" }
+          - { name: "/etc/excision/spam", perm: "0755" }
+          - { name: "/etc/excision/users", perm: "0700" }
+          - { name: "/etc/excision/users/user-data", perm: "0700" }
 
 - name: Make required groups
   group:
-          name: ansimail
+          name: excision
 
-- name: Make AnsiMail user
+- name: Make Excision user
   user:
-          name: ansimail
-          comment: AnsiMail general manager
-          group: ansimail
+          name: excision
+          comment: Excision general manager
+          group: excision
           groups: ""
           login_class: daemon
           shell: /bin/ksh
-          home: /var/ansimail-home
+          home: /var/excision-home
 
-- name: Make AnsiMail password managing user
+- name: Make Excision password managing user
   user:
-          name: ansimail-passwd
-          comment: AnsiMail password manager 
-          group: ansimail
+          name: excision-passwd
+          comment: Excision password manager 
+          group: excision
           groups: ""
           login_class: default
           shell: /bin/ksh
-          home: /var/ansimail-passwd
+          home: /var/excision-passwd
 
-- name: Allow ansimail-passwd to execute proper command
+- name: Allow excision-passwd to execute proper command
   lineinfile:
           path: /etc/doas.conf
           create: yes
@@ -68,27 +68,27 @@
           group: wheel
           mode: '0600'
           state: present
-          line: permit nopass ansimail-passwd as root cmd /usr/local/bin/ansimail-change-user-passwd
+          line: permit nopass excision-passwd as root cmd /usr/local/bin/excision-change-user-passwd
 
 - name: Install gpg-wks init script
   copy:
-          src: ansimail-wks-init
-          dest: /var/ansimail-home/
+          src: excision-wks-init
+          dest: /var/excision-home/
           force: yes
-          owner: ansimail
-          group: ansimail
+          owner: excision
+          group: excision
           mode: '0644'
 
-- name: Create AnsiMail scripts directory
+- name: Create Excision scripts directory
   file:
-          path: /usr/local/lib/ansimail/helpers
+          path: /usr/local/lib/excision/helpers
           state: directory
           force: yes
           owner: root
           group: wheel
           mode: '0700'
 
-- name: Install `ansimail` command
+- name: Install `excision` command
   copy:
           src: "{{ item.name }}"
           dest: /usr/local/bin/
@@ -97,13 +97,13 @@
           group: wheel
           mode: '0700'
   with_items:
-          - name: ansimail
-          - name: ansimail-change-user-passwd
+          - name: excision
+          - name: excision-change-user-passwd
 
-- name: Install AnsiMail scripts
+- name: Install Excision scripts
   copy:
-          src: ansimail_scripts/
-          dest: /usr/local/lib/ansimail/
+          src: excision_scripts/
+          dest: /usr/local/lib/excision/
           force: yes
           owner: root
           group: wheel
