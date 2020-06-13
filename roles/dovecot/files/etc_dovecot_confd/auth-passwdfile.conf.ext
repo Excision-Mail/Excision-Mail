@@ -13,7 +13,7 @@ userdb {
   args = username_format=%u /etc/mail/passwd
 
   # Default fields that can be overridden by passwd-file
-  default_fields = uid=ansimail gid=ansimail home=/var/ansimail/%d/%n quota_rule=*:storage=15G
+  default_fields = uid=excision gid=excision home=/var/excision/%d/%n quota_rule=*:storage=15G
 
   # Override fields from passwd-file
   #override_fields = home=/home/virtual/%u

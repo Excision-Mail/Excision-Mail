@@ -1,37 +1,37 @@
-- name: Get ansimail UID
-  shell: id -u ansimail
-  register: ansimailUID
+- name: Get excision UID
+  shell: id -u excision
+  register: excisionUID
 
 - name: Create mail directory
   file:
-          path: /var/ansimail
+          path: /var/excision
           state: directory
-          owner: ansimail
-          group: ansimail
+          owner: excision
+          group: excision
           mode: '0770'
 
 - name: Set sieve directory permissions
   file:
           path: /usr/local/lib/dovecot/sieve
           state: directory
-          owner: ansimail
-          group: ansimail
+          owner: excision
+          group: excision
           mode: '0770'
 
 - name: Create sieve-before directory
   file:
           path: /var/dovecot/sieve/before
           state: directory
-          owner: ansimail
-          group: ansimail
+          owner: excision
+          group: excision
           mode: '0770'
 
 - name: Create sieve-pipe directory
   file:
           path: /var/dovecot/sieve-pipe
           state: directory
-          owner: ansimail
-          group: ansimail
+          owner: excision
+          group: excision
           mode: '0770'
 
 - name: Copy dovecot local configs
@@ -39,8 +39,8 @@
           src: etc_dovecot_confd/
           dest: /etc/dovecot/conf.d/
           force: yes
-          owner: ansimail
-          group: ansimail
+          owner: excision
+          group: excision
           mode: '0644'
 
 - name: Generate dovecot mail local config
@@ -80,8 +80,8 @@
           src: sieve/
           dest: /usr/local/lib/dovecot/sieve/
           force: yes
-          owner: ansimail
-          group: ansimail
+          owner: excision
+          group: excision
           mode: '0660'
 
 - name: Add sieve shell scripts
@@ -89,16 +89,16 @@
           src: sieve-shell/
           dest: /usr/local/lib/dovecot/sieve/
           force: yes
-          owner: ansimail
-          group: ansimail
+          owner: excision
+          group: excision
           mode: '0770'
 
 - name: Add quota warning script
   template:
           src: quota-warning.sh.j2
           dest: /usr/local/lib/dovecot/sieve/quota-warning.sh
-          owner: ansimail
-          group: ansimail
+          owner: excision
+          group: excision
           mode: '0770'
 
 - name: Add sievec-before scripts
@@ -106,18 +106,18 @@
           src: sieve-before/
           dest: /var/dovecot/sieve/before/
           force: yes
-          owner: ansimail
-          group: ansimail
+          owner: excision
+          group: excision
           mode: '0660'
 
 - name: Add wks-server sievec-before script
   template:
           src: 00-wks.sieve.j2
           dest: /var/dovecot/sieve/before/00-wks.sieve
-          owner: ansimail
-          group: ansimail
+          owner: excision
+          group: excision
           mode: '0660'
 
 - name: Do virtual-regen to start dovecot and smtpd
-  command: ansimail virtual-regen
+  command: excision virtual-regen
 

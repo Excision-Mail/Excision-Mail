@@ -27,7 +27,7 @@
 #
 # <doc/wiki/MailLocation.txt>
 #
-mail_location = maildir:/var/ansimail/%d/%n/Maildir:LAYOUT=fs
+mail_location = maildir:/var/excision/%d/%n/Maildir:LAYOUT=fs
 
 # If you need to set multiple mailbox locations or want to change default
 # namespace settings, you can do it by defining namespace sections.
@@ -111,7 +111,7 @@ namespace inbox {
 # Group to enable temporarily for privileged operations. Currently this is
 # used only with INBOX when either its initial creation or dotlocking fails.
 # Typically this is set to "mail" to give access to /var/mail.
-mail_privileged_group = ansimail
+mail_privileged_group = excision
 
 # Grant access to these supplementary groups for mail processes. Typically
 # these are used to set up access to shared mailboxes. Note that it may be
@@ -176,8 +176,8 @@ mmap_disable = yes
 # to make sure that users can't log in as daemons or other system users.
 # Note that denying root logins is hardcoded to dovecot binary and can't
 # be done even if first_valid_uid is set to 0.
-first_valid_uid = {{ ansimailUID.stdout }}
-last_valid_uid = {{ ansimailUID.stdout }}
+first_valid_uid = {{ excisionUID.stdout }}
+last_valid_uid = {{ excisionUID.stdout }}
 
 # Valid GID range for users, defaults to non-root/wheel. Users having
 # non-valid GID as primary group ID aren't allowed to log in. If user
