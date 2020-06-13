@@ -1,5 +1,3 @@
-# Modified for AnsiMail (OpenBSD 6.7)
-
 # to get the contents of a table
 #    : pfctl -t tablename -T show
 #
@@ -28,10 +26,10 @@ additional_udp_ports = "{ {{ additional_udp_ports | join(', ') }} }"
 table <spamd-white> persist
 # bigmailers is going to  contain the ip addresses of 
 # big mail corps with multiple ip addresses 
-table <bigmailers> persist file "/etc/ansimail/spam/bigmailers"
+table <bigmailers> persist file "/etc/excision/spam/bigmailers"
 # nospamd is the one where you manually add ips
 # of friends and others with misconfigured servers are added
-table <nospamd> persist file "/etc/ansimail/spam/nospamd"
+table <nospamd> persist file "/etc/excision/spam/nospamd"
 {% endif %}
 
 # stop bruteforce attackers that try to hug of death
