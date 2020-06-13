@@ -2,7 +2,7 @@
   lineinfile:
           dest: /etc/rc.conf.local
           regexp: ^spamd_flags=
-          line: spamd_flags="-G {{ spamd_passtime }}:{{ spamd_greyexp }}:{{ spamd_whiteexp }} -h {{ hostname }}.{{ domain }} -C /etc/ansimail/ssl/{{ domain }}.fullchain.pem -K /etc/ansimail/ssl/private/{{ domain }}.key"
+          line: spamd_flags="-G {{ spamd_passtime }}:{{ spamd_greyexp }}:{{ spamd_whiteexp }} -h {{ hostname }}.{{ domain }} -C /etc/excision/ssl/{{ domain }}.fullchain.pem -K /etc/excision/ssl/private/{{ domain }}.key"
           create: yes
 
 - name: Restart spamd
@@ -11,6 +11,6 @@
           state: restarted
 
 - name: Add big mail corps
-  command: ansimail whitelist-bigmailer "{{ item.name }}"
+  command: excision whitelist-bigmailer "{{ item.name }}"
   with_items: "{{ bigmailers }}"
   ignore_errors: yes
