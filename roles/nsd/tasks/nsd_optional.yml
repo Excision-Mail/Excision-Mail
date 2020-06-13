@@ -8,7 +8,7 @@
   when: generate_nsd_conf == true
 
 - name: Generate the temporary nsd zone file
-  command: ansimail ensure-zone
+  command: excision ensure-zone
 
 - name: Move the temporary file to proper one
   copy: 
@@ -18,7 +18,7 @@
           mode: preserve
 
 - name: Generate temporary zone file for others
-  command: ansimail ensure-zone "{{ item.name }}"
+  command: excision ensure-zone "{{ item.name }}"
   with_items: "{{ additional_domains }}"
   when: additional_domains is defined
 
