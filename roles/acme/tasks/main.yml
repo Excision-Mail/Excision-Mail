@@ -112,7 +112,7 @@
           mode: '0755'
 
 - name: Make gpg-wks-server hierarchy
-  command: ansimail ensure-gpg
+  command: excision ensure-gpg
 
 - name: Create httpd config
   template:
@@ -126,13 +126,13 @@
 - name: Create acme config
   template:
           src: acme-client.conf.j2
-          dest: /etc/ansimail/ssl/acme-client.conf
+          dest: /etc/excision/ssl/acme-client.conf
           owner: root
           group: wheel
           mode: '0644'
 
 - name: Create acme certs
-  command: ansimail renew-certs
+  command: excision renew-certs
   ignore_errors: true
 
 - meta: flush_handlers
