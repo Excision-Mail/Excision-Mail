@@ -90,7 +90,7 @@ System requirements (good for about 50 users)
 
 ## Prerequisites and Installation
 See [INSTALLATION.md](INSTALLATION.md) for a simple installation covering the common use cases.  
-For a more complex install for your particular use case, please see the topics in the [wiki](https://github.com/Excision-Mail/Excision-Mail/wiki)
+For more complex installations, visit the website [Excision Mail](https://excision.bsd.ac)
 
 ## Contact and support
 The primary mode of contact for reporting bugs and getting support is through GitHub.  
