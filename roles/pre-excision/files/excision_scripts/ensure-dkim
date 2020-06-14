@@ -8,7 +8,7 @@ key_file="$dkim_home/private/excision.$domain.key"
 pub_file="$dkim_home/excision.$domain.pub"
 txt_file="$dkim_home/excision.$domain.txt"
 
-echo "### Generating/Checking DKIM certificates for domain: $domain\n"
+printf "### Generating/Checking DKIM certificates for domain: %s\n" "$domain"
 
 printf "\n\n### Making sure private key file exists\n"
 

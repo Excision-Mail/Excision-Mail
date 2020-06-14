@@ -21,7 +21,7 @@ printf "\n"
 # first do a sanity check on the public key
 echo "$ssh_key" | ssh-keygen -l -f -
 
-if [ "$?" -ne 0 ]; then
+if [ $? -ne 0 ]; then
 	echo "Error: not a valid public key file"
 	exit 3
 fi
