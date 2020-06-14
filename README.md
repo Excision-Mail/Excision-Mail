@@ -1,9 +1,9 @@
-# Excision
+# Excision Mail
 [![GitHub Actions](https://img.shields.io/endpoint.svg?url=https%3A%2F%2Factions-badge.atrox.dev%2Fatrox%2Fsync-dotenv%2Fbadge)](https://github.com/Excision/Excision/actions)
-[![GitHub release (latest SemVer including pre-releases)](https://img.shields.io/github/v/release/Excision/Excision?include_prereleases)](https://github.com/Excision/Excision/releases)
-[![GitHub license](https://img.shields.io/github/license/Excision/Excision.svg)](https://github.com/Excision/Excision/blobl/master/LICENSE)
-[![GitHub issues](https://img.shields.io/github/issues-raw/Excision/Excision)](https://github.com/Excision/Excision/issues)
-[![contributions welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat)](https://github.com/Excision/Excision/issues)
+[![GitHub release (latest SemVer including pre-releases)](https://img.shields.io/github/v/release/Excision-Mail/Excision-Mail?include_prereleases)](https://github.com/Excision-Mail/Excision-Mail/releases)
+[![GitHub license](https://img.shields.io/github/license/Excision-Mail/Excision-Mail.svg)](https://github.com/Excision-Mail/Excision-Mail/blobl/master/LICENSE)
+[![GitHub issues](https://img.shields.io/github/issues-raw/Excision-Mail/Excision-Mail)](https://github.com/Excision-Mail/Excision-Mail/issues)
+[![contributions welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat)](https://github.com/Excision-Mail/Excision-Mail/issues)
 
 Fullstack, security focused mailserver based on OpenSMTPD for OpenBSD using ansible
 
