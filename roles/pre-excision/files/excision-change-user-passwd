@@ -1,9 +1,9 @@
 #!/bin/sh
 
-. /usr/local/lib/ansimail/helpers/variables
+. /usr/local/lib/excision/helpers/variables
 
 # this is a simple invoker for 
-# changing passwords for the ansimail-passwd
+# changing passwords for the excision-passwd
 # user
 
 # this is not thread safe, atomic, or any of that 
@@ -15,6 +15,6 @@
 # make your own email setup, ldap is
 # more complex than this whole setup put together
 
-sh "$amscripts/change-passwd" "$@"
+sh "$emscripts/change-passwd" "$@"
 
-sh "$amscripts/virtual-regen"
+sh "$emscripts/virtual-regen"
