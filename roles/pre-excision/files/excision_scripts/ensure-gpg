@@ -17,7 +17,7 @@ chmod 2750 "$wks_home"
 #          to send mails to)
 
 # first empty that file
-> "$spam_home/submission-address"
+: > "$spam_home/submission-address"
 # add each domains wks-submission address
 while read -r domain; do
 	mkdir -p "/var/www/openpgpkey/$domain"
