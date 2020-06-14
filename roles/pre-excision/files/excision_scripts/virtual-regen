@@ -50,4 +50,4 @@ rcctl reload dovecot
 smtpctl update table passwd
 smtpctl update table virtuals
 smtpctl update table revirt 
-/usr/libexec/spamd-setup
+
