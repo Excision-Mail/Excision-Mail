@@ -40,7 +40,7 @@ printf "\n"
 
 # if we don't want the funtionality to change password
 # we can skip this part
-if [ "add_ssh" -eq 1 ]; then
+if [ "$add_ssh" -eq 1 ]; then
 	sh "$emscripts/add-user-key" "$user"
 fi
 
