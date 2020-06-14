@@ -1,12 +1,12 @@
 #!/bin/sh
 
-. /usr/local/lib/ansimail/helpers/variables
+. /usr/local/lib/excision/helpers/variables
 
 # first we set the proper variables needed
 domain=$( head -n 1 /etc/mail/vdomains )
-key_file="$dkim_home/private/ansimail.$domain.key"
-pub_file="$dkim_home/ansimail.$domain.pub"
-txt_file="$dkim_home/ansimail.$domain.txt"
+key_file="$dkim_home/private/excision.$domain.key"
+pub_file="$dkim_home/excision.$domain.pub"
+txt_file="$dkim_home/excision.$domain.txt"
 
 echo "### Generating/Checking DKIM certificates for domain: $domain\n"
 
@@ -33,7 +33,7 @@ openssl rsa -in "$key_file" -pubout -out "$pub_file"
 
 printf "\n\n### Creating txt record file from public key\n"
 
-txt_begin="ansimail._domainkey	IN	TXT	"
+txt_begin="excision._domainkey	IN	TXT	"
 
 publickey=$(awk 'NR>2 {print last} {last=$0}' ORS='' "$pub_file")
 publickey="v=DKIM1;k=rsa;p=$publickey;"

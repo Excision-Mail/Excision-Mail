@@ -9,21 +9,21 @@ pkg_add -su
 printf "\n##### Cleaning out old bruteforcers\n"
 # bruteforces are blocked for at least 24 hours
 # if they are unlucky enough to do it just after
-# our cron, it becomes close to 48hrs, touch luck
+# our cron, it becomes close to 48hrs, tough luck
 pfctl -t bruteforce -T expire 86400
 
 printf "\n##### Pending acme certificates\n"
-/usr/local/bin/ansimail renew-certs
+/usr/local/bin/excision renew-certs
 
 printf "\n##### Pending user database checks\n"
-/usr/local/bin/ansimail userdb-check
+/usr/local/bin/excision userdb-check
 
 printf "\n##### Fixing big mailers list\n"
-smtpctl spf walk < /etc/ansimail/spam/bigmailer-names | pfctl -t bigmailers -T add -f -
-pfctl -t bigmailers -T show > /etc/ansimail/spam/bigmailers
+smtpctl spf walk < /etc/excision/spam/bigmailer-names | pfctl -t bigmailers -T add -f -
+pfctl -t bigmailers -T show > /etc/excision/spam/bigmailers
 
 printf "\n##### Cleaning pending gpg requests\n"
-su -l ansimail -c "gpg-wks-server --cron"
+su -l excision -c "gpg-wks-server --cron"
 # a potential alternative is to just manually delete all pending files
 # but it feels a little over the top, for now lets try to see what
 # GnuPG has in store and what its ramifications are
@@ -34,4 +34,4 @@ su -l ansimail -c "gpg-wks-server --cron"
 # We are now going to start showing emails stats, which is a whole
 # another category by itself :)
 printf "\n##### Show mail statistics\n"
-/usr/local/bin/ansimail show-stats
+/usr/local/bin/excision show-stats

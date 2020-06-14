@@ -2,7 +2,7 @@
 
 # Checks the consistency of user database and password database
 
-. /usr/local/lib/ansimail/helpers/variables
+. /usr/local/lib/excision/helpers/variables
 
 virtuals="$user_home/virtual"
 revirt="$user_home/revirt"
@@ -23,7 +23,7 @@ touch "$virtuals" "$revirt"
 
 for user_file in "$user_home/user-data/"*; do
 	username=$( basename "$user_file" )
-	printf "\n%s\t\t\t\tansimail" "$username" >> "$virtuals"
+	printf "\n%s\t\t\t\texcision" "$username" >> "$virtuals"
 	printf "\n%s\t\t\t\t%s" "$username" "$username" >> "$revirt"
 	printf "%s\n" "$username" >> "$allowed"
 	while IFS= read -r alias; do

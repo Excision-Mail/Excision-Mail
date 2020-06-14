@@ -5,16 +5,17 @@
 # The behaviour is undefined on random unstable databases
 # It may mutate your cat and make your kombucha lose its fizzzzzzz
 
-. /usr/local/lib/ansimail/helpers/variables
+. /usr/local/lib/excision/helpers/variables
 
-if [ "$#" -ne 2 ]; then
+if [ "$#" -eq 0 ]; then
 	echo "Incorrect number of arguments to add-user: user@domain [0/1 (for adding ssh-key)]"
 	exit 255
 fi
 
 user="$1"
+add_ssh="$2"
 
-user_status=$(sh "$amscripts/helpers/check-user" "$user")
+user_status=$(sh "$emscripts/helpers/check-user" "$user")
 
 case $user_status in
 	1)
@@ -35,12 +36,12 @@ read -r password
 printf "\n"
 
 # now the second part where we allow users to change their passwords
-# by letting them ssh to ansimail-passwd user
+# by letting them ssh to excision-passwd user
 
 # if we don't want the funtionality to change password
 # we can skip this part
-if [ "$2" -eq 1 ]; then
-	sh "$amscripts/add-user-key" "$user"
+if [ "add_ssh" -eq 1 ]; then
+	sh "$emscripts/add-user-key" "$user"
 fi
 
 touch "$user_home/user-data/$user"

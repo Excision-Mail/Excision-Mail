@@ -1,6 +1,6 @@
 #!/bin/sh
 
-. /usr/local/lib/ansimail/helpers/variables
+. /usr/local/lib/excision/helpers/variables
 
 domain=$(head -n 1 /etc/mail/vdomains)
 

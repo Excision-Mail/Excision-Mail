@@ -7,7 +7,7 @@
 
 # Checks the consistency of user database and password database
 
-. /usr/local/lib/ansimail/helpers/variables
+. /usr/local/lib/excision/helpers/variables
 
 # Check that the password database is in the correct format
 
