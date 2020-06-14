@@ -1,6 +1,6 @@
 #!/bin/sh
 
-# this is only run by the ansimail unpriv
+# this is only run by the excision unpriv
 # user, so we have to define the folder we want
 wks_home="/var/lib/gnupg/wks"
 

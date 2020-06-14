@@ -1,6 +1,6 @@
 #!/bin/sh
 
-. /usr/local/lib/ansimail/helpers/variables
+. /usr/local/lib/excision/helpers/variables
 
 if [ "$#" -eq 0 ]; then
 	echo "Error: no friend ip specified"
@@ -16,7 +16,7 @@ if grep -q "$ip" "$nospamd"; then
 	echo "$ip is already bypassing spamd"
 	exit 1
 else
-	echo "$domain" >> "$nospamd"
+	echo "$ip" >> "$nospamd"
 	pfctl -t nospamd -T replace -f "$nospamd"
 fi
 

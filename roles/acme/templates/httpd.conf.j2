@@ -1,5 +1,3 @@
-# Modified for AnsiMail (OpenBSD 6.7)
-
 # CREDIT: vedetta-com/caesonia
 # https://github.com/vedetta-com/caesonia
 
@@ -61,8 +59,8 @@ server "openpgpkey.{{ domain }}" {
 	}
 
 	tls {
-		certificate "/etc/ansimail/ssl/{{ domain }}.fullchain.pem"
-		key "/etc/ansimail/ssl/private/{{ domain }}.key"
+		certificate "/etc/excision/ssl/{{ domain }}.fullchain.pem"
+		key "/etc/excision/ssl/private/{{ domain }}.key"
 	}
 
 	tcp nodelay
@@ -119,8 +117,8 @@ server "openpgpkey.{{ adomain.name }}" {
 	}
 
 	tls {
-		certificate "/etc/ansimail/ssl/{{ domain }}.fullchain.pem"
-		key "/etc/ansimail/ssl/private/{{ domain }}.key"
+		certificate "/etc/excision/ssl/{{ domain }}.fullchain.pem"
+		key "/etc/excision/ssl/private/{{ domain }}.key"
 	}
 
 	tcp nodelay

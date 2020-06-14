@@ -4,16 +4,16 @@ if [ "$#" -ne 1 ]; then
 	echo "Error: incorrect number of arguments: user@domain"
 fi
 
-. /usr/local/lib/ansimail/helpers/variables
+. /usr/local/lib/excision/helpers/variables
 
 user="$1"
 
 # make a backup of the current keys file
 bak=$(date +%Y%d%m%H%M)
-cp "$ampasswdtempfile" "$ampasswdtempfile.$bak"
+cp "$empasswdtempfile" "$empasswdtempfile.$bak"
 
 # then replace all lines containing the user
-sed -i -e "/\<$user\>/d" "$ampasswdtempfile"
+sed -i -e "/\<$user\>/d" "$empasswdtempfile"
 
-cp "$ampasswdtempfile" "$ampasswdfile"
+cp "$empasswdtempfile" "$empasswdfile"
 

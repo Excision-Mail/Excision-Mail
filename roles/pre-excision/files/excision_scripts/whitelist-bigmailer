@@ -1,6 +1,6 @@
 #!/bin/sh
 
-. /usr/local/lib/ansimail/helpers/variables
+. /usr/local/lib/excision/helpers/variables
 
 if [ "$#" -eq 0 ]; then
 	echo "Error: no big mailer domain specified"

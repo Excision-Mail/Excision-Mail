@@ -1,6 +1,6 @@
 #!/bin/sh
 
-. /usr/local/lib/ansimail/helpers/variables
+. /usr/local/lib/excision/helpers/variables
 
 # we do certain small checks to make sure that
 # the GPG WKS hierarchy is correct
@@ -9,7 +9,7 @@
 # directory exists and is correctly owned 
 #  (NOTE: 2750)
 mkdir -p "$wks_home"
-chown ansimail:ansimail "$wks_home"
+chown excision:excision "$wks_home"
 chmod 2750 "$wks_home"
 
 # we now regenerate all submission addresses for each
@@ -17,17 +17,17 @@ chmod 2750 "$wks_home"
 #          to send mails to)
 
 # first empty that file
-> "$spam_home/submission-address"
+: > "$spam_home/submission-address"
 # add each domains wks-submission address
 while read -r domain; do
 	mkdir -p "/var/www/openpgpkey/$domain"
 	ln -sfh "/var/www/openpgpkey/$domain" "$wks_home/$domain"
-	echo "wks@domain" >> "$spam_home/submission-address"
+	echo "wks@$domain" >> "$spam_home/submission-address"
 done < /etc/mail/vdomains
 
 # make sure the web key directory exists as well
 mkdir -p /var/www/openpgpkey
-chown -R ansimail:ansimail /var/www/openpgpkey
+chown -R excision:excision /var/www/openpgpkey
 
-# now do the bulk of the init using the ansimail account
-su -l ansimail -c "sh /var/ansimail-home/ansimail-wks-init"
+# now do the bulk of the init using the excision account
+su -l excision -c "sh /var/excision-home/excision-wks-init"

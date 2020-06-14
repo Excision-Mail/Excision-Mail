@@ -1,5 +1,3 @@
-# Modified for AnsiMail (OpenBSD 6.7)
-
 authority letsencrypt {
 	api url "https://acme-v02.api.letsencrypt.org/directory"
 	account key "/etc/acme/letsencrypt-privkey.pem"
@@ -20,8 +18,8 @@ domain openpgpkey.{{ domain }} {
 {% endfor %}
 {% endif %}
 	}
-	domain key "/etc/ansimail/ssl/private/{{ domain }}.key"
-	domain full chain certificate "/etc/ansimail/ssl/{{ domain }}.fullchain.pem"
+	domain key "/etc/excision/ssl/private/{{ domain }}.key"
+	domain full chain certificate "/etc/excision/ssl/{{ domain }}.fullchain.pem"
 	sign with letsencrypt
 }
 

@@ -1,9 +1,9 @@
-# AnsiMail
-[![GitHub Actions](https://img.shields.io/endpoint.svg?url=https%3A%2F%2Factions-badge.atrox.dev%2Fatrox%2Fsync-dotenv%2Fbadge)](https://github.com/AnsiMail/AnsiMail/actions)
-[![GitHub release (latest SemVer including pre-releases)](https://img.shields.io/github/v/release/AnsiMail/AnsiMail?include_prereleases)](https://github.com/AnsiMail/AnsiMail/releases)
-[![GitHub license](https://img.shields.io/github/license/AnsiMail/AnsiMail.svg)](https://github.com/AnsiMail/AnsiMail/blobl/master/LICENSE)
-[![GitHub issues](https://img.shields.io/github/issues-raw/AnsiMail/AnsiMail)](https://github.com/AnsiMail/AnsiMail/issues)
-[![contributions welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat)](https://github.com/AnsiMail/AnsiMail/issues)
+# Excision
+[![GitHub Actions](https://img.shields.io/endpoint.svg?url=https%3A%2F%2Factions-badge.atrox.dev%2Fatrox%2Fsync-dotenv%2Fbadge)](https://github.com/Excision/Excision/actions)
+[![GitHub release (latest SemVer including pre-releases)](https://img.shields.io/github/v/release/Excision/Excision?include_prereleases)](https://github.com/Excision/Excision/releases)
+[![GitHub license](https://img.shields.io/github/license/Excision/Excision.svg)](https://github.com/Excision/Excision/blobl/master/LICENSE)
+[![GitHub issues](https://img.shields.io/github/issues-raw/Excision/Excision)](https://github.com/Excision/Excision/issues)
+[![contributions welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat)](https://github.com/Excision/Excision/issues)
 
 Fullstack, security focused mailserver based on OpenSMTPD for OpenBSD using ansible
 
@@ -45,7 +45,7 @@ Fullstack, security focused mailserver based on OpenSMTPD for OpenBSD using ansi
  
 ## Architecture Goals
  
-AnsiMail aims to use as much of the base OpenBSD system and as few dependancies from ports as possible for maximum security.
+Excision aims to use as much of the base OpenBSD system and as few dependancies from ports as possible for maximum security.
 
 #### Base system
 * [OpenSMTPD](https://www.opensmtpd.org/)  
@@ -78,7 +78,7 @@ There should be no differences between upgrading a previous install and starting
 * Be well documented  
 Every part of the setup should be clear and explained.  
 
-AnsiMail tries to follow OpenBSD philosophy of being well documented and explaining all the choices that have been made.  
+Excision tries to follow OpenBSD philosophy of being well documented and explaining all the choices that have been made.  
 **If it does not have good documentation, then it is still buggy**
 
 ## Requirements
@@ -90,10 +90,10 @@ System requirements (good for about 50 users)
 
 ## Prerequisites and Installation
 See [INSTALLATION.md](INSTALLATION.md) for a simple installation covering the common use cases.  
-For a more complex install for your particular use case, please see the topics in the [wiki](https://github.com/AnsiMail/AnsiMail/wiki)
+For a more complex install for your particular use case, please see the topics in the [wiki](https://github.com/Excision/Excision/wiki)
 
 ## Contact and support
 The primary mode of contact for reporting bugs and getting support is through GitHub.  
-AnsiMail also has an IRC [#ansimail](https://webchat.freenode.net/?channels=ansimail) on freenode.  
+Excision also has an IRC [#excision-mail](https://webchat.freenode.net/?channels=#excision-mail) on freenode.  
 I am known as epsilonKNOT on freenode :)
 

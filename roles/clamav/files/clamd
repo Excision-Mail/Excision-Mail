@@ -1,7 +1,5 @@
 #!/bin/ksh
 
-# Modified for AnsiMail (OpenBSD 6.7)
-
 daemon="/usr/local/sbin/clamd"
 daemon_timeout="120"
 

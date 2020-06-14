@@ -1,5 +1,3 @@
-# Modified for AnsiMail (OpenBSD 6.7)
-
 # options for smtpd
 queue compression
 queue ttl 4d
@@ -9,8 +7,8 @@ smtp max-message-size 35M
 smtp sub-addr-delim '{{ username_delimiter }}'
 
 # actual mail handling
-pki {{ domain }} cert  "/etc/ansimail/ssl/{{ domain }}.fullchain.pem" 
-pki {{ domain }} key   "/etc/ansimail/ssl/private/{{ domain }}.key"
+pki {{ domain }} cert  "/etc/excision/ssl/{{ domain }}.fullchain.pem" 
+pki {{ domain }} key   "/etc/excision/ssl/private/{{ domain }}.key"
 
 # Filters
 #
@@ -50,7 +48,7 @@ table	passwd \
 #
 # OpenPGP WKS Submission Address
 table	submission-address \
-	file:/etc/ansimail/spam/submission-address
+	file:/etc/excision/spam/submission-address
 
 # Incoming connections
 #

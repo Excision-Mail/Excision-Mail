@@ -1,6 +1,6 @@
 #!/bin/sh
 
-. /usr/local/lib/ansimail/helpers/variables
+. /usr/local/lib/excision/helpers/variables
 
 if [ "$#" -ne 1 ]; then
 	echo "Incorrect number of arguments to change-passwd: user@domain"
@@ -9,7 +9,7 @@ fi
 
 user=$1
 
-user_status=$(sh "$amscripts/helpers/check-user" "$user")
+user_status=$(sh "$emscripts/helpers/check-user" "$user")
 
 case $user_status in
 	1)
@@ -35,4 +35,3 @@ echo "$password"
 sed -i "/\<$user\>/d" "$user_home/passwd"
 
 echo "$user:$password::::::::" >> "$user_home/passwd"
-

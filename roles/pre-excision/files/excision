@@ -8,7 +8,7 @@ fi
 HELP=$(cat <<-END
 Available options are:
     ensure-dkim
-        Regenerate DKIM txt record and store it in /etc/ansimail/dkim
+        Regenerate DKIM txt record and store it in /etc/excision/dkim
 
     renew-certs
         Renews certificates using acme-client
@@ -26,13 +26,13 @@ Available options are:
         Change the existing password for "user@domain.tld"
 
     daily-report
-        Daily maintenance for AnsiMail
+        Daily maintenance for Excision
 
     userdb-check
         Check consistency of user database
 
     fix-perms
-        Fix permissions for AnsiMail related folders
+        Fix permissions for Excision related folders
 
     virtual-regen
         Assuming that userdb-check has returned correct, recreate the smtpd tables
@@ -65,33 +65,33 @@ shift
 
 case "$command" in
 	"ensure-dkim")
-		/bin/sh /usr/local/lib/ansimail/ensure-dkim "$@";;
+		/bin/sh /usr/local/lib/excision/ensure-dkim "$@";;
 	"renew-certs")
-		/bin/sh /usr/local/lib/ansimail/renew-certs "$@";;
+		/bin/sh /usr/local/lib/excision/renew-certs "$@";;
 	"show-stats")
-		/bin/sh /usr/local/lib/ansimail/show-stats "$@";;
+		/bin/sh /usr/local/lib/excision/show-stats "$@";;
 	"add-alias")
-		/bin/sh /usr/local/lib/ansimail/add-alias "$@";;
+		/bin/sh /usr/local/lib/excision/add-alias "$@";;
 	"add-user")
-		/bin/sh /usr/local/lib/ansimail/add-user "$@";;
+		/bin/sh /usr/local/lib/excision/add-user "$@";;
 	"change-passwd")
-		/bin/sh /usr/local/lib/ansimail/change-passwd "$@";;
+		/bin/sh /usr/local/lib/excision/change-passwd "$@";;
 	"daily-report")
-		/bin/sh /usr/local/lib/ansimail/daily-report "$@";;
+		/bin/sh /usr/local/lib/excision/daily-report "$@";;
 	"userdb-check")
-		/bin/sh /usr/local/lib/ansimail/userdb-check "$@";;
+		/bin/sh /usr/local/lib/excision/userdb-check "$@";;
 	"fix-perms")
-		/bin/sh /usr/local/lib/ansimail/fix-perms "$@";;
+		/bin/sh /usr/local/lib/excision/fix-perms "$@";;
 	"virtual-regen")
-		/bin/sh /usr/local/lib/ansimail/virtual-regen "$@";;
+		/bin/sh /usr/local/lib/excision/virtual-regen "$@";;
 	"ensure-gpg")
-		/bin/sh /usr/local/lib/ansimail/ensure-gpg "$@";;
+		/bin/sh /usr/local/lib/excision/ensure-gpg "$@";;
 	"ensure-zone")
-		/bin/sh /usr/local/lib/ansimail/ensure-zone "$@";;
+		/bin/sh /usr/local/lib/excision/ensure-zone "$@";;
 	"whitelist-bigmailer")
-		/bin/sh /usr/local/lib/ansimail/whitelist-bigmailer "$@";;
+		/bin/sh /usr/local/lib/excision/whitelist-bigmailer "$@";;
 	"whitelist-friend")
-		/bin/sh /usr/local/lib/ansimail/whitelist-friend "$@";;
+		/bin/sh /usr/local/lib/excision/whitelist-friend "$@";;
 	*)
 		echo "$HELP"
 		exit 3;;

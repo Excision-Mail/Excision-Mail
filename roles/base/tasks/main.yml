@@ -39,7 +39,7 @@
 
 - name: Make sure pf table files exists
   file:
-          path: /etc/ansimail/spam/{{ item }}
+          path: /etc/excision/spam/{{ item }}
           state: touch
           owner: root
           group: wheel
@@ -55,10 +55,10 @@
           mode: '0600'
   notify: reload pf
 
-- name: Add AnsiMail daily cron job
+- name: Add Excision daily cron job
   cron:
-          name: AnsiMail daily-report
-          job: "/usr/local/bin/ansimail daily-report"
+          name: Excision daily-report
+          job: "/usr/local/bin/excision daily-report"
           user: root
           hour: "7"
           minute: "30"

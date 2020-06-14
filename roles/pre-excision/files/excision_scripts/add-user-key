@@ -5,7 +5,7 @@
 # The behaviour is undefined on random unstable databases
 # It may mutate your cat and make your kombucha lose its fizzzzzzz
 
-. /usr/local/lib/ansimail/helpers/variables
+. /usr/local/lib/excision/helpers/variables
 
 if [ "$#" -ne 1 ]; then
 	echo "Incorrect number of arguments to add-user-key: user@domain"
@@ -21,20 +21,19 @@ printf "\n"
 # first do a sanity check on the public key
 echo "$ssh_key" | ssh-keygen -l -f -
 
-if [ "$?" -ne 0 ]; then
+if [ $? -ne 0 ]; then
 	echo "Error: not a valid public key file"
 	exit 3
 fi
 
 # make a backup of the current keys file
 bak=$(date +%Y%d%m%H%M)
-cp "$ampasswdtempfile" "$ampasswdtempfile.$bak"
+cp "$empasswdtempfile" "$empasswdtempfile.$bak"
 
 # generate the command to add to the password file
-passwd_command="restrict,pty,command=\"doas /usr/local/bin/ansimail-change-user-passwd $user\" $ssh_key"
+passwd_command="restrict,pty,command=\"doas /usr/local/bin/excision-change-user-passwd $user\" $ssh_key"
 
 # add the new command to the passwdfile
-echo "$passwd_command" >> "$ampasswdtempfile" 
+echo "$passwd_command" >> "$empasswdtempfile" 
 
-cp "$ampasswdtempfile" "$ampasswdfile"
-
+cp "$empasswdtempfile" "$empasswdfile"

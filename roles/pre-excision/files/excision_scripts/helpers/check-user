@@ -4,7 +4,7 @@
 #         1 -> Exists
 #         2 -> Exists as alias for another user  
 
-. /usr/local/lib/ansimail/helpers/variables
+. /usr/local/lib/excision/helpers/variables
 
 username="$1"
 

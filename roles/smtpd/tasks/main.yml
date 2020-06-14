@@ -5,7 +5,7 @@
 
 - name: Make sure that passwd file exists
   file:
-          path: /etc/ansimail/users/passwd
+          path: /etc/excision/users/passwd
           state: touch
           owner: root
           group: wheel
@@ -13,33 +13,33 @@
 
 - name: Create user-data folder
   file:
-          path: /etc/ansimail/users/user-data
+          path: /etc/excision/users/user-data
           state: directory
           owner: root
           group: wheel
           mode: '0700'
 
 - name: Add admin user with random password (ignore if already exists)
-  shell: openssl rand -hex 32 | ansimail add-user "{{ admin }}@{{ domain }}"
+  shell: openssl rand -hex 32 | excision add-user "{{ admin }}@{{ domain }}"
   ignore_errors: yes
 
 - name: Add wks user with random password (ignore if already exists)
-  shell: openssl rand -hex 32 | ansimail add-user "wks@{{ domain }}"
+  shell: openssl rand -hex 32 | excision add-user "wks@{{ domain }}"
   ignore_errors: yes
 
 - name: Add all the other wks users with random passwords (ignore if already exist)
-  shell: openssl rand -hex 32 | ansimail add-user "wks@{{ item.name }}"
+  shell: openssl rand -hex 32 | excision add-user "wks@{{ item.name }}"
   with_items: "{{ additional_domains }}"
   ignore_errors: yes
   when: additional_domains is defined
 
 - name: Add all the needed aliases for admin (ignore if already exist)
-  command: ansimail add-alias "{{ item }}@{{ domain }}" "{{ admin }}@{{ domain }}"
+  command: excision add-alias "{{ item }}@{{ domain }}" "{{ admin }}@{{ domain }}"
   ignore_errors: yes
   with_items: "{{ rfc_aliases }}"
 
 - name: Add all the needed aliases for additional vdomains (ignore if already exist)
-  command: ansimail add-alias "{{ item[0] }}@{{ item[1].name }}" "{{ admin }}@{{ domain }}"
+  command: excision add-alias "{{ item[0] }}@{{ item[1].name }}" "{{ admin }}@{{ domain }}"
   ignore_errors: yes
   with_nested:
           - "{{ rfc_aliases }}"

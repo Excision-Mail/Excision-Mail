@@ -1,4 +1,4 @@
-- name: Install/Upgrade AnsiMail on this machine
+- name: Install/Upgrade Excision on this machine
 
   hosts: local
 
@@ -6,7 +6,7 @@
           - vars.yml
 
   roles:
-          - { role: pre-ansimail,  tags: ['pre-ansimail']   }
+          - { role: pre-excision,  tags: ['pre-excision']   }
           - { role: base,          tags: ['base']           }
           - { role: nsd,           tags: ['nsd']            }
 

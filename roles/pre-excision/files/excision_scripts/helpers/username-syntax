@@ -7,7 +7,7 @@
 #             1 -> username improper syntax (contains more than one @)
 #             2 -> username not valid due to incorrect domain
 
-. /usr/local/lib/ansimail/helpers/variables
+. /usr/local/lib/excision/helpers/variables
 
 username="$1"
 set -- $(echo $username | sed -e "s/@/ /g")

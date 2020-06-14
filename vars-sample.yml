@@ -29,7 +29,7 @@ hostname: mail # can change it if you so prefer, but this is a nice one
 # This is the user that will be created and all server information emails
 # daily reports and outside domain reports will be send to admin@domain.tld
 # This is not an actualy system user, but an email only user: admin@domain
-# NOTE: AnsiMail is configured so that you can actually use this account
+# NOTE: Excision is configured so that you can actually use this account
 #       as your daily email, by filterting all emails that are domain related
 #       to go into a information-archive email folder. This is very easy to set up
 #       using mail filtering. I will add a small section on how to configure mail
@@ -73,7 +73,7 @@ admin: <change-me> # e.g. aisha
 #
 # Complex: This section is bit more intricate and can be skipped
 #
-# If you want to make AnsiMail manage nsd on your behalf you should say yes here
+# If you want to make Excision manage nsd on your behalf you should say yes here
 # It is really recommended to do this as configurin NSD manually is really really
 # hard given the horrible web interfaces used by service providers
 # In the worst case where you want to do it yourself, you can visit the wiki page 
@@ -97,7 +97,7 @@ admin: <change-me> # e.g. aisha
 # It may be that you have some extra subdomains not hosted on this machine or 
 # some other nsd configuration, e.g. google-site-verification txt records or something
 # else that should be added to the default nsd config file. Any such configurations
-# can de added to a file and AnsiMail will dump the contents at the end of the default
+# can de added to a file and Excision will dump the contents at the end of the default
 # config.
 # NOTE: Some subdomains are currently automatically configured to point to the current machine
 #       so make sure that those are not redefined in your addon file.
@@ -136,7 +136,7 @@ admin: <change-me> # e.g. aisha
 
 
 # Almost each option here is independant of others and it is fine to even delete the 
-# option and not even define it. AnsiMail has checks to see if the option is defined
+# option and not even define it. Excision has checks to see if the option is defined
 # and only then takes any steps.
 
 
@@ -161,12 +161,12 @@ admin: <change-me> # e.g. aisha
 
 
 # Private interface
-# By default AnsiMail hardens your firewall to only allow the needed ports to communicate
+# By default Excision hardens your firewall to only allow the needed ports to communicate
 # with the internet and blocks all other ports from being accessed by others. This is a
 # safety check in case of vulnerabilities in any of the ported softwares.
 # If you have any interface that you want to open fully you can define it here.
 #private_interface: <change-me>  # on the off chance that this doesn't cover you use cases
                                  # you should probably roll out your own firewall config
-                                 # as it is impossible for a small automated script as AnsiMail 
+                                 # as it is impossible for a small automated script as Excision
                                  # to set up the cute beautiful beast that is pf
 

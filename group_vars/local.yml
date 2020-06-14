@@ -1,10 +1,10 @@
 ---
-# Any gloabl variables needed to be known across roles
+# Any global variables needed to be known ACROSS roles
 # should be defined here.
 # Currently, only enabling/disabling roles needs to be
 # done here
 
-# pre-ansimail
+# pre-excision
 
 # base
 

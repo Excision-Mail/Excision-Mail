@@ -1,0 +1,31 @@
+0) stop all running scripts
+  - spamd
+  - smtpd
+  - dovecot
+  - rspamd
+
+1) cp -a /etc/ansimail /etc/excision
+  1.1) in the dkim and dkim/private folder
+       rename all files of the form
+       ansimail.domain.tld.*  ->  excision.domain.tld.*
+  1.2) in the nsd folder
+       for each zone file "domain.tld.zone"
+       replace ANSIMAILSERIAL by EXCISIONSERIAL
+  1.3) in the ssl folder
+       correct the domain key and full chain certificate paths
+       change ansimail -> excision
+
+2) rename the ansimail group to excision
+   groupmod -n excision ansimail
+
+3) rename the ansimail user to excision while also moving
+   the home directory
+   usermod -m -d /var/excision-home -l excision ansimail
+
+4) rename the ansimail-passwd user to excision-passwd while
+   also moving the home directory
+   usermod -m -d /var/excision-passwd -l excision-passwd ansimail-passwd
+
+5) mv /var/ansimail /var/excision
+
+   

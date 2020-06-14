@@ -1,23 +1,23 @@
 #!/bin/sh
 
-printf "\n\n### Fixing permissions of AnsiMail config + script files\n\n"
+printf "\n\n### Fixing permissions of Excision config + script files\n\n"
 
-chown root:wheel /usr/local/lib/ansimail/fix-perms /usr/local/lib/ansimail/helpers/verbose-fix
-chmod 600 /usr/local/lib/ansimail/fix-perms /usr/local/lib/ansimail/helpers/verbose-fix
+chown root:wheel /usr/local/lib/excision/fix-perms /usr/local/lib/excision/helpers/verbose-fix
+chmod 600 /usr/local/lib/excision/fix-perms /usr/local/lib/excision/helpers/verbose-fix
 
 # Now that bootstrapping is done
 
-. /usr/local/lib/ansimail/helpers/variables
+. /usr/local/lib/excision/helpers/variables
 
-find "$amscripts" -type d -exec sh "$vfix" root wheel 700 {} \;
-find "$amscripts" -type f -exec sh "$vfix" root wheel 600 {} \;
+find "$emscripts" -type d -exec sh "$vfix" root wheel 700 {} \;
+find "$emscripts" -type f -exec sh "$vfix" root wheel 600 {} \;
 
-find "$amconfig" -path "$user_home" -prune -o -path "$ssl_home/private" -prune \
-	-o -path "$dkim_home/private" -prune -o -type d \
-	-exec sh "$vfix" root wheel 755 {} \;
-find "$amconfig" -path "$user_home" -prune -o -path "$ssl_home/private" -prune \
-	-o -path "$dkim_home/private" -prune -o -type f \
-	-exec sh "$vfix" root wheel 644 {} \;
+find "$emconfig" -path "$user_home" -prune -o -path "$ssl_home/private" -prune \
+        -o -path "$dkim_home/private" -prune -o -type d \
+        -exec sh "$vfix" root wheel 755 {} \;
+find "$emconfig" -path "$user_home" -prune -o -path "$ssl_home/private" -prune \
+        -o -path "$dkim_home/private" -prune -o -type f \
+        -exec sh "$vfix" root wheel 644 {} \;
 
 find "$user_home" -type d -exec sh "$vfix" root wheel 700 {} \;
 find "$user_home" -type f -exec sh "$vfix" root wheel 600 {} \;
