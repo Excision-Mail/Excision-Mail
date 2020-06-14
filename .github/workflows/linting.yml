@@ -8,5 +8,6 @@ jobs:
     steps:
     - uses: actions/checkout@master
     - name: Shellcheck
-      # replace "master" with any valid ref
       uses: ludeeus/action-shellcheck@0.1.0
+    - name: ansible-lint
+      uses: ansible/ansible-lint-action@v4.1.0.post0
