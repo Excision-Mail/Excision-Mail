@@ -1,22 +1,22 @@
 #!/bin/sh
 
-dkim_home="/etc/ansimail/dkim"
-ssl_home="/etc/ansimail/ssl"
-nsd_home="/etc/ansimail/nsd"
-user_home="/etc/ansimail/users"
-spam_home="/etc/ansimail/spam"
+dkim_home="/etc/excision/dkim"
+ssl_home="/etc/excision/ssl"
+nsd_home="/etc/excision/nsd"
+user_home="/etc/excision/users"
+spam_home="/etc/excision/spam"
 
 wks_home="/var/lib/gnupg/wks"
 
-amhome="/var/ansimail-home"
-ampasswd="/var/ansimail-passwd"
-ammails="/var/ansimail"
-amconfig="/etc/ansimail"
+emhome="/var/excision-home"
+empasswd="/var/excision-passwd"
+emmails="/var/excision"
+emconfig="/etc/excision"
 
-amscripts="/usr/local/lib/ansimail"
-amhelpers="/usr/local/lib/ansimail/helpers"
+emscripts="/usr/local/lib/excision"
+emhelpers="/usr/local/lib/excision/helpers"
 
-ampasswdfile="$ampasswd/.ssh/authorized_keys"
-ampasswdtempfile="$user_home/authorized_keys"
+empasswdfile="$empasswd/.ssh/authorized_keys"
+empasswdtempfile="$user_home/authorized_keys"
 
-vfix="$amhelpers/verbose-fix"
+vfix="$emhelpers/verbose-fix"
