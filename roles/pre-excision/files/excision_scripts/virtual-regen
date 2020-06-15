@@ -19,17 +19,19 @@ if [ -e "$allowed" ]; then
 	mv "$allowed" "$allowed.$bak"
 fi
 
-touch "$virtuals" "$revirt"
+touch "$virtuals" "$revirt" "$allowed"
+
+while read -r domain; do
+	printf '@%s\n' "$domain" >> "$allowed"
+done < /etc/mail/vdomains
 
 for user_file in "$user_home/user-data/"*; do
 	username=$( basename "$user_file" )
 	printf "\n%s\t\t\t\texcision" "$username" >> "$virtuals"
 	printf "\n%s\t\t\t\t%s" "$username" "$username" >> "$revirt"
-	printf "%s\n" "$username" >> "$allowed"
 	while IFS= read -r alias; do
 		printf "\n%s\t\t\t\t%s" "$alias" "$username" >> "$virtuals"
 		printf ",%s" "$alias" >> $revirt
-		printf "%s\n" "$alias" >> "$allowed"
 	done < "$user_home/user-data/$username"
 	printf "\n" >> "$revirt"
 done
