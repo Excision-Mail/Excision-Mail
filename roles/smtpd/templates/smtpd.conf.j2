@@ -53,7 +53,8 @@ table	submission-address \
 # Incoming connections
 #
 # Local messages
-listen on socket
+listen on socket \
+	filter rspamd
 {% if private_interface is defined %}
 #
 # If we defined a private interface, we probably want to get emails 
@@ -84,7 +85,7 @@ listen on egress port submission \
 # Sending messages
 #
 action "local_mail" \
-	forward-only \
+	mbox \
 	alias <aliases>
 action "dovecot-lmtp" \
 	lmtp "/var/dovecot/lmtp" rcpt-to \
