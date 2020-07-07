@@ -123,6 +123,14 @@
           mode: '0644'
   notify: restart httpd
 
+- name: Create relayd config
+  template:
+          src: relayd.conf.j2
+          dest: /etc/relayd.conf
+          owner: root
+          group: wheel
+          mode: '0644'
+
 - name: Create acme config
   template:
           src: acme-client.conf.j2
@@ -134,5 +142,22 @@
 - name: Create acme certs
   command: excision renew-certs
   ignore_errors: true
+
+- name: Create symlinks for relayd
+  file:
+          src: "/etc/excision/ssl/{{ item.name }}"
+          dest: "/etc/ssl/{{ item.name }}"
+          owner: root
+          group: wheel
+          state: link
+  with_items:
+          - name: "private/{{ domain }}.key"
+          - name: "{{ domain }}.crt"
+          - name: "{{ domain }}.ocsp"
+
+- name: Restart relayd
+  service:
+          name: relayd
+          state: restarted
 
 - meta: flush_handlers

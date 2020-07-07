@@ -1,0 +1,51 @@
+---
+# Any global variables needed to be known ACROSS roles and hosts
+# should be defined here.
+
+required_domains:
+        - openpgpkey
+        - wkd
+        - autoconfig
+        - autodiscover
+        - mta-sts
+        - imap
+        - pop3
+        - smtp
+
+extra_domains:
+        - calendar
+        - contacts
+        - webmail
+
+enable_extras: false
+
+subdomains: "{{ required_domains + extra_domains }}"
+
+relayd_interface: 127.0.0.1
+relayd_port: 1729
+https_interface: 127.0.0.1
+https_port: 1984
+http_interface: egress
+http_port: 80
+
+# pre-excision
+
+# base
+
+# nsd
+enable_nsd: false
+
+# acme
+
+# spamd
+enable_spamd: false
+
+# rspamd
+
+# clamav
+enable_clamav: false
+
+# smtpd
+username_delimiter: "+"
+
+# dovecot

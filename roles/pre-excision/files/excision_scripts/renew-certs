@@ -3,11 +3,14 @@
 . /usr/local/lib/excision/helpers/variables
 
 domain=$(head -n 1 /etc/mail/vdomains)
+hostname=$(head -n 1 "$nsd_home/hostname")
 
 echo "### Renewing acme certificates"
-acme-client -v -f "$ssl_home/acme-client.conf" "openpgpkey.$domain" 
+acme-client -v -f "$ssl_home/acme-client.conf" "$hostname"
 
 if [ $? -eq 0 ]; then
+  printf "\n### Generating ocsp certificate"
+	ocspcheck -N -o "$ssl_home/$domain.ocsp" "$ssl_home/$domain.crt"
 	printf "\n### Reloading services"
 	rcctl reload httpd dovecot
 	rcctl restart smtpd spamd

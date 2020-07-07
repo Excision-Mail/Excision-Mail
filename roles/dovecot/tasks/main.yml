@@ -118,6 +118,11 @@
           group: excision
           mode: '0660'
 
-- name: Do virtual-regen to start dovecot and smtpd
-  command: excision virtual-regen
+- name: Restart dovecot and smtpd services
+  service:
+          name: "{{ item.name }}"
+          state: restarted
+  with_items:
+          - name: dovecot
+          - name: smtpd
 

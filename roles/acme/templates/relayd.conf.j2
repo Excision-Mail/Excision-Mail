@@ -1,0 +1,68 @@
+
+relayd_interface="{{ relayd_interface }}"
+relayd_port="{{ relayd_port }}"
+https_port="{{ https_port }}"
+
+# table definitions
+table <local> { 127.0.0.1 }
+{% if enable_extras %}
+{% if different_extras %}
+table <extraservers> { {{ extraserverIP }} }
+{% else %}
+table <extraservers> { 127.0.0.1 }
+{% endif %}
+{% endif %}
+
+http protocol tlsinspect {
+	block
+	pass request header "Host" value "{{ hostname }}.{{ domain }}" forward to <local>
+{% for rdomain in required_domains %}
+	pass request header "Host" value "{{ rdomain }}.{{ domain }}" forward to <local>
+{% endfor %}
+{% if additional_domains is defined %}
+{% for adomain in additional_domains %}
+{% for rdomain in required_domains %}
+	pass request header "Host" value "{{ rdomain }}.{{ adomain }}" forward to <local>
+{% endfor %}
+{% endfor %}
+{% endif %}
+
+	### TCP performance options 
+	tcp { nodelay, sack, socket buffer 65536, backlog 100 }
+
+	### Return HTTP/HTML error pages
+	return error
+
+	### Security options
+	tls keypair "{{ domain }}"
+	tls { cipher-server-preference, no tlsv1.0, ciphers "HIGH" }
+
+	# credit: https://doc.huc.fr.eu.org/en/web/httpd/relayd-headers-httpd/
+	match request header set "X-Forwarded-By"   value "$SERVER_ADDR:$SERVER_PORT"    
+	match request header set "X-Forwarded-For"  value "$REMOTE_ADDR"
+
+	match request header remove "Proxy"
+
+	match response header set "Cache-Control"           value "max-age=1814400"
+	#match response header set "Content-Security-Policy" value "default-src 'self'"
+	match response header set "Frame-Options"           value "SAMEORIGIN"
+	match response header set "Referrer-Policy"         value "strict-origin"
+  
+	match response header set "X-Content-Type-Options" value "nosniff"
+	match response header set "X-Download-Options"     value "noopen"
+	match response header set "X-Frame-Options"        value "SAMEORIGIN"
+	match response header set "X-Powered-By"           value "!"
+	match response header set "X-Robots-Tag"           value "index, nofollow"
+	match response header set "X-Xss-Protection"       value "1; mode=block"
+
+  match response header set "Strict-Transport-Security" value "max-age=2592000; preload; subdomains;"
+}
+
+relay tlsinspect {
+	listen on $relayd_interface port $relayd_port tls
+
+	protocol tlsinspect
+
+	forward to <local> port $https_port
+}
+

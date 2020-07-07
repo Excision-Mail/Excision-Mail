@@ -1,6 +1,6 @@
 - name: Install/Upgrade Excision on this machine
 
-  hosts: local
+  hosts: mainserver
 
   vars_files:
           - vars.yml

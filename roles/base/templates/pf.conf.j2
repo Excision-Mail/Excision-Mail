@@ -4,12 +4,18 @@
 
 
 # read the file /etc/services to get an idea of predefined port names
-inbound_tcp = "{ {% if enable_spamd == false -%} smtp, {% endif %}domain, http, https }"
+inbound_tcp = "{ {% if enable_spamd == false -%} smtp, {% endif %}domain, http }"
 inbound_udp = "{ domain }"
 # these are all the ports where people can try to do bruteforce password attacks
 # as they are password login protected
 # We will enable bruteforce blockers for these
 password_tcp = "{ {{ ssh_port }}, smtps, submission, sieve, imaps, pop3s }"
+# we also store the relayd_port
+# so that we can divert https traffic there, which will then be
+# sent to the proper hosts, in case we are using a decentralized
+# configuration
+relayd_port="{{ relayd_port }}"
+relayd_interface="{{ relayd_interface }}"
 
 # we will also need to open the additional ports defined by the user
 {% if additional_tcp_ports is defined %}
@@ -95,5 +101,7 @@ pass in on egress proto tcp to port $additional_tcp_ports
 {% if additional_udp_ports is defined %}
 pass in on egress proto udp to port $additional_udp_ports
 {% endif %}
+
+pass in on egress proto tcp to port https divert-to $relayd_interface port $relayd_port
 
 pass out

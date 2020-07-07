@@ -7,7 +7,7 @@ smtp max-message-size 35M
 smtp sub-addr-delim '{{ username_delimiter }}'
 
 # actual mail handling
-pki {{ domain }} cert  "/etc/excision/ssl/{{ domain }}.fullchain.pem" 
+pki {{ domain }} cert  "/etc/excision/ssl/{{ domain }}.crt"
 pki {{ domain }} key   "/etc/excision/ssl/private/{{ domain }}.key"
 
 # Filters

@@ -36,6 +36,11 @@
           - { name: "/etc/excision/users", perm: "0700" }
           - { name: "/etc/excision/users/user-data", perm: "0700" }
 
+- name: Create hostname file
+  template:
+          src: hostname.j2
+          dest: /etc/excision/nsd/hostname
+
 - name: Make required groups
   group:
           name: excision

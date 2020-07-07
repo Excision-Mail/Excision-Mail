@@ -1,0 +1,18 @@
+- name: install php packages
+  openbsd_pkg:
+    name: "{{ item }}-{{ php_pkg_version }}"
+    state: present
+  with_items:
+    - php
+    - php-gd
+    - php-pgsql
+    - php-curl
+    - php-pdo_pgsql
+    - php-imap
+    - php-ldap
+
+- name: create php directories
+  file:
+    path: /etc/php-fpm.d
+    state: directory
+
