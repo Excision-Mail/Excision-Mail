@@ -1,15 +1,7 @@
 # don't add the vars file that users make
 vars.yml
 
+# don't add inventory.ini
+# changes by users
+inventory.ini
 
-CMakeLists.txt.user
-CMakeCache.txt
-CMakeFiles
-CMakeScripts
-Testing
-Makefile
-cmake_install.cmake
-install_manifest.txt
-compile_commands.json
-CTestTestfile.cmake
-_deps
