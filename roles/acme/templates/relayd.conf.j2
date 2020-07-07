@@ -22,7 +22,7 @@ http protocol tlsinspect {
 {% if additional_domains is defined %}
 {% for adomain in additional_domains %}
 {% for rdomain in required_domains %}
-	pass request header "Host" value "{{ rdomain }}.{{ adomain }}" forward to <local>
+	pass request header "Host" value "{{ rdomain }}.{{ adomain.name }}" forward to <local>
 {% endfor %}
 {% endfor %}
 {% endif %}
