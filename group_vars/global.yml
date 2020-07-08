@@ -17,9 +17,12 @@ extra_domains:
         - contacts
         - webmail
 
-enable_extras: false
 
 subdomains: "{{ required_domains + extra_domains }}"
+
+enable_extras: false
+
+timezone: "US/Eastern"
 
 relayd_interface: 127.0.0.1
 relayd_port: 1729

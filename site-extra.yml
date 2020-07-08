@@ -7,8 +7,8 @@
           - vars.yml
 
   roles:
-          - { role: php,           tags: ['php']            }
-            #- { role: postgresql,    tags: ['postgresql']     }
+    #- { role: php,           tags: ['php']            }
+          - { role: postgresql,    tags: ['postgresql']     }
             #- { role: davical,       tags: ['davical']        }
             #- { role: roundcube,     tags: ['roundcube']      }
 

@@ -1,0 +1,9 @@
+---
+postgresql_addresses:
+  - localhost
+  - "{{ extras_interface }}"
+postgresql_socket_dirs:
+  - /tmp
+  - /var/www/tmp
+pgsql_max_connections: 40
+shared_buffers: 128MB

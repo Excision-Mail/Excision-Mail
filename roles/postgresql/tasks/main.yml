@@ -1,0 +1,68 @@
+---
+- name: install postgresql packages
+  openbsd_pkg:
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - postgresql-server
+    - postgresql-client
+
+- name: set up permissions on /var/www/{tmp,run}
+  file:
+    path: /var/www/{{ item }}
+    state: directory
+    mode: 01775
+    owner: www
+    group: www
+  with_items:
+    - tmp
+    - run
+
+- name: add postgres user to www group
+  user:
+    name: _postgresql
+    groups: www
+    append: yes
+
+- name: initialize database
+  command: initdb -D /var/postgresql/data -U postgres -E UTF8 -A peer
+  args:
+    creates: /var/postgresql/data/PG_VERSION
+  become_user: _postgresql
+
+- name: generate configuration
+  template:
+    src: postgresql.conf.j2
+    dest: /var/postgresql/data/postgresql.conf
+    owner: _postgresql
+    group: _postgresql
+    mode: 0600
+
+- name: generate pg_hba.conf
+  copy:
+    src: '{{ item }}'
+    dest: /var/postgresql/data/{{ item }}
+    owner: _postgresql
+    group: _postgresql
+    mode: 0600
+  with_items:
+    - pg_hba.conf
+    - pg_ident.conf
+
+- name: ensure semmni for busy servers
+  lineinfile:
+    path: /etc/sysctl.conf
+    regexp: "^kern.seminfo.semmni"
+    line: "kern.seminfo.semmni=90"
+
+- name: ensure semmns for busy servers
+  lineinfile:
+    path: /etc/sysctl.conf
+    regexp: "^kern.seminfo.semmns"
+    line: "kern.seminfo.semmns=2048"
+
+- name: enable and start daemon
+  service:
+    name: postgresql
+    enabled: yes
+    state: restarted

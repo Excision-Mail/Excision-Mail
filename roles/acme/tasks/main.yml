@@ -114,6 +114,15 @@
 - name: Make gpg-wks-server hierarchy
   command: excision ensure-gpg
 
+- name: Create extra httpd config if asked
+  template:
+          src: httpd-extra.conf.j2
+          dest: /etc/httpd-extra.conf
+          owner: root
+          group: wheel
+          mode: '0644'
+  when: not extras_not_home
+
 - name: Create httpd config
   template:
           src: httpd.conf.j2
@@ -129,7 +138,7 @@
           dest: /etc/relayd.conf
           owner: root
           group: wheel
-          mode: '0644'
+          mode: '0600'
 
 - name: Create acme config
   template:
