@@ -1,3 +1,4 @@
 ---
-php-version: 7.4
+php_version: 7.4
 php_pkg_version: 7.4.7
+php_fpm: 'php{{ php_version | replace(".", "") }}_fpm'

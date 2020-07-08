@@ -2,7 +2,7 @@
 queue compression
 queue ttl 4d
 bounce warn-interval 1h, 6h, 2d # default: 4h
-smtp max-message-size 35M
+smtp max-message-size {{ max_attachment_sizeM + 1 }}M
 
 smtp sub-addr-delim '{{ username_delimiter }}'
 

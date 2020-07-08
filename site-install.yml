@@ -13,8 +13,4 @@
           - { role: clamav,        tags: ['clamav']         }
           - { role: smtpd,         tags: ['smtpd']          }
           - { role: dovecot,       tags: ['dovecot']        }
-            #- { role: php,           tags: ['php']            }
-            #- { role: postgresql,    tags: ['postgresql']     }
-            #- { role: davical,       tags: ['davical']        }
-            #- { role: roundcube,     tags: ['roundcube']      }
 

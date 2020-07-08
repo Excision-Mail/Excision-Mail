@@ -28,6 +28,14 @@ https_port: 1984
 http_interface: egress
 http_port: 80
 
+extrasIP: 127.0.0.1
+extras_interface: "{{ https_interface }}"
+extras_port: "{{ relayd_port }}"
+extras_not_home: false
+
+max_attachment_sizeM: 32
+max_attachment_size: "{{ max_attachment_sizeM * 1048576 }}"
+
 # pre-excision
 
 # base

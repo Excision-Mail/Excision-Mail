@@ -1,0 +1,44 @@
+server "webmail.{{ domain }}" {
+{% if additional_domains is defined %}
+{% for adomain in additional_domains %}
+	alias "webmail.{{ adomain.name }}"
+{% endfor %}
+{% endif %}
+
+	listen on $extras_interface port $extras_port
+
+	tcp nodelay
+
+	log { access "access.log", error "error.log" }
+
+	# rest of the files are queried in their respective folders
+	root "/roundcube"
+
+	directory index index.php
+
+	location "*.php" {
+		fastcgi socket "/run/php-fpm.sock"
+	}
+}
+
+server "calendar.{{ domain }}"{
+	alias "contacts.{{ domain }}"
+{% if additional_domains is defined %}
+{% for adomain in additional_domains %}
+	alias "calendar.{{ adomain.name }}"
+	alias "contacts.{{ adomain.name }}"
+{% endfor %}
+{% endif %}
+
+	listen on $extras_interface port $extras_port
+
+	tcp nodelay
+
+	log { access "access.log", error "error.log" }
+
+	location "/" { directory index index.php }
+	location "/davical/*.php*" {
+		root "/davical/htdocs"
+		fastcgi socket "/run/php-fpm.sock"
+	}
+}

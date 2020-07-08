@@ -125,6 +125,10 @@ server "{{ adomain.name }}" {
 {% endfor %}
 {% endif %}
 
+{% if not extras_not_home %}
+include "/etc/httpd-extras.conf"
+{% endif %}
+
 types {
 	include "/usr/share/misc/mime.types"
 }

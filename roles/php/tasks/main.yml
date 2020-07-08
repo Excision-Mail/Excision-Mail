@@ -1,5 +1,5 @@
 - name: Include the optional php config if it is enabled
   include: php_optional.yml
-  when: enable_php == true
+  when: enable_extras == true
 
 - meta: flush_handlers

@@ -5,12 +5,11 @@ https_port="{{ https_port }}"
 
 # table definitions
 table <local> { 127.0.0.1 }
+
 {% if enable_extras %}
-{% if different_extras %}
-table <extraservers> { {{ extraserverIP }} }
-{% else %}
-table <extraservers> { 127.0.0.1 }
-{% endif %}
+# only enable extras when asked
+extras_port="{{ extras_port }}"
+table <extras> { {{ extrasIP }} }
 {% endif %}
 
 http protocol tlsinspect {
@@ -19,12 +18,22 @@ http protocol tlsinspect {
 {% for rdomain in required_domains %}
 	pass request header "Host" value "{{ rdomain }}.{{ domain }}" forward to <local>
 {% endfor %}
+{% if enable_extras %}
+{% for edomain in extra_domains %}
+	pass request header "Host" value "{{ edomain }}.{{ domain }}" forward to <extrasIP>
+{% endfor %}
+{% endif %}
 {% if additional_domains is defined %}
 {% for adomain in additional_domains %}
 {% for rdomain in required_domains %}
 	pass request header "Host" value "{{ rdomain }}.{{ adomain.name }}" forward to <local>
 {% endfor %}
 {% endfor %}
+{% if enable_extras %}
+{% for edomain in extra_domains %}
+	pass request header "Host" value "{{ edomain }}.{{ adomain.name }}" forward to <extrasIP>
+{% endfor %}
+{% endif %}
 {% endif %}
 
 	### TCP performance options 
@@ -64,5 +73,6 @@ relay tlsinspect {
 	protocol tlsinspect
 
 	forward to <local> port $https_port
+	forward to <extrasIP> port $extras_port
 }
 
