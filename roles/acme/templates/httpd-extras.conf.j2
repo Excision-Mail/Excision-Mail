@@ -1,3 +1,6 @@
+extras_interface="{{ extras_interface }}"
+extras_port="{{ extras_port }}"
+
 server "webmail.{{ domain }}" {
 {% if additional_domains is defined %}
 {% for adomain in additional_domains %}
@@ -12,7 +15,7 @@ server "webmail.{{ domain }}" {
 	log { access "access.log", error "error.log" }
 
 	# rest of the files are queried in their respective folders
-	root "/roundcube"
+	root "/roundcubemail"
 
 	directory index index.php
 

@@ -1,0 +1,42 @@
+---
+- name: install roundcube packages
+  openbsd_pkg:
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - roundcubemail
+    - composer
+
+- name: create roundcubemail user
+  postgresql_user:
+    name: roundcubemail
+    password: "{{ pgsql_password_roundcube }}"
+
+- name: create roundcubemail database
+  postgresql_db:
+    name: roundcubemail
+    encoding: UNICODE
+    owner: roundcubemail
+
+- name: initialize the database
+  postgresql_query:
+    db: roundcubemail
+    path_to_script: /var/www/roundcubemail/SQL/postgres.initial.sql
+    login_user: roundcubemail
+    login_password: "{{ pgsql_password_roundcube }}"
+  ignore_errors: true
+
+- name: create etc inside chroot
+  file:
+    name: /var/www/etc
+    state: directory
+    owner: root
+    group: wheel
+    mode: 0755
+
+- name: copy ca certs into www chroot
+  copy:
+    src: /etc/ssl/cert.pem
+    dest: /var/www/etc/ssl/cert.pem
+    remote_src: true
+    mode: preserve

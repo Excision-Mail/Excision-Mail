@@ -9,7 +9,7 @@ table <local> { 127.0.0.1 }
 {% if enable_extras %}
 # only enable extras when asked
 extras_port="{{ extras_port }}"
-table <extras> { {{ extrasIP }} }
+table <extrasIP> { {{ extrasIP }} }
 {% endif %}
 
 http protocol tlsinspect {
@@ -28,12 +28,12 @@ http protocol tlsinspect {
 {% for rdomain in required_domains %}
 	pass request header "Host" value "{{ rdomain }}.{{ adomain.name }}" forward to <local>
 {% endfor %}
-{% endfor %}
 {% if enable_extras %}
 {% for edomain in extra_domains %}
 	pass request header "Host" value "{{ edomain }}.{{ adomain.name }}" forward to <extrasIP>
 {% endfor %}
 {% endif %}
+{% endfor %}
 {% endif %}
 
 	### TCP performance options 

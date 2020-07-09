@@ -32,3 +32,7 @@
     enabled: yes
     state: restarted
 
+- name: generate httpd-extra.conf is asked
+  template:
+    src: httpd-extras.conf.j2
+    dest: /etc/httpd-extras.conf
