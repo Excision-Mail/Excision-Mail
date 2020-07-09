@@ -40,3 +40,11 @@
     dest: /var/www/etc/ssl/cert.pem
     remote_src: true
     mode: preserve
+
+- name: create config file for roundcube
+  template:
+    src: config.inc.php.j2
+    dest: /var/www/roundcubemail/config/config.inc.php
+    owner: root
+    group: wheel
+    mode: 0644
