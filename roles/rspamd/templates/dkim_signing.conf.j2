@@ -2,14 +2,14 @@ allow_username_mismatch = true;
 
 domain {
     {{ domain }} {
-        path = "/etc/excision/dkim/private/excision.{{ domain }}.key";
-        selector = "excision";
+        path = "/etc/excision/dkim/private/excisionRSA.{{ domain }}.key";
+        selector = "excisionRSA";
     }
 {% if additional_domains is defined %}
 {% for adomain in additional_domains %}
     {{ adomain.name }} {
-        path = "/etc/excision/dkim/private/excision.{{ domain }}.key";
-        selector = "excision";
+        path = "/etc/excision/dkim/private/excisionRSA.{{ adomain.name }}.key";
+        selector = "excisionRSA";
     }
 {% endfor %}
 {% endif %}

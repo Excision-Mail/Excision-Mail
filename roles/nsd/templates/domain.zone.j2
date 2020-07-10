@@ -64,9 +64,14 @@ ns{{ loop.index }}	IN	AAAA	{{ ps.ipv6 }}
 ;; strict transport security
 ; somewhat like DANE but doesn't need DNSSEC
 {% for sdomain in subdomains %}
-{{ sdomain }}	IN	CNAME	{{ hostname }}.{{ domain }}.
-{% endfor %}
+{% if ipv4 is defined %}
+{{ sdomain }}	IN	A	{{ ipv4 }}
+{% endif %}
+{% if ipv6 is defined %}
+{{ sdomain }}	IN	AAAA	{{ ipv6 }}
+{% endif %}
 
+{% endfor %}
 
 ;; SRV record format: https://en.wikipedia.org/wiki/SRV_record#Record_format
 ;; service._proto	IN	SRV	priority	weight	port	address
@@ -87,6 +92,8 @@ _pop3s._tcp	IN	SRV	0	1	995	pop3.{{ domain }}.
 ; mayhaps you can override them on a client but just don't use them
 _imap._tcp	IN	SRV	0	0	0	.
 _pop3._tcp	IN	SRV	0	0	0	.
+; ischedule information for calendars to talk with each other
+_ischedules._tcp  IN  SRV 0 1 443 calendar.{{ domain }}.
 
 ; we also need to setup the acceptable mail server in the SPF record
 @	IN	TXT	"v=spf1 mx ~all"

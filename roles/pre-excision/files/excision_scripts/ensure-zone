@@ -18,16 +18,18 @@ maindomain=$(head -n 1 /etc/mail/vdomains)
 # up to the admin to make sure that it gets installed 
 zone_file="/var/nsd/zones/master/$domain.zone.tmp"
 
-sh "$emscripts/ensure-dkim"
 newserial=$(($(date +%y%m%d%H%M) + 20000000))
 
 sed -e "s/EXCISIONSERIAL/$newserial/g" "$nsd_home/$domain.zone" > "$zone_file"
 
-cat "$dkim_home/excision.$maindomain.txt" >> "$zone_file"
+cat "$dkim_home/excisionRSA.$domain.txt" >> "$zone_file"
+cat "$dkim_home/calendarRSA.$domain.txt" >> "$zone_file"
 
 # if we had an addon file, we also add its contents
 # very useful for hosting your other dynamic DNS websites
 [ -e "$nsd_home/$domain.zone.addon" ] && cat "$nsd_home/$domain.zone.addon" >> "$zone_file"
+
+printf "\n" >> "$zone_file"
 
 sh "$vfix" root wheel 644 "$zone_file"
 

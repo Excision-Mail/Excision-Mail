@@ -2,50 +2,64 @@
 
 . /usr/local/lib/excision/helpers/variables
 
-# first we set the proper variables needed
-domain=$( head -n 1 /etc/mail/vdomains )
-key_file="$dkim_home/private/excision.$domain.key"
-pub_file="$dkim_home/excision.$domain.pub"
-txt_file="$dkim_home/excision.$domain.txt"
+# create a public key-pair for dkim for each domain
+# and also for davical for each domain
 
-printf "### Generating/Checking DKIM certificates for domain: %s\n" "$domain"
+while read -r domain ; do
+	for selector in excision calendar; do
 
-printf "\n\n### Making sure private key file exists\n"
+#		key_ed="$dkim_home/private/${selector}ED.$domain.key"
+		key_rsa="$dkim_home/private/${selector}RSA.$domain.key"
+#		pub_ed="$dkim_home/${selector}ED.$domain.pub"
+		pub_rsa="$dkim_home/${selector}RSA.$domain.pub"
+#		txt_ed="$dkim_home/${selector}ED.$domain.txt"
+		txt_rsa="$dkim_home/${selector}RSA.$domain.txt"
 
-# if it doesn't exist then we create it
-if [ ! -e "$key_file" ]; then 
-	openssl genrsa -out "$key_file" 2048
-else
-	# now lets make sure that if it exists then it 
-	# is a proper key file
-	openssl rsa -in "$key_file" -check
+		printf "### Generating/Checking DKIM certificates for domain: %s\n" "$domain"
 
-	# an error exit code means that it was an incorrect 
-	# key file, so we create it
-	if [ $? -ne 0 ]; then
-		openssl genrsa -out "$key_file" 2048
-	fi
-fi
+		if [ ! -e "$key_rsa" ]; then 
+			openssl genrsa -out "$key_rsa" 2048
+		fi
 
-printf "\n\n### Making sure public key file exists\n"
+#		if [ ! -e "$key_ed"]; then
+#			openssl genpkey -algorithm ed25519 -outform PEM -out "$key_ed"
+#		fi
 
-openssl rsa -in "$key_file" -pubout -out "$pub_file"
+		openssl rsa -in "$key_rsa" -pubout -out "$pub_rsa"
+#		openssl pkey -in "$key_ed" -pubout -out "$pub_ed"
 
-printf "\n\n### Creating txt record file from public key\n"
+		printf "\n\n### Creating txt record file from public key\n"
 
-txt_begin="excision._domainkey	IN	TXT	"
+		if [ "$selector" = "excision" ]; then
+			rsa_begin="${selector}RSA._domainkey	IN	TXT	"
+#			ed_begin="${selector}ED._domainkey	IN	TXT	"
+			xtext="v=DKIM1;k=rsa;p="
+		else
+			rsa_begin="${selector}RSA._domainkey.calendar	IN	TXT	"
+#			ed_begin="${selector}ED._domainkey.calendar	IN	TXT	"
+			xtest="k=rsa;t=s;p="
+		fi
 
-publickey=$(awk 'NR>2 {print last} {last=$0}' ORS='' "$pub_file")
-publickey="v=DKIM1;k=rsa;p=$publickey;"
-txt_end=$(echo "$publickey" | awk 'BEGIN {ORS=" "}{for (i=1;i<=length($0);i+=255) printf "\042%s\042 ",substr( $0, i, 255 ) } ')
 
-echo "$txt_begin( $txt_end)" | tee "$txt_file"
+		pkey_rsa=$(awk 'NR>2 {print last} {last=$0}' ORS='' "$pub_rsa")
+#		pkey_ed=$(awk 'NR>2 {print last} {last=$0}' ORS='' "$pub_ed")
 
-# these are inline with the fix-perms
-printf "\n\n### Ensuring correct permissions on all three files\n"
-sh "$vfix" root _rspamd 640 "$key_file"
-sh "$vfix" root wheel 644 "$pub_file"
-sh "$vfix" root wheel 644 "$txt_file"
+		rsa_end=$(echo "$xtest$pkey_rsa;" | awk 'BEGIN {ORS=" "}{for (i=1;i<=length($0);i+=255) printf "\042%s\042 ",substr( $0, i, 255 ) } ')
+#		ed_end=$(echo "$xtest$pkey_ed;" | awk 'BEGIN {ORS=" "}{for (i=1;i<=length($0);i+=255) printf "\042%s\042 ",substr( $0, i, 255 ) } ')
 
-# also reload rspamd (don't need to restart)
+		printf "%s\t( %s)\n" "$rsa_begin" "$rsa_end" | tee "$txt_rsa"
+#		printf "%s\t( %s\n" "$ed_begin" "$ed_end" | tee "$txt_ed"
+
+
+		printf "\n\n### Ensuring correct permissions on all three files\n"
+#		sh "$vfix" root _rspamd 640 "$key_ed"
+		sh "$vfix" root _rspamd 640 "$key_rsa"
+#		sh "$vfix" root wheel 644 "$pub_ed"
+		sh "$vfix" root wheel 644 "$pub_rsa"
+#		sh "$vfix" root wheel 644 "$txt_ed"
+		sh "$vfix" root wheel 644 "$txt_rsa"
+
+	done
+done < "/etc/mail/vdomains"
+
 rcctl reload rspamd

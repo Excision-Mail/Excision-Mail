@@ -24,8 +24,8 @@
 
 - name: Move temporary files to proper one for others
   copy: 
-          src: /var/nsd/zones/master/{{ domain }}.zone.tmp 
-          dest: /var/nsd/zones/master/{{ domain }}.zone
+          src: /var/nsd/zones/master/{{ item.name }}.zone.tmp 
+          dest: /var/nsd/zones/master/{{ item.name }}.zone
           remote_src: yes
           mode: preserve
   with_items: "{{ additional_domains }}"

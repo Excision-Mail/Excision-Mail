@@ -15,7 +15,7 @@
 - name: create roundcubemail database
   postgresql_db:
     name: roundcubemail
-    encoding: UNICODE
+    encoding: UTF-8
     owner: roundcubemail
 
 - name: initialize the database
