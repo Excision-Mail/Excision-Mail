@@ -23,7 +23,7 @@ newserial=$(($(date +%y%m%d%H%M) + 20000000))
 sed -e "s/EXCISIONSERIAL/$newserial/g" "$nsd_home/$domain.zone" > "$zone_file"
 
 cat "$dkim_home/excisionRSA.$domain.txt" >> "$zone_file"
-cat "$dkim_home/calendarRSA.$domain.txt" >> "$zone_file"
+cat "$dkim_home/davRSA.$domain.txt" >> "$zone_file"
 
 # if we had an addon file, we also add its contents
 # very useful for hosting your other dynamic DNS websites
