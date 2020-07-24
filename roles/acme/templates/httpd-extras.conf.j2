@@ -24,12 +24,10 @@ server "webmail.{{ domain }}" {
 	}
 }
 
-server "calendar.{{ domain }}"{
-	alias "contacts.{{ domain }}"
+server "dav.{{ domain }}"{
 {% if additional_domains is defined %}
 {% for adomain in additional_domains %}
-	alias "calendar.{{ adomain.name }}"
-	alias "contacts.{{ adomain.name }}"
+	alias "dav.{{ adomain.name }}"
 {% endfor %}
 {% endif %}
 
