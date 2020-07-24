@@ -33,7 +33,7 @@ while read -r domain ; do
 		if [ "$selector" = "excision" ]; then
 			rsa_begin="${selector}RSA._domainkey	IN	TXT	"
 #			ed_begin="${selector}ED._domainkey	IN	TXT	"
-			xtext="v=DKIM1;k=rsa;p="
+			xtest="v=DKIM1;k=rsa;p="
 		else
 			rsa_begin="${selector}RSA._domainkey.dav	IN	TXT	"
 #			ed_begin="${selector}ED._domainkey.dav	IN	TXT	"
