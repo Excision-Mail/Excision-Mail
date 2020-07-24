@@ -6,6 +6,7 @@
   with_items:
     - postgresql-server
     - postgresql-client
+    - py3-psycopg2
 
 - name: set up permissions on /var/www/{tmp,run}
   file:
@@ -66,3 +67,5 @@
     name: postgresql
     enabled: yes
     state: restarted
+
+- meta: flush_handlers

@@ -72,7 +72,7 @@ $c->get_includes_subcollections = true;
 * a user has lost his password and clicks on the "Help! I've forgotten my
 * password" on the login page.
 */
-$c->admin_email ='calendar@{{ domain }}';
+$c->admin_email ='postmaster@{{ item.name }}';
 
 /**
 * Set this to 'true' in order to restrict the /setup.php page (which contains
@@ -460,7 +460,7 @@ $c->enable_scheduling = true;
 *
 * Default: none
 */
-$c->scheduling_dkim_domain = 'calendar.{{ domain }}';
+$c->scheduling_dkim_domain = 'dav.{{ item.name }}';
 
 /**
 * Domain Key selector to use when signing outbound scheduling requests.
@@ -469,7 +469,7 @@ $c->scheduling_dkim_domain = 'calendar.{{ domain }}';
 *
 * Default: 'cal'
 */
-$c->scheduling_dkim_selector = 'calendarRSA';
+$c->scheduling_dkim_selector = 'davRSA';
 
 /*
 * Domain Key private key 
@@ -685,8 +685,8 @@ $c->trust_x_forwarded = true;
 */
 $c->authenticate_hook['call'] = 'IMAP_PAM_check';
 $c->authenticate_hook['config'] =  array(
-  'imap_url' => '{imap.{{ domain }}:993/imap/ssl/novalidate-cert}',
-  'email_base' => '{{ domain }}'
+  'imap_url' => '{imap.{{ item.name }}:993/imap/ssl/novalidate-cert}',
+  'email_base' => '{{ item.name }}'
 );
 include('drivers_imap_pam.php');
 

@@ -1,5 +1,69 @@
-- name: Include the optional php config if it is enabled
-  include: php_optional.yml
-  when: enable_extras == true
+---
+- name: install php packages
+  openbsd_pkg:
+    name: "{{ item.name }}-{{ php_pkg_version }}"
+    state: present
+  with_items:
+    - { name: "php" }
+    - { name: "php-gd" }
+    - { name: "php-pgsql" }
+    - { name: "php-curl" }
+    - { name: "php-pdo_pgsql" }
+    - { name: "php-imap" }
+    - { name: "php-ldap" }
+
+- name: install extension inis
+  copy:
+    src: phpsample/
+    dest: "/etc/php-{{ php_version }}/"
+
+- name: create php directories
+  file:
+    path: /etc/php-fpm.d
+    state: directory
+
+- name: generate php config
+  template:
+    src: php.ini.j2
+    dest: /etc/php-{{ php_version }}.ini
+
+- name: generate php_fpm config
+  copy:
+    src: php-fpm.conf
+    dest: /etc/php-fpm.conf
+    force: no
+
+- name: create etc inside chroot
+  file:
+    name: /var/www/etc
+    state: directory
+    owner: root
+    group: wheel
+    mode: 0755
+
+- name: copy ca certs into www chroot
+  copy:
+    src: /etc/ssl/cert.pem
+    dest: /var/www/etc/ssl/cert.pem
+    remote_src: true
+    mode: preserve
+
+- name: copy resolv.conf into www chroot
+  copy:
+    src: /etc/resolv.conf
+    dest: /var/www/etc/resolv.conf
+    remote_src: true
+    mode: preserve
+
+- name: enable and restart php-fpm
+  service:
+    name: "{{ php_fpm }}"
+    enabled: yes
+    state: restarted
+
+- name: generate httpd-extras.conf
+  template:
+    src: httpd-extras.conf.j2
+    dest: /etc/httpd-extras.conf
 
 - meta: flush_handlers

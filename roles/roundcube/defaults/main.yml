@@ -1,2 +1,11 @@
 ---
+roundcube_extras: false
 
+roundcube_base_plugins:
+  - name: newmail_notifier
+  - name: managesieve
+
+roundcube_extra_plugins:
+  - { name: 'custom_from' }
+
+roundcube_plugins: '{{ roundcube_base_plugins + ( roundcube_extras | ternary(roundcube_extra_plugins, []) ) }}'

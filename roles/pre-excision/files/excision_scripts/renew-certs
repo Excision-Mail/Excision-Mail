@@ -12,7 +12,7 @@ ocspcheck -N -o "$ssl_home/$domain.ocsp" "$ssl_home/$domain.crt"
 
 if [ $acme_status -eq 0 ]; then
 	printf "\n### Reloading services"
-	rcctl reload httpd dovecot
+	rcctl reload httpd dovecot relayd
 	rcctl restart smtpd spamd
 fi
 

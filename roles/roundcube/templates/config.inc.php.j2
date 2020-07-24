@@ -60,7 +60,7 @@ $config['imap_conn_options'] = array(
 // %d - domain (http hostname $_SERVER['HTTP_HOST'] without the first part)
 // %z - IMAP domain (IMAP hostname without the first part)
 // For example %n = mail.domain.tld, %t = domain.tld
-$config['smtp_server'] = 'ssl://smtp.%s';
+$config['smtp_server'] = 'ssl://smtp.%t';
 
 $config['smtp_conn_options'] = array(
   'ssl' => array(
@@ -87,7 +87,7 @@ $config['smtp_pass'] = '%p';
 $config['support_url'] = 'https://github.com/Excision-Mail/Excision-Mail';
 
 // Name your service. This is displayed on the login screen and in the window title
-$config['product_name'] = 'Roundcube Webmail with Excision Mail';
+$config['product_name'] = 'Roundcube @ Excision';
 
 // This key is used to encrypt the users imap password which is stored
 // in the session record. For the default cipher method it must be
@@ -99,6 +99,10 @@ $config['des_key'] = '{{ rc_encryption_key }}';
 $config['plugins'] = array(
     'archive',
     'zipdownload',
+    'managesieve',
+    'newmail_notifier',
+    'emoticons',
+    'custom_from',
 );
 
 // skin name: folder from skins/

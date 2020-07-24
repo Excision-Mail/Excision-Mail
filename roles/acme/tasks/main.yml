@@ -152,7 +152,7 @@
   command: excision renew-certs
   ignore_errors: true
 
-- name: Create symlinks for relayd
+- name: Create symlinks for relayd certificates
   file:
           src: "/etc/excision/ssl/{{ item.name }}"
           dest: "/etc/ssl/{{ item.name }}"
@@ -168,5 +168,6 @@
   service:
           name: relayd
           state: restarted
+          enabled: yes
 
 - meta: flush_handlers

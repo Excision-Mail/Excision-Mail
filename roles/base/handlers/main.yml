@@ -1,3 +1,4 @@
+---
 - name: rebuild login database
   command: cap_mkdb /etc/login.conf
 

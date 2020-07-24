@@ -93,7 +93,7 @@ _pop3s._tcp	IN	SRV	0	1	995	pop3.{{ domain }}.
 _imap._tcp	IN	SRV	0	0	0	.
 _pop3._tcp	IN	SRV	0	0	0	.
 ; ischedule information for calendars to talk with each other
-_ischedules._tcp  IN  SRV 0 1 443 calendar.{{ domain }}.
+_ischedules._tcp  IN  SRV 0 1 443 dav.{{ domain }}.
 
 ; we also need to setup the acceptable mail server in the SPF record
 @	IN	TXT	"v=spf1 mx ~all"

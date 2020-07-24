@@ -22,7 +22,7 @@ Available options are:
     add-user "user@domain.tld"
         Add new user "user@domain.tld"
 
-    change-passdw "user@domain.tld"
+    change-passwd "user@domain.tld"
         Change the existing password for "user@domain.tld"
 
     daily-report
@@ -46,11 +46,19 @@ Available options are:
         Creates an example zone file backup in /var/nsd/zones/master/domain.zone.tmp
         DOES NOT DEPEND ON OR AFFECT CURRENT NSD CONFIG
 
-    whitelist-bigmailer "domain"
+    whitelist-bigmailer "domain.tld"
         Finds and whitelists all ips associated with "domain", for spamd
 
     whitelist-friend "ip"
         Whitelists "ip" for spamd
+
+    add-user-key "user"
+        Add an ssh key for a user
+        This also allows them to be able to change their password
+
+    deleteall-user-keys "user@domain.tld"
+        Delete all ssh-keys for a user
+        This removes the users ability to change their password
 END
 )
 
@@ -92,6 +100,10 @@ case "$command" in
 		/bin/sh /usr/local/lib/excision/whitelist-bigmailer "$@";;
 	"whitelist-friend")
 		/bin/sh /usr/local/lib/excision/whitelist-friend "$@";;
+  "add-user-key")
+    /bin/sh /usr/local/lib/excision/add-user-key "$@";;
+  "deleteall-user-keys")
+    /bin/sh /usr/local/lib/excision/deleteall-user-keys "$@";;
 	*)
 		echo "$HELP"
 		exit 3;;

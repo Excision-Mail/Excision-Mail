@@ -13,16 +13,15 @@ required_domains:
         - smtp
 
 extra_domains:
-        - calendar
-        - contacts
+        - dav
         - webmail
-
 
 subdomains: "{{ required_domains + extra_domains }}"
 
-enable_extras: false
-
 timezone: "US/Eastern"
+
+max_attachment_sizeM: 32
+max_attachment_size: "{{ max_attachment_sizeM * 1048576 }}"
 
 relayd_interface: 127.0.0.1
 relayd_port: 1729
@@ -31,32 +30,21 @@ https_port: 1984
 http_interface: egress
 http_port: 80
 
+# this part deals with enabling
+# webmail, caldav and carddav
+enable_extras: false
 extrasIP: 127.0.0.1
 extras_interface: "{{ https_interface }}"
 extras_port: "{{ relayd_port }}"
 extras_not_home: false
 
-max_attachment_sizeM: 32
-max_attachment_size: "{{ max_attachment_sizeM * 1048576 }}"
 
-# pre-excision
-
-# base
-
-# nsd
+# other optionals
 enable_nsd: false
 
-# acme
-
-# spamd
 enable_spamd: false
 
-# rspamd
-
-# clamav
 enable_clamav: false
 
-# smtpd
 username_delimiter: "+"
 
-# dovecot

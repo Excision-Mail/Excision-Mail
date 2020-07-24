@@ -1,3 +1,4 @@
+---
 - name: Make sure log files exist
   file:
           path: /var/log/{{ item }}
@@ -5,7 +6,7 @@
           owner: root
           group: wheel
           mode: '0640'
-  with_items: { nsd, httpd, doas, clamd, freshclam, spamd}
+  with_items: { nsd, httpd, doas, clamd, freshclam, spamd, php-fpm, postgresql}
 
 - name: Generate login.conf
   copy:

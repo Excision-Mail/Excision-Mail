@@ -1,0 +1,21 @@
+---
+- name: install git for roundcube extras 
+  openbsd_pkg:
+    name: git
+    state: present
+
+- name: clone needed plugins for roundcube
+  git:
+    repo: '{{ item.repo }}'
+    version: '{{ item.version }}'
+    dest: '{{ /var/www/roundcubemail/plugins/item.name }}'
+  with_items: '{{ roundcube_plugins }}'
+
+- name: create config for plugins
+  copy:
+    src: "{{ item }}.config.inc.php"
+    dest: "/var/www/roundcubemail/plugins/{{ item }}/config.inc.php"
+  with_items:
+    - managesieve
+    - newmail_notifier
+

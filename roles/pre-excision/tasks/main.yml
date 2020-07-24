@@ -5,21 +5,21 @@
   with_items: 
           - { name: "dovecot" }
           - { name: "dovecot-pigeonhole" }
-          - { name: "rspamd" }
+          - { name: "opensmtpd-extras" }
           - { name: "opensmtpd-filter-rspamd" }
           - { name: "opensmtpd-filter-senderscore" }
-          - { name: "opensmtpd-extras" }
           - { name: "redis" }
+          - { name: "rspamd" }
 
 - name: Enable required services
   service:
           name: "{{ item.name }}"
           enabled: yes
   with_items:
-          - { name: "redis" }
-          - { name: "rspamd" }
           - { name: "dovecot" }
           - { name: "httpd" }
+          - { name: "redis" }
+          - { name: "rspamd" }
 
 - name: Create Excision config directories
   file:

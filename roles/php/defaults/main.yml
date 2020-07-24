@@ -1,4 +1,4 @@
 ---
-php_version: 7.4
-php_pkg_version: 7.4.7
+php_version: 7.3
+php_pkg_version: 7.3.19
 php_fpm: 'php{{ php_version | replace(".", "") }}_fpm'

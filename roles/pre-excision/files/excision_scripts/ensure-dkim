@@ -6,7 +6,7 @@
 # and also for davical for each domain
 
 while read -r domain ; do
-	for selector in excision calendar; do
+	for selector in excision dav; do
 
 #		key_ed="$dkim_home/private/${selector}ED.$domain.key"
 		key_rsa="$dkim_home/private/${selector}RSA.$domain.key"
@@ -35,8 +35,8 @@ while read -r domain ; do
 #			ed_begin="${selector}ED._domainkey	IN	TXT	"
 			xtext="v=DKIM1;k=rsa;p="
 		else
-			rsa_begin="${selector}RSA._domainkey.calendar	IN	TXT	"
-#			ed_begin="${selector}ED._domainkey.calendar	IN	TXT	"
+			rsa_begin="${selector}RSA._domainkey.dav	IN	TXT	"
+#			ed_begin="${selector}ED._domainkey.dav	IN	TXT	"
 			xtest="k=rsa;t=s;p="
 		fi
 

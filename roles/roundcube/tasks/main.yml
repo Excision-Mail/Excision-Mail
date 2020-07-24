@@ -5,9 +5,8 @@
     state: present
   with_items:
     - roundcubemail
-    - composer
 
-- name: create roundcubemail user
+- name: create roundcubemail user for postgresql
   postgresql_user:
     name: roundcubemail
     password: "{{ pgsql_password_roundcube }}"
@@ -18,7 +17,7 @@
     encoding: UTF-8
     owner: roundcubemail
 
-- name: initialize the database
+- name: initialize the postgresql database
   postgresql_query:
     db: roundcubemail
     path_to_script: /var/www/roundcubemail/SQL/postgres.initial.sql
@@ -26,25 +25,24 @@
     login_password: "{{ pgsql_password_roundcube }}"
   ignore_errors: true
 
-- name: create etc inside chroot
-  file:
-    name: /var/www/etc
-    state: directory
-    owner: root
-    group: wheel
-    mode: 0755
-
-- name: copy ca certs into www chroot
-  copy:
-    src: /etc/ssl/cert.pem
-    dest: /var/www/etc/ssl/cert.pem
-    remote_src: true
-    mode: preserve
-
-- name: create config file for roundcube
+- name: create config file for roundcubemail
   template:
     src: config.inc.php.j2
     dest: /var/www/roundcubemail/config/config.inc.php
     owner: root
     group: wheel
     mode: 0644
+
+- name: include roundcube extra plugins when enabled
+  include: roundcube_extras.yml
+  when: roundcube_extras
+
+- name: own the directories for plugins
+  file:
+    path: "/var/www/roundcubemail/plugins"
+    state: directory
+    owner: www
+    group: www
+    recurse: yes
+
+- meta: flush_handlers
