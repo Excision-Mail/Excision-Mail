@@ -39,9 +39,11 @@ server "calendar.{{ domain }}"{
 
 	log { access "access.log", error "error.log" }
 
+	root "/davical/htdocs"
+
 	location "/" { directory index index.php }
-	location "/davical/*.php*" {
-		root "/davical/htdocs"
+
+	location "/*.php*" {
 		fastcgi socket "/run/php-fpm.sock"
 	}
 }
