@@ -19,6 +19,7 @@
           - { name: "dovecot" }
           - { name: "httpd" }
           - { name: "redis" }
+          - { name: "relayd" }
           - { name: "rspamd" }
 
 - name: Create Excision config directories
