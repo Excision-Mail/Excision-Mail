@@ -9,4 +9,5 @@
           - { role: pre-excision,  tags: ['pre-excision']   }
           - { role: base,          tags: ['base']           }
           - { role: nsd,           tags: ['nsd']            }
+          - { role: ldapd,         tags: ['ldapd']          }
 
