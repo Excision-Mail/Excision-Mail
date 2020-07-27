@@ -1,3 +1,0 @@
-[submodule "roles/ldapd"]
-	path = roles/ldapd
-	url = https://github.com/bsd-ac/openbsd-ldapd

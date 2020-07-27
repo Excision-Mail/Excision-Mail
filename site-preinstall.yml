@@ -3,11 +3,10 @@
   hosts: mainserver
 
   vars_files:
-          - vars.yml
+    - vars.yml
 
   roles:
-          - { role: pre-excision,  tags: ['pre-excision']   }
-          - { role: base,          tags: ['base']           }
-          - { role: nsd,           tags: ['nsd']            }
-          - { role: ldapd,         tags: ['ldapd']          }
+    - { role: pre-excision,  tags: ['pre-excision']   }
+    - { role: base,          tags: ['base']           }
+    - { role: nsd,           tags: ['nsd']            }
 
