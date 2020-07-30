@@ -1,14 +1,14 @@
 - name: Install/Upgrade Excision on this machine
 
   hosts: 
-          - extraserver
+    - extraserver
 
   vars_files:
-          - vars.yml
+    - vars.yml
 
   roles:
-          - { role: php,           tags: ['php']            }
-          - { role: postgresql,    tags: ['postgresql']     }
-          - { role: davical,       tags: ['davical']        }
-          - { role: roundcube,     tags: ['roundcube']      }
+    - { role: php,           tags: ['php']            }
+    - { role: postgresql,    tags: ['postgresql']     }
+    - { role: davical,       tags: ['davical']        }
+    - { role: roundcube,     tags: ['roundcube']      }
 
