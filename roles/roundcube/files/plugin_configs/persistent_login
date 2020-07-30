@@ -1,0 +1,31 @@
+<?php
+// ----------------------------------
+// PERSISTENT LOGIN / REMEMBER ME
+// ----------------------------------
+
+// Time until the peristent login cookie invalidates (in seconds; 60*60*24*3 = 3 days)
+$rcmail_config['ifpl_login_expire'] = 60*60*24*3;
+
+// The name of the persistent login cookie.
+$rcmail_config['ifpl_cookie_name'] = '_pt';
+
+// ----------------------------------
+// TOKEN BASED (MORE SECURE!) - OPTIONAL
+// Installation of database scripts required. (see "./sql/" folder)
+// ----------------------------------
+
+// Turn on feature  to use tokens.
+$rcmail_config['ifpl_use_auth_tokens'] = true;
+
+// The name of the database table for the AuthTokens.
+$rcmail_config['db_table_auth_tokens'] = 'auth_tokens';
+
+// ----------------------------------
+// IP BASED RESTRICTION
+// Since 5.0
+// ----------------------------------
+
+// List of allowed IP masks
+// e.g.: '127.0.0.1/32', '10.10.0.0/24', '1.1.1.0/24'
+$rcmail_config['ifpl_netmask_whitelist'] = array();
+?>

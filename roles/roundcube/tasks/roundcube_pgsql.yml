@@ -1,0 +1,28 @@
+---
+- name: create roundcubemail user for postgresql
+  postgresql_user:
+    name: roundcubemail
+    password: "{{ pgsql_password_roundcube }}"
+
+- name: create roundcubemail database
+  postgresql_db:
+    name: roundcubemail
+    encoding: UTF-8
+    owner: roundcubemail
+
+- name: initialize the postgresql database
+  postgresql_query:
+    db: roundcubemail
+    path_to_script: /var/www/roundcubemail/SQL/postgres.initial.sql
+    login_user: roundcubemail
+    login_password: "{{ pgsql_password_roundcube }}"
+  ignore_errors: true
+
+- name: add table for persistent_login
+  postgresql_query:
+    db: roundcubemail
+    path_to_script: /var/www/roundcubemail/plugins/persistent_login/sql/postgres.sql
+    login_user: roundcubemail
+    login_password: "{{ pgsql_password_roundcube }}"
+  ignore_errors: true
+

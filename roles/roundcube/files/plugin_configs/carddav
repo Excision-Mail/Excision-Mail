@@ -1,0 +1,61 @@
+<?php
+
+//// RCMCardDAV Plugin Admin Settings
+
+///////////////////////////////////////////////////////////////////////
+////                                                               ////
+////                                                               ////
+//// SEE doc/ADMIN-SETTINGS.md FOR DOCUMENTATION ON THE PARAMETERS ////
+////                                                               ////
+////                                                               ////
+///////////////////////////////////////////////////////////////////////
+
+
+//// ** GLOBAL SETTINGS
+
+// Disallow users to add custom addressbooks (default: false)
+// $prefs['_GLOBAL']['fixed'] = true;
+
+// When enabled, this option hides the 'CardDAV' section inside Preferences.
+// $prefs['_GLOBAL']['hide_preferences'] = true;
+
+// Scheme for storing the CardDAV passwords, in order from least to best security.
+// Options: plain, base64, des_key, encrypted (default)
+// $prefs['_GLOBAL']['pwstore_scheme'] = 'encrypted';
+
+// Specify minimum loglevels for logging for the plugin and the HTTP client
+// The following are possible: DEBUG, INFO, NOTICE, WARNING, ERROR, CRITICAL, ALERT, EMERGENCY
+// Defaults to ERROR
+$prefs['_GLOBAL']['loglevel'] = \Psr\Log\LogLevel::WARNING;
+$prefs['_GLOBAL']['loglevel_http'] = \Psr\Log\LogLevel::ERROR;
+
+//// ** ADDRESSBOOK PRESETS
+
+// Each addressbook preset takes the following form:
+/*
+$prefs['<Presetname>'] = [
+	// required attributes
+	'name'         =>  '<Addressbook Name>',
+	'url'          =>  '<CardDAV Discovery URL>',
+
+	// required attributes unless passwordless authentication is used (Kerberos)
+	'username'     =>  '<CardDAV Username>',
+	'password'     =>  '<CardDAV Password>',
+
+	// optional attributes
+	'active'       =>  <true or false>,
+	'readonly'     =>  <true or false>,
+	'refresh_time' => '<Refresh Time in Hours, Format HH[:MM[:SS]]>',
+
+	// attributes that are fixed (i.e., not editable by the user) and auto-updated for this preset
+	'fixed'        =>  [ < 0 or more of the other attribute keys > ],
+
+	// always require these attributes, even for addressbook view
+	'require_always' => ['email'],
+
+	// hide this preset from CardDAV preferences section so users can't even see it
+	'hide' => <true or false>,
+];
+*/
+
+// vim: ts=4:sw=4:expandtab:fenc=utf8:ff=unix:tw=120

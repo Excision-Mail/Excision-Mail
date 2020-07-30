@@ -1,0 +1,30 @@
+---
+- name: install git for roundcube plugins 
+  openbsd_pkg:
+    name: git
+    state: present
+  when: roundcube_extra_plugins
+
+- name: clone needed plugins for roundcube
+  git:
+    repo: "{{ item.repo }}"
+    version: "{{ item.version }}"
+    dest: "/var/www/roundcubemail/plugins/{{ item.plugin }}"
+    force: yes
+  with_items: "{{ roundcube_extra_plugins }}"
+  when: roundcube_extra_plugins
+
+- name: create config for plugins
+  copy:
+    src: "plugin_configs/{{ item | basename }}"
+    dest: "/var/www/roundcubemail/plugins/{{ item | basename }}/config.inc.php"
+  loop: "{{ lookup('fileglob', 'plugin_configs/*', wantlist=true) }}"
+
+- name: own the directories for plugins
+  file:
+    path: "/var/www/roundcubemail/plugins"
+    state: directory
+    owner: www
+    group: www
+    recurse: yes
+

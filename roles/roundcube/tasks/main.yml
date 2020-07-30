@@ -6,25 +6,6 @@
   with_items:
     - roundcubemail
 
-- name: create roundcubemail user for postgresql
-  postgresql_user:
-    name: roundcubemail
-    password: "{{ pgsql_password_roundcube }}"
-
-- name: create roundcubemail database
-  postgresql_db:
-    name: roundcubemail
-    encoding: UTF-8
-    owner: roundcubemail
-
-- name: initialize the postgresql database
-  postgresql_query:
-    db: roundcubemail
-    path_to_script: /var/www/roundcubemail/SQL/postgres.initial.sql
-    login_user: roundcubemail
-    login_password: "{{ pgsql_password_roundcube }}"
-  ignore_errors: true
-
 - name: create config file for roundcubemail
   template:
     src: config.inc.php.j2
@@ -33,16 +14,10 @@
     group: wheel
     mode: 0644
 
-- name: include roundcube extra plugins when enabled
-  include: roundcube_extras.yml
-  when: roundcube_extras
+- name: include roundcube plugins
+  include: roundcube_plugins.yml
 
-- name: own the directories for plugins
-  file:
-    path: "/var/www/roundcubemail/plugins"
-    state: directory
-    owner: www
-    group: www
-    recurse: yes
+- name: include roundcue postgresql
+  include: roundcube_pgsql.yml
 
 - meta: flush_handlers

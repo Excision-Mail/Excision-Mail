@@ -10,11 +10,11 @@ $config['managesieve_port'] = 4190;
 // %n - http hostname ($_SERVER['SERVER_NAME'])
 // %d - domain (http hostname without the first part)
 // For example %n = mail.domain.tld, %d = domain.tld
-$config['managesieve_host'] = '%h';
+$config['managesieve_host'] = 'tls://%h';
 
 // authentication method. Can be CRAM-MD5, DIGEST-MD5, PLAIN, LOGIN, EXTERNAL
 // or none. Optional, defaults to best method supported by server.
-$config['managesieve_auth_type'] = null;
+$config['managesieve_auth_type'] = 'PLAIN';
 
 // Optional managesieve authentication identifier to be used as authorization proxy.
 // Authenticate as a different user but act on behalf of the logged in user.
@@ -88,13 +88,13 @@ $config['managesieve_default_headers'] = array('Subject', 'From', 'To', 'deliver
 // 0 - no separate section (default),
 // 1 - add Vacation section,
 // 2 - add Vacation section, but hide Filters section
-$config['managesieve_vacation'] = 0;
+$config['managesieve_vacation'] = 1;
 
 // Enables separate management interface for setting forwards (redirect to and copy to)
 // 0 - no separate section (default),
 // 1 - add Forward section,
 // 2 - add Forward section, but hide Filters section
-$config['managesieve_forward'] = 0;
+$config['managesieve_forward'] = 1;
 
 // Default vacation interval (in days).
 // Note: If server supports vacation-seconds extension it is possible
