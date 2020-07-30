@@ -39,8 +39,8 @@
           src: etc_dovecot_confd/
           dest: /etc/dovecot/conf.d/
           force: yes
-          owner: excision
-          group: excision
+          owner: root
+          group: wheel
           mode: '0644'
 
 - name: Generate dovecot mail local config
