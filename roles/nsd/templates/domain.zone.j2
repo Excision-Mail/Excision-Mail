@@ -40,16 +40,16 @@ ns{{ loop.index }}	IN	AAAA	{{ ps.ipv6 }}
 
 ; these are the domain names that will be accepted on this server
 {% if ipv4 is defined %}
-{{ hostname }}	IN	A	{{ ipv4 }}
+{{ hostname.split('.')[:-2] | join('.') }}	IN	A	{{ ipv4 }}
 {% endif %}
 
 {% if ipv6 is defined %}
-{{ hostname }}	IN	AAAA	{{ ipv6 }}
+{{ hostname.split('.')[:-2] | join('.') }}	IN	AAAA	{{ ipv6 }}
 {% endif %}
 
 ; currently we don't have a backup MX server
 ; TODO: set up configuration to allow backup mail server
-@	IN	MX	0	{{ hostname }}.{{ domain }}.
+@	IN	MX	0	{{ hostname }}.
 
 ;; autoconfig is used by mail clients to automatically set up
 ; the IMAP/SMTP configurations; specifically mozilla
@@ -79,27 +79,27 @@ ns{{ loop.index }}	IN	AAAA	{{ ps.ipv6 }}
 ;;							(used for load balancing on client side, 
 ;;							which makes it basically worthless)
 ; we also detail all the services used and the ports that they map to
-_openpgpkey._tcp	IN	SRV	0	0	443	openpgpkey.{{ domain }}.
+_openpgpkey._tcp	IN	SRV	0	0	443	openpgpkey.{{ domains[0].name }}.
 ; we need autodiscover service >.> why so much???
 ; damn you microsoft
-_autodiscover._tcp	IN	SRV	0	0	443	autodiscover.{{ domain }}.
+_autodiscover._tcp	IN	SRV	0	0	443	autodiscover.{{ domains[0].name }}.
 ; submission's' is the SSL/TLS port while without the 's' is the STARTTLS
-_submissions._tcp	IN	SRV	0	1	465	smtp.{{ domain }}. ; SSL/TLS
-_submission._tcp	IN	SRV	5	1	587	smtp.{{ domain }}. ; STARTTLS (but enforced)
-_imaps._tcp	IN	SRV	0	1	993	imap.{{ domain }}.
-_pop3s._tcp	IN	SRV	0	1	995	pop3.{{ domain }}.
+_submissions._tcp	IN	SRV	0	1	465	smtp.{{ domains[0].name }}. ; SSL/TLS
+_submission._tcp	IN	SRV	5	1	587	smtp.{{ domains[0].name }}. ; STARTTLS (but enforced)
+_imaps._tcp	IN	SRV	0	1	993	imap.{{ domains[0].name }}.
+_pop3s._tcp	IN	SRV	0	1	995	pop3.{{ domains[0].name }}.
 ; we disable insecure POP3 and insecure IMAP from being automatically detected
 ; mayhaps you can override them on a client but just don't use them
 _imap._tcp	IN	SRV	0	0	0	.
 _pop3._tcp	IN	SRV	0	0	0	.
 ; ischedule information for calendars to talk with each other
-_ischedules._tcp  IN  SRV 0 1 443 dav.{{ domain }}.
+_ischedules._tcp  IN  SRV 0 1 443 dav.{{ domains[0].name }}.
 
 ; we also need to setup the acceptable mail server in the SPF record
 @	IN	TXT	"v=spf1 mx ~all"
-_dmarc	IN	TXT	"v=DMARC1;p=reject;pct=100;rua=mailto:dmarcreports@{{ domain }};"
+_dmarc	IN	TXT	"v=DMARC1;p=reject;pct=100;rua=mailto:dmarcreports@{{ item.name }};"
 ; these two are needed to finalize MTA-STS (along with publishing the policy in a mta-sts.txt file in httpd
-_smtp._tls	IN	TXT	"v=TLSRPTv1;rua=mailto:tlsreports@{{ domain }};"
+_smtp._tls	IN	TXT	"v=TLSRPTv1;rua=mailto:tlsreports@{{ item.name }};"
 _mta-sts	IN	TXT	"v=STSv1;id=EXCISIONSERIAL;"
 
 ; SSHFP records are added here to make sure that

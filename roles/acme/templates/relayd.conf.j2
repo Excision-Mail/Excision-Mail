@@ -14,27 +14,17 @@ table <extrasIP> { {{ extrasIP }} }
 
 http protocol tlsinspect {
 	block
-	pass request header "Host" value "{{ hostname }}.{{ domain }}" forward to <local>
+	pass request header "Host" value "{{ hostname }}" forward to <local>
+{% for domain in domains %}
 {% for rdomain in required_domains %}
-	pass request header "Host" value "{{ rdomain }}.{{ domain }}" forward to <local>
+	pass request header "Host" value "{{ rdomain }}.{{ domain.name }}" forward to <local>
 {% endfor %}
 {% if enable_extras %}
 {% for edomain in extra_domains %}
-	pass request header "Host" value "{{ edomain }}.{{ domain }}" forward to <extrasIP>
-{% endfor %}
-{% endif %}
-{% if additional_domains is defined %}
-{% for adomain in additional_domains %}
-{% for rdomain in required_domains %}
-	pass request header "Host" value "{{ rdomain }}.{{ adomain.name }}" forward to <local>
-{% endfor %}
-{% if enable_extras %}
-{% for edomain in extra_domains %}
-	pass request header "Host" value "{{ edomain }}.{{ adomain.name }}" forward to <extrasIP>
+	pass request header "Host" value "{{ edomain }}.{{ domain.name }}" forward to <extrasIP>
 {% endfor %}
 {% endif %}
 {% endfor %}
-{% endif %}
 
 	### TCP performance options 
 	tcp { nodelay, sack, socket buffer 65536, backlog 100 }
@@ -43,7 +33,7 @@ http protocol tlsinspect {
 	return error
 
 	### Security options
-	tls keypair "{{ domain }}"
+	tls keypair "{{ domains[0].name }}"
 	tls { cipher-server-preference, no tlsv1.0, ciphers "HIGH" }
 
 	# credit: https://doc.huc.fr.eu.org/en/web/httpd/relayd-headers-httpd/

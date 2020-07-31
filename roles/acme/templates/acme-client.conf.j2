@@ -8,21 +8,16 @@ authority letsencrypt-staging {
 	account key "/etc/acme/letsencrypt-staging-privkey.pem"
 }
 
-domain {{ hostname }}.{{ domain }} {
+domain {{ hostname }} {
 	alternative names { \
 {% for sdomain in subdomains %}
-		"{{ sdomain }}.{{ domain }}" \
-{% endfor %}
-{%if additional_domains is defined %}
-{% for adomain in additional_domains %}
-{% for sdomain in subdomains %}
-		"{{ sdomain }}.{{ adomain.name }}" \
+{% for domain in domains %}
+		"{{ sdomain }}.{{ domain.name }}" \
 {% endfor %}
 {% endfor %}
-{% endif %}
 	}
-	domain key "/etc/excision/ssl/private/{{ domain }}.key"
-	domain full chain certificate "/etc/excision/ssl/{{ domain }}.crt"
+	domain key "/etc/excision/ssl/private/{{ domains[0].name }}.key"
+	domain full chain certificate "/etc/excision/ssl/{{ domains[0].name }}.crt"
 	sign with letsencrypt
 }
 

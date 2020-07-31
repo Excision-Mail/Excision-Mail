@@ -6,17 +6,12 @@ http_interface="{{ http_interface }}"
 https_port="{{ https_port }}"
 https_interface="{{ https_interface }}"
 
-server "{{ hostname }}.{{ domain }}" {
+server "{{ hostname }}" {
 {% for sdomain in subdomains %}
-	alias "{{ sdomain }}.{{ domain }}"
-{% endfor %}
-{% if additional_domains is defined %}
-{% for adomain in additional_domains %}
-{% for sdomain in subdomains %}
-	alias "{{ sdomain }}.{{ adomain.name }}"
+{% for domain in domains %}
+	alias "{{ sdomain }}.{{ domain.name }}"
 {% endfor %}
 {% endfor %}
-{% endif %}
 
 	listen on $http_interface port $http_port
 
@@ -33,11 +28,11 @@ server "{{ hostname }}.{{ domain }}" {
 		block return 302 "https://$HTTP_HOST$REQUEST_URI"
 	}
 }
+{% for domain in domains %}
 
-
-server "{{ hostname }}.{{ domain }}" {
+server "nonexistent.{{ domain.name }}" {
 {% for rdomain in required_domains %}
-	alias "{{ rdomain }}.{{ domain }}"
+	alias "{{ rdomain }}.{{ domain.name }}"
 {% endfor %}
 
 	listen on $https_interface port $https_port
@@ -53,77 +48,29 @@ server "{{ hostname }}.{{ domain }}" {
 	}
 
 	# OpenPGP Web Key Directory
-	location "/.well-known/openpgpkey/{{ domain }}/*" {
-		root "/openpgpkey/{{ domain }}"
+	location "/.well-known/openpgpkey/{{ domain.name }}/*" {
+		root "/openpgpkey/{{ domain.name }}"
 		request strip 3
 	}
 
 	# Autodiscover file for Microsoft 
 	location "/Autodiscover/*" {
-		root "/Autodiscover/{{ domain }}"
+		root "/Autodiscover/{{ domain.name }}"
 		request strip 1
 	}
 
 	# OpenPGP Web Key Directory
 	location "/mail/*" {
-		root "/mail/{{ domain }}"
+		root "/mail/{{ domain.name }}"
 		request strip 1
 	}
 
 	# rest of the files are queried in their respective folders
 	location "/*" {
-		root "/htdocs/{{ domain }}"
+		root "/htdocs/{{ domain.name }}"
 	}
 }
-
-{% if additional_domains is defined %}
-{% for adomain in additional_domains %}
-
-server "{{ adomain.name }}" {
-{% if additional_domains is defined %}
-{% for rdomain in required_domains %}
-	alias "{{ rdomain }}.{{ adomain.name }}"
 {% endfor %}
-{% endif %}
-
-	listen on $https_interface port $https_port
-
-	tcp nodelay
-
-	log { access "access.log", error "error.log" }
-
-	# SMTP MTA Strict Transport Security
-	location "/.well-known/mta-sts.txt" {
-		root "/mta-sts"
-		request strip 1
-	}
-
-	# OpenPGP Web Key Directory
-	location "/.well-known/openpgpkey/{{ adomain.name }}/*" {
-		root "/openpgpkey/{{ adomain.name }}"
-		request strip 3
-	}
-
-	# Autodiscover file for Microsoft 
-	location "/Autodiscover/*" {
-		root "/Autodiscover/{{ adomain.name }}"
-		request strip 1
-	}
-
-	# OpenPGP Web Key Directory
-	location "/mail/*" {
-		root "/mail/{{ adomain.name }}"
-		request strip 1
-	}
-
-	# rest of the files are queried in their respective folders
-	location "/*" {
-		root "/htdocs/{{ adomain.name }}"
-	}
-}
-
-{% endfor %}
-{% endif %}
 
 {% if not extras_not_home %}
 include "/etc/httpd-extras.conf"

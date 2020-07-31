@@ -1,16 +1,16 @@
 - name: Install/Upgrade Excision on this machine
 
   hosts: 
-          - mainserver
+    - mainserver
 
   vars_files:
-          - vars.yml
+    - vars.yml
 
   roles:
-          - { role: acme,          tags: ['acme']           }
-          - { role: spamd,         tags: ['spamd']          }
-          - { role: rspamd,        tags: ['rspamd']         }
-          - { role: clamav,        tags: ['clamav']         }
-          - { role: smtpd,         tags: ['smtpd']          }
-          - { role: dovecot,       tags: ['dovecot']        }
+    - { role: acme,          tags: ['acme']           }
+    - { role: spamd,         tags: ['spamd']          }
+    - { role: rspamd,        tags: ['rspamd']         }
+    - { role: clamav,        tags: ['clamav']         }
+    - { role: smtpd,         tags: ['smtpd']          }
+    - { role: dovecot,       tags: ['dovecot']        }
 

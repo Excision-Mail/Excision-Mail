@@ -1,50 +1,31 @@
+---
 - name: Copy mailname
   template:
-          src: mailname.j2
-          dest: /etc/mail/mailname
-          owner: root
-          group: wheel
-          mode: '0644'
+    src: mailname.j2
+    dest: /etc/mail/mailname
+    owner: root
+    group: wheel
+    mode: '0644'
 
 - name: Copy vdomains
   template:
-          src: vdomains.j2
-          dest: /etc/mail/vdomains
-          owner: root
-          group: wheel
-          mode: '0644'
+    src: vdomains.j2
+    dest: /etc/mail/vdomains
+    owner: root
+    group: wheel
+    mode: '0644'
 
-- name: Generate zone master file
+- name: Generate zone master files
   template:
-          src: domain.zone.j2
-          dest: /etc/excision/nsd/{{ domain }}.zone
-          owner: root
-          group: wheel
-          mode: '0644'
-  with_items:
-          - name: "{{ domain }}"
+    src: domain.zone.j2
+    dest: "/etc/excision/nsd/{{ item.name }}.zone"
+    owner: root
+    group: wheel
+    mode: '0644'
+  with_items: "{{ domains }}"
 
 - name: Add SSHFP records to zone master file
-  shell: ssh-keygen -r {{ hostname }} >> /etc/excision/nsd/{{ domain }}.zone
-
-- name: Copy addon file
-  shell: cat {{ nsd_addon }} > /etc/excision/nsd/{{ domain }}.zone.addon
-  when: nsd_addon is defined
-
-- name: Generate zone master file
-  template:
-          src: domain.zone.j2
-          dest: /etc/excision/nsd/{{ item.name }}.zone
-          owner: root
-          group: wheel
-          mode: '0644'
-  with_items: "{{ additional_domains }}"
-  when: additional_domains is defined
-
-- name: Add SSHFP records to zone master file
-  shell: ssh-keygen -r {{ hostname }} >> /etc/excision/nsd/{{ item.name }}.zone
-  with_items: "{{ additional_domains }}"
-  when: additional_domains is defined
+  shell: ssh-keygen -r "{{ hostname.split('.')[:-2] | join('.') }}" >> "/etc/excision/nsd/{{ domains[0].name }}.zone"
 
 - name: Actually generate the required config if the needed
   include: nsd_optional.yml

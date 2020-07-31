@@ -2,7 +2,7 @@
   lineinfile:
           dest: /etc/rc.conf.local
           regexp: ^spamd_flags=
-          line: spamd_flags="-G {{ spamd_passtime }}:{{ spamd_greyexp }}:{{ spamd_whiteexp }} -h {{ hostname }}.{{ domain }} -C /etc/excision/ssl/{{ domain }}.crt -K /etc/excision/ssl/private/{{ domain }}.key"
+          line: spamd_flags="-G {{ spamd_passtime }}:{{ spamd_greyexp }}:{{ spamd_whiteexp }} -h {{ hostname }} -C /etc/excision/ssl/{{ domains[0].name }}.crt -K /etc/excision/ssl/private/{{ domains[0].name }}.key"
           create: yes
 
 - name: Restart spamd

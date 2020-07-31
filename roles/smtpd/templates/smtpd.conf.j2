@@ -7,8 +7,8 @@ smtp max-message-size {{ max_attachment_sizeM + 1 }}M
 smtp sub-addr-delim '{{ username_delimiter }}'
 
 # actual mail handling
-pki {{ domain }} cert  "/etc/excision/ssl/{{ domain }}.crt"
-pki {{ domain }} key   "/etc/excision/ssl/private/{{ domain }}.key"
+pki {{ domains[0].name }} cert  "/etc/excision/ssl/{{ domains[0].name }}.crt"
+pki {{ domains[0].name }} key   "/etc/excision/ssl/private/{{ domains[0].name }}.key"
 
 # Filters
 #
@@ -66,18 +66,18 @@ listen on {{ private_interface }}
 # Incoming messages from outside to people in <vdomain>
 # this filter checks for spam vs ham on smtp port
 listen on egress \
-	tls pki {{ domain }} \
+	tls pki {{ domains[0].name }} \
 	filter { check_dyndns, check_rdns, check_fcrdns, senderscore, rspamd }
 # 
 # User submitted messages on two ports 465-SSL/TLS and 587-STARTTLS
 # this filter signs the outgoing emails using the rspamd dkim_signing module
 listen on egress port smtps \
-	smtps pki {{ domain }} \
+	smtps pki {{ domains[0].name }} \
 	auth <passwd> received-auth \
 	senders <revirt> \
 	filter rspamd 
 listen on egress port submission \
-	tls-require pki {{ domain }} \
+	tls-require pki {{ domains[0].name }} \
 	auth <passwd> received-auth \
 	senders <revirt> \
 	filter rspamd 
@@ -92,7 +92,7 @@ action "dovecot-lmtp" \
 	virtual <virtuals>
 action "outbound" \
 	relay \
-	helo {{ hostname }}.{{ domain }}
+	helo {{ hostname }}
 
 # Rules - first to match is applied
 #

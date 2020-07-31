@@ -57,17 +57,10 @@
     state: directory
     mode: '0755'
 
-- name: generate config file for davical
-  template:
-    src: config.php.j2
-    dest: "/var/www/etc/davical/dav.{{ domain }}-conf.php"
-  with_items:
-    - name: "{{ domain }}"
-
-- name: generate config file for davical extra domains
+- name: generate config file for all domains
   template:
     src: config.php.j2
     dest: "/var/www/etc/davical/dav.{{ item.name }}-conf.php"
-  with_items: "{{ additional_domains }}"
+  with_items: "{{ domains }}"
 
 - meta: flush_handlers

@@ -1,12 +1,10 @@
 extras_interface="{{ extras_interface }}"
 extras_port="{{ extras_port }}"
 
-server "webmail.{{ domain }}" {
-{% if additional_domains is defined %}
-{% for adomain in additional_domains %}
-	alias "webmail.{{ adomain.name }}"
+server "webmail.{{ domains[0].name }}" {
+{% for domain in domains[1:] %}
+	alias "webmail.{{ domain.name }}"
 {% endfor %}
-{% endif %}
 
 	listen on $extras_interface port $extras_port
 
@@ -24,12 +22,10 @@ server "webmail.{{ domain }}" {
 	}
 }
 
-server "dav.{{ domain }}"{
-{% if additional_domains is defined %}
-{% for adomain in additional_domains %}
-	alias "dav.{{ adomain.name }}"
+server "dav.{{ domains[0].name }}"{
+{% for domain in domains[1:] %}
+	alias "dav.{{ domain.name }}"
 {% endfor %}
-{% endif %}
 
 	listen on $extras_interface port $extras_port
 

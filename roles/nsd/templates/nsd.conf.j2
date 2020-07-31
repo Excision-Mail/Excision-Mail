@@ -11,28 +11,12 @@ remote-control:
   control-enable: yes
   control-interface: /var/run/nsd.sock
 
-zone:
-  name: {{ domain }}
-  zonefile: "master/{{ domain }}.zone"
-{% if (secondary_nameservers is defined) and (secondary_nameservers|length > 0) %}
-{% for ns in secondary_nameservers %}
-{% if ns.ipv4 is defined %}
-  notify: {{ ns.ipv4 }} NOKEY
-  provide-xfr: {{ ns.ipv4 }} NOKEY
-{% endif %}
-{% if ns.ipv6 is defined %}
-  notify: {{ ns.ipv6 }} NOKEY
-  provide-xfr: {{ ns.ipv6 }} NOKEY
-{% endif %}
-{% endfor %}
-{% endif %}
-{% if (additional_domains is defined) and (additional_domains|length > 0) %}
-{% for adomain in additional_domains %}
-{% if (adomain.nsd is defined) and (adomain.nsd == true) %}
+{% for domain in domains %}
+{% if (domain.nsd is defined) and (domain.nsd == true) %}
 
 zone:
-  name: {{ adomain.name }}
-  zonefile: "master/{{ adomain.name }}.zone"
+  name: {{ domain.name }}
+  zonefile: "master/{{ domain.name }}.zone"
 {% if (secondary_nameservers is defined) and (secondary_nameservers|length > 0) %}
 {% for ns in secondary_nameservers %}
 {% if ns.ipv4 is defined %}
@@ -47,4 +31,3 @@ zone:
 {% endif %}
 {% endif %}
 {% endfor %}
-{% endif %}

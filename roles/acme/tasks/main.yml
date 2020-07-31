@@ -1,99 +1,50 @@
 - name: Create httpd domain directory
   file:
-          path: /var/www/htdocs/{{ domain }}
+          path: "/var/www/htdocs/{{ item.name }}"
           state: directory
           owner: root
           group: wheel
           mode: '0755'
-
-- name: Create httpd domain directory
-  file:
-          path: /var/www/htdocs/{{ item.name }}
-          state: directory
-          owner: root
-          group: wheel
-          mode: '0755'
-  with_items: "{{ additional_domains }}"
-  when: additional_domains is defined
+  with_items: "{{ domains }}"
 
 - name: Create mail directory for mozilla autoconfig
   file:
-          path: /var/www/mail/{{ domain }}
+          path: "/var/www/mail/{{ item.name }}"
           state: directory
           owner: root
           group: wheel
           mode: '0755'
-
-- name: Create mail directory for mozilla autoconfig for adomains
-  file:
-          path: /var/www/mail/{{ item.name }}
-          state: directory
-          owner: root
-          group: wheel
-          mode: '0755'
-  with_items: "{{ additional_domains }}"
-  when: additional_domains is defined
+  with_items: "{{ domains }}"
 
 # https://wiki.mozilla.org/Thunderbird:Autoconfiguration#Implementation
 - name: Copy mozilla config file to mail
   template:
           src: config-v1.1.xml.j2
-          dest: /var/www/mail/{{ item.name }}/config-v1.1.xml
+          dest: "/var/www/mail/{{ item.name }}/config-v1.1.xml"
           owner: root
           group: wheel
           mode: '0755'
-  with_items: 
-          - name: "{{ domain }}"
-
-- name: Copy mozilla config file to mail for adomains
-  template:
-          src: config-v1.1.xml.j2
-          dest: /var/www/mail/{{ item.name }}/config-v1.1.xml
-          owner: root
-          group: wheel
-          mode: '0755'
-  with_items: "{{ additional_domains }}"
-  when: additional_domains is defined
+  with_items: "{{ domains }}"
 
 - name: Create autodiscover directory for microsoft autodiscover
   file:
-          path: /var/www/Autodiscover/{{ domain }}
+          path: "/var/www/Autodiscover/{{ item.name }}"
           state: directory
           owner: root
           group: wheel
           mode: '0755'
-
-- name: Create autodiscover directory for microsoft autodiscover for adomains
-  file:
-          path: /var/www/Autodiscover/{{ item.name }}
-          state: directory
-          owner: root
-          group: wheel
-          mode: '0755'
-  with_items: "{{ additional_domains }}"
-  when: additional_domains is defined
+  with_items: "{{ domains }}"
 
 # https://github.com/gronke/email-autodiscover/blob/master/mail/autodiscover.xml
 # https://docs.microsoft.com/en-us/previous-versions/office/office-2010/cc511507(v=office.14)?redirectedfrom=MSDN#Anchor_3
 - name: Copy autodiscover config file to autodiscover
   template:
           src: Autodiscover.xml.j2
-          dest: /var/www/Autodiscover/{{ domain }}/Autodiscover.xml
+          dest: "/var/www/Autodiscover/{{ item.name }}/Autodiscover.xml"
           owner: root
           group: wheel
           mode: '0755'
-  with_items:
-          - name: "{{ domain }}"
-
-- name: Copy autodiscover config file to autodiscover
-  template:
-          src: Autodiscover.xml.j2
-          dest: /var/www/Autodiscover/{{ item.name }}/Autodiscover.xml
-          owner: root
-          group: wheel
-          mode: '0755'
-  with_items: "{{ additional_domains }}"
-  when: additional_domains is defined
+  with_items: "{{ domains }}"
 
 - name: Create mta-sts directory
   file:
@@ -160,9 +111,9 @@
           group: wheel
           state: link
   with_items:
-          - name: "private/{{ domain }}.key"
-          - name: "{{ domain }}.crt"
-          - name: "{{ domain }}.ocsp"
+          - name: "private/{{ domains[0].name }}.key"
+          - name: "{{ domains[0].name }}.crt"
+          - name: "{{ domains[0].name }}.ocsp"
 
 - name: Restart relayd
   service:

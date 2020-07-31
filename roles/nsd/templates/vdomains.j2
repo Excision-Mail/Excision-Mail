@@ -1,6 +1,3 @@
-{{ domain }}
-{% if additional_domains is defined %}
-{% for adomain in additional_domains %}
-{{ adomain.name }}
+{% for domain in domains %}
+{{ domain.name }}
 {% endfor %}
-{% endif %}

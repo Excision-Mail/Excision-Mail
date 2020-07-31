@@ -2,27 +2,25 @@
 require ["envelope", "vnd.dovecot.pipe"];
 
 # we need to make all key submission requests
-# ( that are mode to wks@{{ domain }} )
+# ( that are mode to wks@domain.tld )
 # go through the parsing script
-if envelope :all :contains ["To"] "wks@{{ domain }}" {
-  # wks@{{ domain }} should not be the sender (self emails are not done)
-  # X-WKS-Loop should not be present
-  if allof (NOT envelope :all :contains "From" "wks@{{ domain }}",
-            NOT header :is ["X-WKS-Loop"] ["wks.multidomain.loop"]) {
-    pipe "wks-server" [ "wks@{{ domain }}" ];
-  }
-  # keep filing the email (now that it has been processed)
-  # We don't discard it, because we want to keep all requests
-  # on file (just in case)
-}
+#if envelope :all :contains ["To"] "wks@domain.tld" {
+# wks@domain.tld should not be the sender (self emails are not done)
+# X-WKS-Loop should not be present
+#  if allof (NOT envelope :all :contains "From" "wks@domain.tld",
+#            NOT header :is ["X-WKS-Loop"] ["wks.multidomain.loop"]) {
+#    pipe "wks-server" [ "wks@domain.tld" ];
+#  }
+# keep filing the email (now that it has been processed)
+# We don't discard it, because we want to keep all requests
+# on file (just in case)
+#}
 
-{% if additional_domains is defined %}
-{% for adomain in additional_domains %}
-if envelope :all :contains ["To"] "wks@{{ adomain.name }}" {
-  if allof (NOT envelope :all :contains "From" "wks@{{ adomain.name }}",
+{% for domain in domains %}
+if envelope :all :contains ["To"] "wks@{{ domain.name }}" {
+  if allof (NOT envelope :all :contains "From" "wks@{{ domain.name }}",
             NOT header :is ["X-WKS-Loop"] ["wks.multidomain.loop"]) {
-    pipe "wks-server" [ "wks@{{ adomain.name }}" ];
+    pipe "wks-server" [ "wks@{{ domain.name }}" ];
   }
 }
 {% endfor %}
-{% endif %}

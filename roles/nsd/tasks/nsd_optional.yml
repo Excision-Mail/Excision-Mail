@@ -1,40 +1,27 @@
 - name: Generate nsd conf
   template:
-          src: nsd.conf.j2
-          dest: /var/nsd/etc/nsd.conf
-          owner: root
-          group: _nsd
-          mode: '0640'
+    src: nsd.conf.j2
+    dest: /var/nsd/etc/nsd.conf
+    owner: root
+    group: _nsd
+    mode: '0640'
   when: generate_nsd_conf == true
 
 - name: Generate the temporary nsd zone file
-  command: excision ensure-zone
+  command: excision ensure-zone "{{ item.name }}"
+  with_items: "{{ domains }}"
 
 - name: Move the temporary file to proper one
   copy: 
-          src: /var/nsd/zones/master/{{ domain }}.zone.tmp 
-          dest: /var/nsd/zones/master/{{ domain }}.zone
-          remote_src: yes
-          mode: preserve
-
-- name: Generate temporary zone file for others
-  command: excision ensure-zone "{{ item.name }}"
-  with_items: "{{ additional_domains }}"
-  when: additional_domains is defined
-
-- name: Move temporary files to proper one for others
-  copy: 
-          src: /var/nsd/zones/master/{{ item.name }}.zone.tmp 
-          dest: /var/nsd/zones/master/{{ item.name }}.zone
-          remote_src: yes
-          mode: preserve
-  with_items: "{{ additional_domains }}"
-  when: additional_domains is defined
+    src: "/var/nsd/zones/master/{{ item.name }}.zone.tmp"
+    dest: "/var/nsd/zones/master/{{ item.name }}.zone"
+    remote_src: yes
+    mode: preserve
+  with_items: "{{ domains }}"
 
 - name: Restart nsd
   service:
-          name: nsd
-          enabled: yes
-          state: restarted
-
+    name: nsd
+    enabled: yes
+    state: restarted
 
