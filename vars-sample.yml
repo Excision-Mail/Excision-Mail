@@ -5,13 +5,24 @@
 
 #####-------- REQUIRED SECTION
 
-# This is the domain name for which the mail server will be set up.
+# This are the domains for which the mail server will be set up.
 # This should not contain any subdomains, only the main one
-# NOTE: This is going to be the primary domain for which we are going
-#       to set up NSD, certificate management, subdomain management
-#       If you have additional domains for which you want to handle 
-#       mails, set them up later in the appropriate section
-domain: <change-me> # e.g. aisha.cc
+# NOTE: You can have as many domains as you want in this list
+#       for each domain you can decide to enable/disable NSD
+#       It is highly advised to enable NSD as it does a lot
+#       of certificate management, subdomain management
+#       and record management for authentication
+#       If you don't enable nsd for a domain, it is on you
+#       to ensure that all records are properly managed
+#       https://excision.bsd.ac/guides/manualdns/
+domains: 
+  - name: <change-me> # e.g. aisha.cc
+    nsd: true         # HIGHLY RECOMMENDED, else remove or set to false
+                      # also depends on enable_nsd: true
+  #- name: domain2.tld
+  #  nsd: false
+  #- name: domain3.tld3
+  #  nsd: true
 
 # The hostname is one which is what the ip here is hosting
 # the one which is going to act as the subdomain, if the hostname here
@@ -24,7 +35,7 @@ domain: <change-me> # e.g. aisha.cc
 #       you input over here: hostname.domain.tld
 #       e.g. my hostname is called mail and the reverse dns resolves to
 #       mail.aisha.cc
-hostname: mail # can change it if you so prefer, but this is a nice one
+hostname: "mail.{{ domain[0].name }}" # can change it if you so prefer, but this is a nice one
 
 # This is the user that will be created and all server information emails
 # daily reports and outside domain reports will be send to admin@domain.tld
@@ -60,15 +71,6 @@ admin: <change-me> # e.g. aisha
 # will be delivered fine.
 #enable_spamd: false # set to true to enable (disabled by default)
 
-# If you are hosting more than a single domain you can add the additional ones
-# here. Each of them will be using the same DKIM key for validation which makes
-# it easy to manage in case something goes wrong
-#additional_domains:
-#         - name: "domain2"
-#           nsd: true
-#         - name: "domain3" # as many as you want
-#           #nsd: false # if no value for nsd is defined it is treated as false
-
 # HIGHLY RECOMMENDED TO USE THIS SECTION
 #
 # Complex: This section is bit more intricate and can be skipped
@@ -102,7 +104,7 @@ admin: <change-me> # e.g. aisha
 # NOTE: Some subdomains are currently automatically configured to point to the current machine
 #       so make sure that those are not redefined in your addon file.
 # restricted subdomains: www, <hostname>, imap, smtp, pop3, autoconfig, 
-#                        autodiscover, wkd, mta-sts
+#                        autodiscover, wkd, mta-sts, dav, webmail
 # HINT: first run do the install without the addon and see what is generated
 #       if you want to see if your addon is compatible (it most likely is)
 #nsd_addon: <change-me>
