@@ -7,6 +7,7 @@
     - vars.yml
 
   roles:
+    - { role: httpd,         tags: ['httpd']          }
     - { role: acme,          tags: ['acme']           }
     - { role: spamd,         tags: ['spamd']          }
     - { role: rspamd,        tags: ['rspamd']         }
