@@ -56,4 +56,4 @@
 
 - name: Download pretrained datasets
   include: bayes_pretrain.yml
-  when: rspamd_enable_pretrain == true
+  when: rspamd_enable_pretrain

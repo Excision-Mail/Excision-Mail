@@ -5,14 +5,14 @@
     owner: root
     group: _nsd
     mode: '0640'
-  when: generate_nsd_conf == true
+  when: generate_nsd_conf
 
 - name: Generate the temporary nsd zone file
   command: excision ensure-zone "{{ item.name }}"
   with_items: "{{ domains }}"
 
 - name: Move the temporary file to proper one
-  copy: 
+  copy:
     src: "/var/nsd/zones/master/{{ item.name }}.zone.tmp"
     dest: "/var/nsd/zones/master/{{ item.name }}.zone"
     remote_src: yes

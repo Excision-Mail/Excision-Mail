@@ -29,6 +29,7 @@
   command: initdb -D /var/postgresql/data -U postgres -E UTF8 -A peer
   args:
     creates: /var/postgresql/data/PG_VERSION
+  become: yes
   become_user: _postgresql
 
 - name: generate configuration

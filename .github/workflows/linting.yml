@@ -29,6 +29,7 @@ jobs:
         targets: |
           site-preinstall.yml
           site-install.yml
+          site-extra.yml
         # [optional]
         # Arguments to override a package and its version to be set explicitly.
         # Must follow the example syntax.
@@ -56,4 +57,4 @@ jobs:
         #                         path to directories or files to skip. This option is
         #                         repeatable.
         #   -c C                  Specify configuration file to use. Defaults to ".ansible-lint"
-        args: ""
+        args: "-x 301 -x 204"

@@ -1,5 +1,5 @@
 - name: Include the optional clamav config if it is enabled
   include: clamav_optional.yml
-  when: enable_clamav == true
+  when: enable_clamav
 
 - meta: flush_handlers

@@ -29,4 +29,4 @@
 
 - name: Actually generate the required config if the needed
   include: nsd_optional.yml
-  when: enable_nsd == true
+  when: enable_nsd

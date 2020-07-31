@@ -1,8 +1,8 @@
 - name: Install required packages
   openbsd_pkg:
           name: "{{ item.name }}"
-          state: latest
-  with_items: 
+          state: present
+  with_items:
           - { name: "dovecot" }
           - { name: "dovecot-pigeonhole" }
           - { name: "opensmtpd-extras" }
@@ -59,7 +59,7 @@
 - name: Make Excision password managing user
   user:
           name: excision-passwd
-          comment: Excision password manager 
+          comment: Excision password manager
           group: excision
           groups: ""
           login_class: default

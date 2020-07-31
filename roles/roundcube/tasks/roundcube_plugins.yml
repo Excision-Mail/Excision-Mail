@@ -1,5 +1,5 @@
 ---
-- name: install git for roundcube plugins 
+- name: install git for roundcube plugins
   openbsd_pkg:
     name: git
     state: present

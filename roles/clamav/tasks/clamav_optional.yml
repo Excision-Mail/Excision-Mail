@@ -10,7 +10,7 @@
   with_items:
           - { name: "clamd" }
           - { name: "freshclam" }
-        
+
 - name: install clamd init script
   copy:
           src: clamd

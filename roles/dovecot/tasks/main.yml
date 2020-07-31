@@ -1,5 +1,5 @@
 - name: Get excision UID
-  shell: id -u excision
+  command: id -u excision
   register: excisionUID
 
 - name: Create mail directory

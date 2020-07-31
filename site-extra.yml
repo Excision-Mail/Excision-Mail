@@ -1,6 +1,6 @@
 - name: Install/Upgrade Excision on this machine
 
-  hosts: 
+  hosts:
     - extraserver
 
   vars_files:
