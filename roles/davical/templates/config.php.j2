@@ -477,8 +477,11 @@ $c->scheduling_dkim_selector = 'davRSA';
 *
 * Default: none
 */  
-// $c->schedule_private_key = 'davical_private_key';
-
+{% for register in davical_keys.results %}
+{% if register.item == item %}
+$c->schedule_private_key = '{{ register.stdout }}';
+{% endif %}
+{% endfor %}
 
 /***************************************************************************
 *                                                                          *
@@ -573,7 +576,7 @@ $c->trust_x_forwarded = true;
 /*********** LDAP hook **********/
 /********************************/
 /*
-* For Active Directory go down to the next example.
+/* For Active Directory go down to the next example.
 */
 
 //$c->authenticate_hook['call'] = 'LDAP_check';

@@ -66,6 +66,11 @@
     state: directory
     mode: '0755'
 
+- name: get all private keys 
+  command: cat "/var/www/etc/davical/keys/davRSA.{{ item.name }}.key"
+  loop: "{{ domains }}"
+  register: davical_keys
+
 - name: generate config file for all domains
   template:
     src: config.php.j2
