@@ -12,8 +12,6 @@ else
 	domain="$1"
 fi
 
-maindomain=$(head -n 1 /etc/mail/vdomains)
-
 # by default, we don't install it
 # up to the admin to make sure that it gets installed 
 zone_file="/var/nsd/zones/master/$domain.zone.tmp"

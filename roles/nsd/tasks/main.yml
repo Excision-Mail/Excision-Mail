@@ -24,6 +24,9 @@
     mode: '0644'
   with_items: "{{ domains }}"
 
+- name: Generate all dkim certificates
+  command: excision ensure-dkim
+
 - name: Add SSHFP records to zone master file
   shell: ssh-keygen -r "{{ hostname.split('.')[:-2] | join('.') }}" >> "/etc/excision/nsd/{{ domains[0].name }}.zone"
 
