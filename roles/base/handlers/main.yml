@@ -12,4 +12,3 @@
 
 - name: reload pf
   command: pfctl -f /etc/pf.conf
-
