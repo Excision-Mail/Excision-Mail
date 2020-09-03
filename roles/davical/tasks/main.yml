@@ -16,10 +16,10 @@
 
 - name: create initial db for davical_dba
   postgresql_db:
-     name: davical
-     owner: davical_dba
-     encoding: UTF-8
-     template: template0
+    name: davical
+    owner: davical_dba
+    encoding: UTF-8
+    template: template0
 
 - name: run initial scripts for davical database
   postgresql_query:
@@ -34,7 +34,13 @@
   ignore_errors: true
 
 - name: run admin script for davical database
-  command: /var/www/davical/dba/update-davical-database --dbname davical --appuser davical_app --nopatch --owner davical_dba --dbpass "{{ davical_dba_password }}"
+  command: >
+    /var/www/davical/dba/update-davical-database
+    --dbname davical
+    --appuser davical_app
+    --nopatch
+    --owner davical_dba
+    --dbpass "{{ davical_dba_password }}"
 
 - name: insert basic roles into davical database
   postgresql_query:
@@ -49,7 +55,10 @@
     db: davical
     login_user: davical_dba
     login_password: "{{ davical_dba_password }}"
-    query: "UPDATE usr SET password = '**{{ davical_tmp_admin_password }}' WHERE user_no = 1;"
+    query: >
+      UPDATE usr
+      SET password = '**{{ davical_tmp_admin_password }}'
+      WHERE user_no = 1;
 
 - name: create folder for configs
   file:
