@@ -1,21 +1,15 @@
 ---
-- name: install php packages
+- name: install php extensions
   openbsd_pkg:
     name: "{{ item.name }}-{{ php_pkg_version }}"
     state: present
-  with_items:
-    - { name: "php" }
-    - { name: "php-gd" }
-    - { name: "php-pgsql" }
-    - { name: "php-curl" }
-    - { name: "php-pdo_pgsql" }
-    - { name: "php-imap" }
-    - { name: "php-ldap" }
+  with_items: "{{ php_extensions }}"
 
 - name: install extension inis
   copy:
-    src: phpsample/
+    src: "/etc/php-{{ php_version }}.sample/"
     dest: "/etc/php-{{ php_version }}/"
+    remote_src: true
 
 - name: create php directories
   file:
@@ -31,7 +25,7 @@
   copy:
     src: php-fpm.conf
     dest: /etc/php-fpm.conf
-    force: no
+    force: false
 
 - name: create etc inside chroot
   file:
@@ -50,15 +44,17 @@
 
 - name: copy resolv.conf into www chroot
   copy:
-    src: /etc/resolv.conf
+    src: "{{ item }}"
     dest: /var/www/etc/resolv.conf
     remote_src: true
     mode: preserve
+  with_fileglob:
+    - /etc/resolv.conf*
 
 - name: enable and restart php-fpm
   service:
     name: "{{ php_fpm }}"
-    enabled: yes
+    enabled: true
     state: restarted
 
 - name: generate httpd-extras.conf

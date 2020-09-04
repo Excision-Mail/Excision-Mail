@@ -1,3 +1,12 @@
 ---
 php_pkg_version: 7.3.19
-php_fpm: 'php{{ php_version | replace(".", "") }}_fpm'
+
+php_extensions:
+  - { name: "php" }
+  - { name: "php-gd" }
+  - { name: "php-pgsql" }
+  - { name: "php-curl" }
+  - { name: "php-pdo_pgsql" }
+  - { name: "php-imap" }
+  - { name: "php-ldap" }
+
