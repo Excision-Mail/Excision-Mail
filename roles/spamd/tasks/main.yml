@@ -1,3 +1,4 @@
+---
 - name: Include spamd if it needed
   include: spamd_optional.yml
   when: enable_spamd

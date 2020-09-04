@@ -1,36 +1,37 @@
+---
 spamd_passtime: 15    # delivery can be retried after 15 minutes
 spamd_greyexp: 6      # greylisted entries expire after 6 hours
 spamd_whiteexp: 2190  # whitelisted entries expire after 3 months
 
 bigmailers:
-        - { name: "aliexpress.com" }
-        - { name: "amazon.com" }
-        - { name: "ebay.com" }
-        - { name: "github.com" }
-        - { name: "google.com" }
-        - { name: "icloud.com" }
-        - { name: "kijiji.com" }
-        - { name: "linkedin.com" }
-        - { name: "mandrillapp.com" }
-        - { name: "mailchimp.com" }
-        - { name: "microsoft.com" }
-        - { name: "outlook.com" }
-        - { name: "paypal.com" }
-        - { name: "sendgrid.net" }
-        - { name: "t-mobile.com" }
-        - { name: "verizon.com" }
-        - { name: "yahoo.com" }
-        - { name: "intuit.com" }
-        - { name: "facebookmail.com" }
-        - { name: "messagingengine.com" }
-        - { name: "gamingonlinux.com" }
-        - { name: "freebsd.com" }
-        - { name: "freebsd.org" }
-        - { name: "openbsd.org" }
-        - { name: "outlook.fr" }
-        - { name: "zoho.com" }
-        - { name: "protonmail.com" }
-        - { name: "mailgun.net" }
-        - { name: "fastmail.com" }
-        - { name: "steampowered.com" }
-        - { name: "email.gog.com" }
+  - {name: "aliexpress.com"}
+  - {name: "amazon.com"}
+  - {name: "ebay.com"}
+  - {name: "github.com"}
+  - {name: "google.com"}
+  - {name: "icloud.com"}
+  - {name: "kijiji.com"}
+  - {name: "linkedin.com"}
+  - {name: "mandrillapp.com"}
+  - {name: "mailchimp.com"}
+  - {name: "microsoft.com"}
+  - {name: "outlook.com"}
+  - {name: "paypal.com"}
+  - {name: "sendgrid.net"}
+  - {name: "t-mobile.com"}
+  - {name: "verizon.com"}
+  - {name: "yahoo.com"}
+  - {name: "intuit.com"}
+  - {name: "facebookmail.com"}
+  - {name: "messagingengine.com"}
+  - {name: "gamingonlinux.com"}
+  - {name: "freebsd.com"}
+  - {name: "freebsd.org"}
+  - {name: "openbsd.org"}
+  - {name: "outlook.fr"}
+  - {name: "zoho.com"}
+  - {name: "protonmail.com"}
+  - {name: "mailgun.net"}
+  - {name: "fastmail.com"}
+  - {name: "steampowered.com"}
+  - {name: "email.gog.com"}
