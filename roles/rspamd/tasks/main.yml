@@ -1,59 +1,45 @@
+---
 - name: Create rspamd local.d directory
   file:
-          path: /etc/rspamd/local.d/
-          state: directory
-          owner: root
-          group: wheel
-          mode: '0755'
+    path: /etc/rspamd/local.d/
+    state: directory
+    owner: root
+    group: wheel
+    mode: '0755'
 
 - name: Create rspamd local confs
   copy:
-          src: etc_rspamd_locald/
-          dest: /etc/rspamd/local.d/
-          force: yes
-          owner: root
-          group: wheel
-          mode: '0644'
+    src: etc_rspamd_locald/
+    dest: /etc/rspamd/local.d/
+    force: true
+    owner: root
+    group: wheel
+    mode: '0644'
 
-- name: Create dkim_signing config
+- name: Create rspamd local templated confs
   template:
-          src: dkim_signing.conf.j2
-          dest: /etc/rspamd/local.d/dkim_signing.conf
-          owner: root
-          group: wheel
-          mode: '0644'
-
-- name: Create phishing config
-  template:
-          src: phishing.conf.j2
-          dest: /etc/rspamd/local.d/phishing.conf
-          owner: root
-          group: wheel
-          mode: '0644'
-
-- name: Create surbl config
-  template:
-          src: surbl.conf.j2
-          dest: /etc/rspamd/local.d/surbl.conf
-          owner: root
-          group: wheel
-          mode: '0644'
+    src: "{{ item.name }}"
+    dest: "/etc/rspamd/local.d/{{ item.name | replace('.j2', '') }}"
+    owner: root
+    group: wheel
+    mode: '0644'
+  with_items: "{{ rspamd_templates }}"
 
 - name: Check redis is started
   service:
-          name: redis
-          state: started
+    name: redis
+    state: started
 
 - name: Check rspamd is started
   service:
-          name: rspamd
-          state: started
+    name: rspamd
+    state: started
 
 - name: Check rspamd is reloaded
   service:
-          name: rspamd
-          state: reloaded
+    name: rspamd
+    state: reloaded
 
 - name: Download pretrained datasets
-  include: bayes_pretrain.yml
+  include: rspamd_pretrain.yml
   when: rspamd_enable_pretrain

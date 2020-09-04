@@ -1,3 +1,9 @@
-rspamd_enable_pretrain:   false
-rspamd_enable_phishtank:  false
-rspamd_enable_surbl:      true
+---
+rspamd_templates:
+  - name: dkim_signing.conf.j2
+  - name: phishing.conf.j2
+  - name: surbl.conf.j2
+
+rspamd_enable_pretrain: false
+rspamd_enable_phishtank: false
+rspamd_enable_surbl: true

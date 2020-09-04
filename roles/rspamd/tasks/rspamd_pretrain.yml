@@ -1,0 +1,28 @@
+---
+- name: Download rspamd ham sqlite
+  get_url:
+    url: https://rspamd.com/rspamd_statistics/bayes.ham.sqlite
+    dest: /var/rspamd/bayes.ham.sqlite.pretrain
+    mode: '0644'
+  creates: /var/rspamd/bayes.ham.sqlite.pretrain
+  register: ham_downloaded
+
+- name: Download rspamd spam sqlite
+  get_url:
+    url: https://rspamd.com/rspamd_statistics/bayes.spam.sqlite
+    dest: /var/rspamd/bayes.spam.sqlite.pretrain
+    mode: '0644'
+  creates: /var/rspamd/bayes.spam.sqlite.pretrain
+  register: spam_downloaded
+
+
+- name: Convert from sqlite to redis
+  command: >
+    rspamadm statconvert
+    -c /etc/rspamd/rspamd.conf
+    --cache
+    --spamd-db /var/rspamd/bayes.spam.sqlite.pretrain
+    --ham-db /var/rspamd/bayes.ham.sqlite.pretrain
+    -e 15552000
+    -h 127.0.0.1:6379
+  when: ham_downloaded.changed or spam_downloaded.changed
