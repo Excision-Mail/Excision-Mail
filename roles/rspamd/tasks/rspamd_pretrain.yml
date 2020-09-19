@@ -4,7 +4,7 @@
     url: https://rspamd.com/rspamd_statistics/bayes.ham.sqlite
     dest: /var/rspamd/bayes.ham.sqlite.pretrain
     mode: '0644'
-  creates: /var/rspamd/bayes.ham.sqlite.pretrain
+    force: false
   register: ham_downloaded
 
 - name: Download rspamd spam sqlite
@@ -12,9 +12,8 @@
     url: https://rspamd.com/rspamd_statistics/bayes.spam.sqlite
     dest: /var/rspamd/bayes.spam.sqlite.pretrain
     mode: '0644'
-  creates: /var/rspamd/bayes.spam.sqlite.pretrain
+    force: false
   register: spam_downloaded
-
 
 - name: Convert from sqlite to redis
   command: >
