@@ -8,7 +8,6 @@ roundcube_base_plugins:
   - plugin: "subscriptions_option"
   - plugin: "archive"
   - plugin: "zipdownload"
-  #- plugin: "enigma"
 
 roundcube_extra_plugins:
   - plugin: "custom_from"
@@ -23,5 +22,3 @@ roundcube_extra_plugins:
   - plugin: "nextcloud"
     repo: "https://github.com/texxasrulez/roundcube-plugin-nextcloud"
     version: "0.3.0"
-  #- plugin: "plugin_manager"
-

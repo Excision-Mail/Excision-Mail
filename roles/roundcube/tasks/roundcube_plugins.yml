@@ -10,7 +10,7 @@
     repo: "{{ item.repo }}"
     version: "{{ item.version }}"
     dest: "/var/www/roundcubemail/plugins/{{ item.plugin }}"
-    force: yes
+    force: true
   with_items: "{{ roundcube_extra_plugins }}"
   when: roundcube_extra_plugins
 
@@ -26,5 +26,4 @@
     state: directory
     owner: www
     group: www
-    recurse: yes
-
+    recurse: true

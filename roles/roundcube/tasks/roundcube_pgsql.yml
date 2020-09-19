@@ -25,4 +25,3 @@
     login_user: roundcubemail
     login_password: "{{ pgsql_password_roundcube }}"
   ignore_errors: true
-
