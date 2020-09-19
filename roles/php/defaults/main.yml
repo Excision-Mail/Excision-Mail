@@ -2,11 +2,10 @@
 php_pkg_version: 7.3.19
 
 php_extensions:
-  - { name: "php" }
-  - { name: "php-gd" }
-  - { name: "php-pgsql" }
-  - { name: "php-curl" }
-  - { name: "php-pdo_pgsql" }
-  - { name: "php-imap" }
-  - { name: "php-ldap" }
-
+  - "php"
+  - "php-gd"
+  - "php-pgsql"
+  - "php-curl"
+  - "php-pdo_pgsql"
+  - "php-imap"
+  - "php-ldap"

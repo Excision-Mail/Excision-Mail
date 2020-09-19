@@ -1,7 +1,7 @@
 ---
 - name: install php extensions
   openbsd_pkg:
-    name: "{{ item.name }}-{{ php_pkg_version }}"
+    name: "{{ item }}-{{ php_pkg_version }}"
     state: present
   with_items: "{{ php_extensions }}"
 
@@ -31,9 +31,6 @@
   file:
     name: /var/www/etc
     state: directory
-    owner: root
-    group: wheel
-    mode: 0755
 
 - name: copy ca certs into www chroot
   copy:
@@ -57,5 +54,3 @@
     name: "{{ php_fpm }}"
     enabled: true
     state: restarted
-
-- meta: flush_handlers
