@@ -17,4 +17,3 @@
     name: httpd
     state: restarted
   when: extras_in_config.changed or extras_config.changed
-
