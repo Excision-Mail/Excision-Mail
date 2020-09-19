@@ -45,21 +45,17 @@
 - name: copy resolv.conf into www chroot
   copy:
     src: "{{ item }}"
-    dest: /var/www/etc/resolv.conf
+    dest: "/var/www/{{ item }}"
     remote_src: true
     mode: preserve
-  with_fileglob:
-    - /etc/resolv.conf*
+  with_items:
+    - /etc/resolv.conf
+    - /etc/resolv.conf.tail
 
 - name: enable and restart php-fpm
   service:
     name: "{{ php_fpm }}"
     enabled: true
     state: restarted
-
-- name: generate httpd-extras.conf
-  template:
-    src: httpd-extras.conf.j2
-    dest: /etc/httpd-extras.conf
 
 - meta: flush_handlers

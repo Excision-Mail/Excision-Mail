@@ -1,0 +1,20 @@
+---
+- name: ensure httpd-extras.conf is included in httpd.conf
+  lineinfile:
+    path: /etc/httpd.conf
+    line: 'include "/etc/httpd-extras.conf"'
+    state: present
+  register: extras_in_config
+
+- name: generate httpd-extras.conf
+  template:
+    src: httpd-extras.conf.j2
+    dest: /etc/httpd-extras.conf
+  register: extras_config
+
+- name: restart httpd
+  service:
+    name: httpd
+    state: restarted
+  when: extras_in_config.changed or extras_config.changed
+

@@ -1,6 +1,10 @@
 # CREDIT: vedetta-com/caesonia
 # https://github.com/vedetta-com/caesonia
 
+types {
+	include "/usr/share/misc/mime.types"
+}
+
 http_port="{{ http_port }}"
 http_interface="{{ http_interface }}"
 https_port="{{ https_port }}"
@@ -72,10 +76,4 @@ server "nonexistent.{{ domain.name }}" {
 }
 {% endfor %}
 
-{% if not extras_not_home %}
 include "/etc/httpd-extras.conf"
-{% endif %}
-
-types {
-	include "/usr/share/misc/mime.types"
-}

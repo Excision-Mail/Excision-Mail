@@ -7,6 +7,7 @@
     - vars.yml
 
   roles:
+    - { role: httpd-extra,   tags: ['httpd-extra']    }
     - { role: php,           tags: ['php']            }
     - { role: postgresql,    tags: ['postgresql']     }
     - { role: davical,       tags: ['davical']        }
