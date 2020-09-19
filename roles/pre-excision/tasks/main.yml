@@ -1,117 +1,112 @@
+---
 - name: Install required packages
   openbsd_pkg:
-          name: "{{ item.name }}"
-          state: present
-  with_items:
-          - { name: "dovecot" }
-          - { name: "dovecot-pigeonhole" }
-          - { name: "opensmtpd-extras" }
-          - { name: "opensmtpd-filter-rspamd" }
-          - { name: "opensmtpd-filter-senderscore" }
-          - { name: "redis" }
-          - { name: "rspamd" }
+    name: "{{ pre_excision_packages }}"
+    state: present
 
 - name: Enable required services
   service:
-          name: "{{ item.name }}"
-          enabled: yes
+    name: "{{ item.name }}"
+    enabled: true
   with_items:
-          - { name: "dovecot" }
-          - { name: "httpd" }
-          - { name: "redis" }
-          - { name: "relayd" }
-          - { name: "rspamd" }
+    - {name: "dovecot"}
+    - {name: "httpd"}
+    - {name: "redis"}
+    - {name: "relayd"}
+    - {name: "rspamd"}
 
 - name: Create Excision config directories
   file:
-          name: "{{ item.name }}"
-          state: directory
-          owner: root
-          group: wheel
-          mode: "{{ item.perm }}"
+    name: "{{ item.name }}"
+    state: directory
+    owner: root
+    group: wheel
+    mode: "{{ item.perm }}"
   with_items:
-          - { name: "/etc/excision/dkim/private", perm: "0755" }
-          - { name: "/etc/excision/ssl/private", perm: "0755" }
-          - { name: "/etc/excision/nsd", perm: "0755" }
-          - { name: "/etc/excision/spam", perm: "0755" }
-          - { name: "/etc/excision/users", perm: "0700" }
-          - { name: "/etc/excision/users/user-data", perm: "0700" }
+    - {name: "/etc/excision/dkim/private", perm: "0755"}
+    - {name: "/etc/excision/ssl/private", perm: "0755"}
+    - {name: "/etc/excision/nsd", perm: "0755"}
+    - {name: "/etc/excision/spam", perm: "0755"}
+    - {name: "/etc/excision/users", perm: "0700"}
+    - {name: "/etc/excision/users/user-data", perm: "0700"}
 
 - name: Create hostname file
   template:
-          src: hostname.j2
-          dest: /etc/excision/nsd/hostname
+    src: hostname.j2
+    dest: /etc/excision/nsd/hostname
 
 - name: Make required groups
   group:
-          name: excision
+    name: excision
 
 - name: Make Excision user
   user:
-          name: excision
-          comment: Excision general manager
-          group: excision
-          groups: ""
-          login_class: daemon
-          shell: /bin/ksh
-          home: /var/excision-home
+    name: excision
+    comment: Excision general manager
+    group: excision
+    groups: ""
+    login_class: daemon
+    shell: /bin/ksh
+    home: /var/excision-home
 
 - name: Make Excision password managing user
   user:
-          name: excision-passwd
-          comment: Excision password manager
-          group: excision
-          groups: ""
-          login_class: default
-          shell: /bin/ksh
-          home: /var/excision-passwd
+    name: excision-passwd
+    comment: Excision password manager
+    group: excision
+    groups: ""
+    login_class: default
+    shell: /bin/ksh
+    home: /var/excision-passwd
 
 - name: Allow excision-passwd to execute proper command
   lineinfile:
-          path: /etc/doas.conf
-          create: yes
-          owner: root
-          group: wheel
-          mode: '0600'
-          state: present
-          line: permit nopass excision-passwd as root cmd /usr/local/bin/excision-change-user-passwd
+    path: /etc/doas.conf
+    create: true
+    owner: root
+    group: wheel
+    mode: '0600'
+    state: present
+    line: >
+      permit nopass
+      excision-passwd as root
+      cmd /usr/local/bin/excision-change-user-passwd
 
 - name: Install gpg-wks init script
   copy:
-          src: excision-wks-init
-          dest: /var/excision-home/
-          force: yes
-          owner: excision
-          group: excision
-          mode: '0644'
+    src: excision-wks-init
+    dest: /var/excision-home/
+    force: true
+    owner: excision
+    group: excision
+    mode: '0644'
 
 - name: Create Excision scripts directory
   file:
-          path: /usr/local/lib/excision/helpers
-          state: directory
-          force: yes
-          owner: root
-          group: wheel
-          mode: '0700'
+    path: /usr/local/lib/excision/helpers
+    state: directory
+    force: true
+    owner: root
+    group: wheel
+    mode: '0700'
 
 - name: Install `excision` command
   copy:
-          src: "{{ item.name }}"
-          dest: /usr/local/bin/
-          force: yes
-          owner: root
-          group: wheel
-          mode: '0700'
+    src: "{{ item.name }}"
+    dest: /usr/local/bin/
+    force: true
+    owner: root
+    group: wheel
+    mode: '0700'
   with_items:
-          - name: excision
-          - name: excision-change-user-passwd
+    - name: excision
+    - name: excision-change-user-passwd
 
 - name: Install Excision scripts
   copy:
-          src: excision_scripts/
-          dest: /usr/local/lib/excision/
-          force: yes
-          owner: root
-          group: wheel
-          mode: '0600'
-
+    src: excision_scripts/
+    dest: /usr/local/lib/excision/
+    force: true
+    owner: root
+    group: wheel
+    mode: '0600'

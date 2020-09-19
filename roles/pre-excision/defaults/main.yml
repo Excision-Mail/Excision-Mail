@@ -1,0 +1,10 @@
+---
+
+pre_excision_packages:
+  - "dovecot"
+  - "dovecot-pigeonhole"
+  - "opensmtpd-extras"
+  - "opensmtpd-filter-rspamd"
+  - "opensmtpd-filter-senderscore"
+  - "redis"
+  - "rspamd"
