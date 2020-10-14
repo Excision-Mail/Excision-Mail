@@ -10,9 +10,11 @@ acme-client -v -f "$ssl_home/acme-client.conf" "$hostname"
 acme_status=$?
 ocspcheck -N -o "$ssl_home/$domain.ocsp" "$ssl_home/$domain.crt"
 
+rcctl reload relayd
+
 if [ $acme_status -eq 0 ]; then
 	printf "\n### Reloading services"
-	rcctl reload httpd dovecot relayd
+	rcctl reload dovecot
 	rcctl restart smtpd spamd
 fi
 
