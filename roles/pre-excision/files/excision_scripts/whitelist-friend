@@ -12,7 +12,7 @@ nospamd="$spam_home/nospamd"
 
 touch "$nospamd"
 
-if grep -q "$ip" "$nospamd"; then
+if grep -q "^$ip$" "$nospamd"; then
 	echo "$ip is already bypassing spamd"
 	exit 1
 else

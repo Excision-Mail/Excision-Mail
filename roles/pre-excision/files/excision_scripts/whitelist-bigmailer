@@ -12,7 +12,7 @@ bigmailers="$spam_home/bigmailer-names"
 
 touch "$bigmailers"
 
-if grep -q "$domain" "$bigmailers"; then 
+if grep -q "^$domain$" "$bigmailers"; then 
 	echo "$domain is already registered as a big mail corp"
 	exit 1
 else
