@@ -13,12 +13,12 @@ The following files are going to be changed:
   The default package url is going to be changed to https://cdn.openbsd.org/pub/OpenBSD
   
   /etc/doas.conf:
-  We will permit all member of :wheel to doas without password, change this afterwards
+  We will permit all members of :wheel to doas without password, change this afterwards
 
   The installation also adds the excision-passwd user who is allowed to run the
       excision change-passwd 
   command without needing a password. It is important that you keep this line in the 
-  doas.conf even if you change other permissions.
+  doas.conf even if after you change back the other permissions.
 EOF
 
 echo "We will back them up"
@@ -29,7 +29,7 @@ echo "Now we change them to the standard configuration and add the needed ansibl
 echo 'permit nopass :wheel' > /etc/doas.conf
 echo 'https://cdn.openbsd.org/pub/OpenBSD' > /etc/installurl
 
-pkg_add ansible gnupg--%gnupg2
-# this symlink is needed as unfortunately 
-# a lot of programs are not up to date
-ln -sfh /usr/local/bin/gpg2 /usr/local/bin/gpg
+pkg_add python
+# if you are running the ansible roles from
+# the same machine you also need ansible
+# pkg_add ansible
