@@ -14,7 +14,7 @@ if [ -e "$user_home/user-data/$username" ]; then
 fi
 
 for user in "$user_home/user-data/"*; do
-	[ -e "$user" ] || break
+	[ -e "$user" ] || continue
 	if grep -q "^$username$" "$user"; then
 		echo 2
 		exit 0
