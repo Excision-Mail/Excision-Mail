@@ -110,3 +110,16 @@
     owner: root
     group: wheel
     mode: '0600'
+
+- name: Install `excision` man page
+  copy:
+    src: files/man8/excision.8
+    dest: /usr/local/man/man8/
+    owner: root
+    group: bin
+    mode: '0644'
+  register: man_updated
+
+- name: Update man database
+  when: man_updated
+  command: makewhatis

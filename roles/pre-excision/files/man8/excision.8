@@ -1,0 +1,302 @@
+.Dd $Mdocdate: November 27 2020 $
+.Dt EXCISION 8
+.Os
+.Sh NAME
+.Nm excision
+.Nd configure and control the Excision Mail system
+.Sh SYNOPSIS
+.Nm
+.Cm add-alias
+.Ar alias@domainA.tldA user@domainB.tldB
+.Nm
+.Cm add-user |
+.Cm add-user-key |
+.Cm change-passwd |
+.Cm deleteall-user-keys
+.Ar user@domain.tld
+.Nm
+.Cm daily-report |
+.Cm ensure-dkim |
+.Cm ensure-gpg |
+.Cm fix-perms |
+.Cm renew-certs |
+.Cm show-stats |
+.Cm userdb-check |
+.Cm virtual-regen
+.Nm
+.Cm ensure-zone
+.Op Ar domain.tld
+.Nm
+.Cm whitelist-bigmailer
+.Ar domain.tld
+.Nm
+.Cm whitelist-friend
+.Ar IP
+.Sh DESCRIPTION
+The
+.Nm
+utility is the configuration manager for the Excision Mail system.
+It can be used to manage the
+.Sx USERS ,
+encryption
+.Sx KEYS
+and
+.Sx DNS
+settings.
+.Pp
+Throughout this document, it is assumed that the
+.Ar sub-addr-delim
+character is set to
+.Ql + .
+.Pp
+The following commands are available:
+.Bl -tag -width Ds -compact
+.It Cm add-alias Ar alias@domainA.tldA user@domainB.tldB
+.Pp
+Add
+.Ar alias@domainA.tldA
+as an alias for
+.Ar user@domainB.tldB .
+.Pp
+This allows
+.Ar user@domainB.tldB
+to send and receive mails as
+.Ar alias[+ext]@domainA.tldA .
+Being added as an alias now disqualifes
+.Ar alias@domainA.tldA
+from being a regular user.
+No regular user account can be set as an alias.
+.Pp
+See
+.Sx USERS
+for details about account types.
+.Pp
+.It Cm add-user Ar user@domain.tld Op Ar 0/1
+.Pp
+Add
+.Ar user@domain.tld
+as a regular user, with optionally asking for an openssh
+key, if the second argument is specified and is
+.Ql 1 .
+.Pp
+An openssh key is needed if
+.Ar user@domain.tld
+wishes to have password changing permissions for their
+own account.
+.Pp
+.It Cm add-user-key Ar user@domain.tld
+.Pp
+Prompt for adding an openssh key for
+.Ar user@domain.tld .
+.Pp
+A user can have multiple openssh keys.
+.Pp
+.It Cm change-passwd Ar user@domain.tld
+.Pp
+Change the IMAP and SMTP password for
+.Ar user@domain.tld .
+This takes effect immediately.
+.Pp
+.It Cm daily-report
+.Pp
+Run the daily report and update script manually.
+.Pp
+.It Cm deleteall-user-keys Ar user@domain.tld
+.Pp
+Remove all openssh keys for
+.Ar user@domain.tld .
+.Pp
+This will disable the
+.Ar user@domain.tld
+account from being able to change their password.
+.Pp
+.It Cm ensure-dkim
+.Pp
+Ensure that the DKIM certificates for all domains are valid.
+.Pp
+.It Cm ensure-gpg
+.Pp
+Ensure minimal sanity of the GPG system to allow users
+to use
+.Xr gpg-wks-server 1 .
+.Pp
+.It Cm ensure-zone Op Ar domain.tld
+.Pp
+Create the
+.Sy zonefile
+for
+.Ar domain.tld
+in
+.Pa /var/nsd/zones/master/domain.tld.tmp .
+If no
+.Ar domain.tld
+is specified, it defaults to the main domain for the server.
+.Pp
+This does not activate the new
+.Sy zonefile .
+The system admin should check the generated
+.Sy zonefile
+and then run
+.Bd -literal
+$ mv /var/nsd/zones/master/domain.tld{.tmp,}
+$ rcctl restart nsd
+.Ed
+.Pp
+.It Cm fix-perms
+Do a minimal fix of permissions of all files related to Excision Mail.
+.Pp
+.It Cm renew-certs
+.Pp
+Renew
+.Xr acme-client 1
+certificates for all domains and reload the services if needed.
+.Pp
+.It Cm show-stats
+.Pp
+Show email statistics from
+.Xr dovecot 1 ,
+.Xr rspamd 8
+and
+.Xr smtpd 8 .
+.Pp
+.It Cm userdb-check
+.Pp
+Validate the current users and aliases, and check for inconsistencies.
+.Pp
+.It Cm virtual-regen
+.Pp
+Regenerate the user database and reload the services.
+.Pp
+.Sy NOTE :
+This does not validate the user database prior to regenerating it.
+The sytem admin must run
+.Cm userdb-check
+before running this command.
+.Pp
+.It Cm whitelist-bigmailer Ar domain.tld
+.Pp
+Allow all MX IP addresses for
+.Ar domain.tld
+to bypass the
+.Xr spamd 8
+greylisting.
+.Pp
+.It Cm whitelist-friend Ar IP
+.Pp
+Allow the
+.Ar IP
+address to bypass the
+.Xr spamd 8
+greylisting.
+.El
+.Sh USERS
+There are two types of user accounts in Excision Mail:
+.Sy regular
+and
+.Sy alias .
+.Pp
+.Sy regular
+accounts can be added using the
+.Cm add-user
+command.
+The accounts are used for authentication in
+IMAP and SMTP protocols.
+They are given passwords and
+optionally openssh key based password changing authority.
+.Pp
+.Sy alias
+accounts can be added using the
+.Cm add-alias
+command.
+These accounts cannot be used for IMAP or SMTP logins.
+.Pp
+Both account types are functionally equivalent for sending and
+receiving emails, allowing use with delimiter extensions
+.Ar user[+ext]@domain.tld
+and using
+.Xr gpg-wks-server 1
+for
+.Xr gpg 1
+key publication.
+.Pp
+They are indistinguishable from an outside perspective and are
+present as a simple way to create multiple identities.
+.Pp
+Once an alias is created it is advised to not remove the alias,
+manually or otherwise, unless special care has been taken to sanitize
+the ecosystem.
+This can create unintended consequences, such as
+free floating GPG keys, not tied to any account; previous mails
+being sent to the incorrect person.
+There is no way to advertise that an account has been removed.
+.Sh KEYS
+There are several key types associated with Excision Mail:
+DKIM certificates,
+.Xr acme-client 1
+.Xr ssl 8
+certificates,
+.Xr ssh 1
+user keys and
+.Xr gpg 1
+user keys.
+.Pp
+The DKIM certificates are auto-managed using the
+.Cm ensure-dkim
+command.
+.Pp
+The
+.Xr ssl 8
+certificates for IMAP and SMTP are managed using the
+.Cm renew-certs
+command.
+It is run in the
+.Cm daily-report
+to ensure that all
+.Xr ssl 8
+certificates are up to date.
+.Pp
+The
+.Xr ssh 1
+keys are only available to designated users,
+who have had an ssh key added during the account
+creation with
+.Cm add-user Ar 1 ,
+or with
+.Cm add-user-key .
+An ssh key is needed for allowing the user to
+change their password.
+.Pp
+The
+.Xr gpg 1
+keys for the system accounts
+.Ar wks@comain.tld
+are auto-managed using the
+.Cm ensure-gpg
+command.
+Users can manage their published keys using the
+.Xr gpg-wks-server 1
+key publication protocol.
+.Sh DNS
+The DNS management subsystem is an optional system using
+.Xr nsd 8 .
+.Pp
+All domains registered in Excision Mail have their zonefiles
+generated using
+.Cm ensure-zone .
+Extra zone information for
+.Ar domain.tld
+can be added by putting it in
+.Pa /etc/excision/nsd/domain.tld.zone.addon .
+This information is appended to the zonefile when
+it is created with
+.Cm ensure-zone .
+.Sh SEE ALSO
+.Xr dovecot 1 ,
+.Xr gpg 1 ,
+.Xr smtpd.conf 5 ,
+.Xr rspamd 8 ,
+.Xr smtpd 8
+.Sh AUTHORS
+.Nm
+is written by
+.An Aisha Tammy Aq Mt excision@bsd.ac .
