@@ -35,7 +35,7 @@ domains:
 #       you input over here: hostname.domain.tld
 #       e.g. my hostname is called mail and the reverse dns resolves to
 #       mail.aisha.cc
-hostname: "mail.{{ domain[0].name }}" # can change it if you so prefer, but this is a nice one
+hostname: "mail.{{ domains[0].name }}" # can change it if you so prefer, but this is a nice one
 
 # This is the user that will be created and all server information emails
 # daily reports and outside domain reports will be send to admin@domain.tld
