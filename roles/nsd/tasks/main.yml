@@ -26,6 +26,7 @@
 
 - name: Generate all dkim certificates
   command: excision ensure-dkim
+  ignore_errors: true
 
 - name: Add SSHFP records to zone master file
   shell: >
