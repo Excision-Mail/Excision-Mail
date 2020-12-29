@@ -4,6 +4,7 @@
 
   vars_files:
     - vars.yml
+    - group_vars/global.yml
 
   roles:
     - { role: pre-excision,  tags: ['pre-excision']   }
