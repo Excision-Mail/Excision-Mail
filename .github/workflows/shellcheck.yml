@@ -20,3 +20,4 @@ jobs:
       uses: ludeeus/action-shellcheck@master
       with:
         scandir: './roles/pre-excision/files'
+        SHELLCHECK_OPTS: -ax -e 1117,2034,2181
