@@ -4,8 +4,8 @@
     - mainserver
 
   vars_files:
-    - vars.yml
     - group_vars/global.yml
+    - vars.yml
 
   roles:
     - { role: httpd,         tags: ['httpd']          }

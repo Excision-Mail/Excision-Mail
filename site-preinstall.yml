@@ -3,8 +3,8 @@
   hosts: mainserver
 
   vars_files:
-    - vars.yml
     - group_vars/global.yml
+    - vars.yml
 
   roles:
     - { role: pre-excision,  tags: ['pre-excision']   }
