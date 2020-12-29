@@ -5,6 +5,7 @@
 
   vars_files:
     - vars.yml
+    - group_vars/global.yml
 
   roles:
     - { role: httpd,         tags: ['httpd']          }
