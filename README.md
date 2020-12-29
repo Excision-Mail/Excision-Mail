@@ -1,5 +1,6 @@
 # Excision Mail
-[![GitHub Actions](https://img.shields.io/endpoint.svg?url=https%3A%2F%2Factions-badge.atrox.dev%2Fatrox%2Fsync-dotenv%2Fbadge)](https://github.com/Excision/Excision/actions)
+[![ansible-lint](https://github.com/Excision-Mail/Excision-Mail/workflows/ansible-lint/badge.svg)](https://github.com/Excision-Mail/Excision-Mail/actions?query=workflow%3Aansible-lint)
+[![shellcheck](https://github.com/Excision-Mail/Excision-Mail/workflows/shellcheck/badge.svg)](https://github.com/Excision-Mail/Excision-Mail/actions?query=workflow%3Ashellcheck)
 [![GitHub release (latest SemVer including pre-releases)](https://img.shields.io/github/v/release/Excision-Mail/Excision-Mail?include_prereleases)](https://github.com/Excision-Mail/Excision-Mail/releases)
 [![GitHub license](https://img.shields.io/github/license/Excision-Mail/Excision-Mail.svg)](https://github.com/Excision-Mail/Excision-Mail/blobl/master/LICENSE)
 [![GitHub issues](https://img.shields.io/github/issues-raw/Excision-Mail/Excision-Mail)](https://github.com/Excision-Mail/Excision-Mail/issues)
