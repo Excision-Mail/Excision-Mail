@@ -8,6 +8,9 @@
 
 Fullstack, security focused mailserver based on OpenSMTPD for OpenBSD using ansible
 
+## Installation
+Go through the installation manual on [Excision Mail - Detailed Installation](https://excision.bsd.ac/install/fullinstall/).
+
 ## Functionality highlights
 
 #### Full featured email server with modern encryption standards enforced
@@ -88,10 +91,6 @@ System requirements (good for about 50 users)
   * 1 core
   * 1GB RAM
   * 2GB Swap 
-
-## Prerequisites and Installation
-See [INSTALLATION.md](INSTALLATION.md) for a simple installation covering the common use cases.  
-For more complex installations, visit the website [Excision Mail](https://excision.bsd.ac)
 
 ## Contact and support
 The primary mode of contact for reporting bugs and getting support is through GitHub.  
