@@ -1,8 +1,8 @@
-name: "Push Notification"
+name: irc-push
 on: [push, pull_request, create, issues, issue_comment]
 
 jobs:
-  test:
+  irc-push:
     runs-on: ubuntu-latest
     steps:
       - name: irc push
