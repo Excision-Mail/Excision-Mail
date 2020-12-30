@@ -9,7 +9,7 @@
 Fullstack, security focused mailserver based on OpenSMTPD for OpenBSD using ansible
 
 ## Installation
-Go through the installation guide on the website: [install guide](https://www.epsilonknot.xyz/excision/install/guide/)
+Go through the installation guide on the website: [install guide](https://excision.bsd.ac/install/guide/)
 
 ## Functionality highlights
 
