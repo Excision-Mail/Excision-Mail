@@ -63,6 +63,8 @@ relay tlsinspect {
 	protocol tlsinspect
 
 	forward to <local> port $https_port
+{% if enable_extras %}
 	forward to <extrasIP> port $extras_port
+{% endif %}
 }
 
