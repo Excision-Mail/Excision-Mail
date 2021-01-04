@@ -9,7 +9,7 @@ table <local> { 127.0.0.1 }
 {% if enable_extras %}
 # only enable extras when asked
 extras_port="{{ extras_port }}"
-table <extrasIP> { {{ extrasIP }} }
+table <extras_ip> { {{ extras_ip }} }
 {% endif %}
 
 http protocol tlsinspect {
@@ -21,7 +21,7 @@ http protocol tlsinspect {
 {% endfor %}
 {% if enable_extras %}
 {% for edomain in extra_domains %}
-	pass request header "Host" value "{{ edomain }}.{{ domain.name }}" forward to <extrasIP>
+	pass request header "Host" value "{{ edomain }}.{{ domain.name }}" forward to <extras_ip>
 {% endfor %}
 {% endif %}
 {% endfor %}
@@ -64,7 +64,7 @@ relay tlsinspect {
 
 	forward to <local> port $https_port
 {% if enable_extras %}
-	forward to <extrasIP> port $extras_port
+	forward to <extras_ip> port $extras_port
 {% endif %}
 }
 

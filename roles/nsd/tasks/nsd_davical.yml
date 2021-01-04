@@ -2,7 +2,7 @@
 # this is the ugliest hack in this whole instalation
 # i am full of regret with being unable to get a nicer
 # method for figuring out how to send private keys
-# to the extraserver, (unless combining site-install and site-extrasIP
+# to the extraserver, (unless combining site-install and site-extras
 # and then setting facts - NOT GOING TO DO THIS)
 - name: Synchronize davical private keys
   command: >
@@ -10,7 +10,7 @@
     -e "ssh -i $HOME/.ssh/id_ed25519 -p22"
     --rsync-path="mkdir -p /var/www/etc/davical/keys && /usr/bin/openrsync"
     "/etc/excision/dkim/private/davRSA.{{ item.name }}.key"
-    "root@{{ extrasIP }}:/var/www/etc/davical/keys/"
+    "root@{{ extras_ip }}:/var/www/etc/davical/keys/"
   with_items: "{{ domains }}"
   when: extras_not_home
 

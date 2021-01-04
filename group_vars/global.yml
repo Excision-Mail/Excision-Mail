@@ -40,10 +40,10 @@ http_port: 80
 # to set them up on a separate machine and let the two machines
 # interact with each other through a private network/VPN
 # wireguard is a really good candidate to setup such a VPN
-# in which case you can set the extrasIP to the wireguard peer IP 
+# in which case you can set the extras_ip to the wireguard peer IP
 # and in the above configuration set http/s interface to tun0/wg0
 enable_extras: false
-extrasIP: 127.0.0.1                        # if using wireguard, set to the peer ip of 
+extras_ip: 127.0.0.1                       # if using wireguard, set to the peer ip of
                                            # extraserver, like 10.7.0.3
 extras_interface: "{{ https_interface }}"  # this should then be set to wg0/tun0
 extras_port: "{{ relayd_port }}"           #
@@ -70,5 +70,3 @@ enable_spamd: false
 # For most people enabling clamav is not really needed unless you
 # are going to be serving for windows clients 
 enable_clamav: false
-
-
