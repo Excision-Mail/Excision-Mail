@@ -1,110 +1,36 @@
 #!/bin/sh
 
 if [ "$(id -u)" -ne 0 ]; then
-	echo "This can only be run by root"
+	printf %s\\n "excision can only be run by root"
 	exit 1
 fi
 
 HELP=$(cat <<-END
-Available options are:
-    ensure-dkim
-        Regenerate DKIM txt record and store it in /etc/excision/dkim
-
-    renew-certs
-        Renews certificates using acme-client
-
-    show-stats
-        Show statistics of email services
-
-    add-alias "alias@domain.tld" "user@domain.tld"
-        Add alias for user
-
-    add-user "user@domain.tld"
-        Add new user "user@domain.tld"
-
-    change-passwd "user@domain.tld"
-        Change the existing password for "user@domain.tld"
-
-    daily-report
-        Daily maintenance for Excision
-
-    userdb-check
-        Check consistency of user database
-
-    fix-perms
-        Fix permissions for Excision related folders
-
-    virtual-regen
-        Assuming that userdb-check has returned correct, recreate the smtpd tables
-        and reload all services depending on the passwor database. 
-        MUST RUN "userdb-check" MANUALLY
-
-    ensure-gpg
-        Do the bare minimum gpg fixing so that newer keys can be published using WKS
-
-    ensure-zone
-        Creates an example zone file backup in /var/nsd/zones/master/domain.zone.tmp
-        DOES NOT DEPEND ON OR AFFECT CURRENT NSD CONFIG
-
-    whitelist-bigmailer "domain.tld"
-        Finds and whitelists all ips associated with "domain", for spamd
-
-    whitelist-friend "ip"
-        Whitelists "ip" for spamd
-
-    add-user-key "user"
-        Add an ssh key for a user
-        This also allows them to be able to change their password
-
-    deleteall-user-keys "user@domain.tld"
-        Delete all ssh-keys for a user
-        This removes the users ability to change their password
+usage:  excision add-alias alias@domainA.tldA user@domainB.tldB
+        excision add-user user@domain.tld [1]
+        excision add-user-key | change-passwd | deleteall-user-keys
+                 user@domain.tld
+        excision daily-report | ensure-dkim | ensure-gpg | fix-perms |
+                 renew-certs | show-stats | userdb-check | virtual-regen
+        excision ensure-zone [domain.tld]
+        excision whitelist-bigmailer domain.tld
+        excision whitelist-friend IP
 END
 )
 
-
 if [ $# -lt 1 ]; then
-	echo "$HELP"
+	printf %s\\n "${HELP}"
 	exit 2
 fi
 
-command=$1
+command="$1"
 shift
 
-case "$command" in
-	"ensure-dkim")
-		/bin/sh /usr/local/lib/excision/ensure-dkim "$@";;
-	"renew-certs")
-		/bin/sh /usr/local/lib/excision/renew-certs "$@";;
-	"show-stats")
-		/bin/sh /usr/local/lib/excision/show-stats "$@";;
-	"add-alias")
-		/bin/sh /usr/local/lib/excision/add-alias "$@";;
-	"add-user")
-		/bin/sh /usr/local/lib/excision/add-user "$@";;
-	"change-passwd")
-		/bin/sh /usr/local/lib/excision/change-passwd "$@";;
-	"daily-report")
-		/bin/sh /usr/local/lib/excision/daily-report "$@";;
-	"userdb-check")
-		/bin/sh /usr/local/lib/excision/userdb-check "$@";;
-	"fix-perms")
-		/bin/sh /usr/local/lib/excision/fix-perms "$@";;
-	"virtual-regen")
-		/bin/sh /usr/local/lib/excision/virtual-regen "$@";;
-	"ensure-gpg")
-		/bin/sh /usr/local/lib/excision/ensure-gpg "$@";;
-	"ensure-zone")
-		/bin/sh /usr/local/lib/excision/ensure-zone "$@";;
-	"whitelist-bigmailer")
-		/bin/sh /usr/local/lib/excision/whitelist-bigmailer "$@";;
-	"whitelist-friend")
-		/bin/sh /usr/local/lib/excision/whitelist-friend "$@";;
-  "add-user-key")
-    /bin/sh /usr/local/lib/excision/add-user-key "$@";;
-  "deleteall-user-keys")
-    /bin/sh /usr/local/lib/excision/deleteall-user-keys "$@";;
-	*)
-		echo "$HELP"
-		exit 3;;
-esac
+script_home="/usr/local/lib/excision"
+
+if [ -f "${script_home}/${command}" ] && [ -x "${script_home}/${command}" ]; then
+	"${script_home}/${command}" "${@}"
+else
+	printf %s\\n "${HELP}"
+	exit 3
+fi

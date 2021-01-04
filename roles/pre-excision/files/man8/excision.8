@@ -9,7 +9,10 @@
 .Cm add-alias
 .Ar alias@domainA.tldA user@domainB.tldB
 .Nm
-.Cm add-user |
+.Cm add-user
+.Ar user@domain.tld
+.Op Ar 1
+.Nm
 .Cm add-user-key |
 .Cm change-passwd |
 .Cm deleteall-user-keys
@@ -71,7 +74,7 @@ See
 .Sx USERS
 for details about account types.
 .Pp
-.It Cm add-user Ar user@domain.tld Op Ar 0/1
+.It Cm add-user Ar user@domain.tld Op Ar 1
 .Pp
 Add
 .Ar user@domain.tld
