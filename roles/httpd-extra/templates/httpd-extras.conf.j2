@@ -17,6 +17,23 @@ server "webmail.{{ domains[0].name }}" {
 
 	directory index index.php
 
+	location ".htaccess*"             { block }
+	location "/CHANGELOG"             { block }
+	location "/INSTALL"               { block }
+	location "/LICENSE"               { block }
+	location "/README.md"             { block }
+	location "/SQL*"                  { block }
+	location "/UPGRADING"             { block }
+	location "/bin*"                  { block }
+	location "/composer**"            { block }
+	location "/config*"               { block }
+	location "/db*"                   { block }
+	location "/installer*"            { block }
+	location "/logs*"                 { block }
+	location "/plugin*"               { block }
+	location "/program*"              { block }
+	location "/temp*"                 { block }
+
 	location "*.php" {
 		fastcgi socket "/run/php-fpm.sock"
 	}
