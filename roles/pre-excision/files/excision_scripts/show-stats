@@ -7,4 +7,4 @@ printf "\n### Rspamd statistics\n"
 /usr/local/bin/rspamc stat
 
 printf "\n### Dovecot statistics\n"
-su -l excision -c "/usr/local/bin/doveadm -f pager quota get -A | tr -d '\f'"
+/usr/local/bin/doveadm -f pager quota get -A | tr -d '\f'
