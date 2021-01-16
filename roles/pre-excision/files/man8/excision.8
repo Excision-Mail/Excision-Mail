@@ -229,7 +229,7 @@ Once an alias is created it is advised to not remove the alias,
 manually or otherwise, unless special care has been taken to sanitize
 the ecosystem.
 This can create unintended consequences, such as
-free floating GPG keys, not tied to any account; previous mails
+free floating GPG keys, not tied to any account; emails
 being sent to the incorrect person.
 There is no way to advertise that an account has been removed.
 .Sh KEYS
@@ -268,6 +268,13 @@ or with
 .Cm add-user-key .
 An ssh key is needed for allowing the user to
 change their password.
+For a user to change their password, they need to ssh to the
+mail server with the
+.Sy excision-passwd
+user and the ssh key registered to their account.
+.Bd -literal
+    $ ssh -i identity_file excison-passwd@mail.domain.tld
+.Ed
 .Pp
 The
 .Xr gpg 1
@@ -302,4 +309,7 @@ it is created with
 .Sh AUTHORS
 .Nm
 is written by
-.An Aisha Tammy Aq Mt excision@bsd.ac .
+.An Aisha Tammy Aq Mt excision@bsd.ac
+with the help of other open source contributors at
+.Lk https://github.com/Excision-Mail/Excision-Mail .
+
