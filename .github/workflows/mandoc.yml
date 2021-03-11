@@ -1,0 +1,20 @@
+name: mandoc
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  mandoc:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Install dependencies
+      run: |
+        sudo apt update
+        sudo apt-get install -y mandoc
+    - name: Check man pages
+      run: |
+        mandoc -T lint -W warning roles/pre-excision/files/man8/excision.8
