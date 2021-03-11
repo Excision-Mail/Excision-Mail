@@ -96,7 +96,7 @@ A user can have multiple openssh keys.
 .Pp
 .It Cm change-passwd Ar user@domain.tld
 .Pp
-Change the IMAP and SMTP password for
+Change the IMAP, POP and SMTP password for
 .Ar user@domain.tld .
 This takes effect immediately.
 .Pp
@@ -140,7 +140,7 @@ This does not activate the new
 The system admin should check the generated
 .Sy zonefile
 and then run
-.Bd -literal
+.Bd -literal -offset width
 $ mv /var/nsd/zones/master/domain.tld{.tmp,}
 $ rcctl restart nsd
 .Ed
@@ -203,7 +203,7 @@ accounts can be added using the
 .Cm add-user
 command.
 The accounts are used for authentication in
-IMAP and SMTP protocols.
+IMAP, POP and SMTP protocols.
 They are given passwords and
 optionally openssh key based password changing authority.
 .Pp
@@ -211,7 +211,7 @@ optionally openssh key based password changing authority.
 accounts can be added using the
 .Cm add-alias
 command.
-These accounts cannot be used for IMAP or SMTP logins.
+These accounts cannot be used for IMAP, POP or SMTP logins.
 .Pp
 Both account types are functionally equivalent for sending and
 receiving emails, allowing use with delimiter extensions
@@ -249,7 +249,7 @@ command.
 .Pp
 The
 .Xr ssl 8
-certificates for IMAP and SMTP are managed using the
+certificates for IMAP, POP and SMTP are managed using the
 .Cm renew-certs
 command.
 It is run in the
@@ -272,8 +272,8 @@ For a user to change their password, they need to ssh to the
 mail server with the
 .Sy excision-passwd
 user and the ssh key registered to their account.
-.Bd -literal
-    $ ssh -i identity_file excison-passwd@mail.domain.tld
+.Bd -literal -offset width
+$ ssh -i identity_file excison-passwd@mail.domain.tld
 .Ed
 .Pp
 The
@@ -293,6 +293,18 @@ The DNS management subsystem is an optional system using
 All domains registered in Excision Mail have their zonefiles
 generated using
 .Cm ensure-zone .
+Even if the DNS subsystem is not used, the zone files
+are generated as a reference for manually managing the DNS.
+The temporary zone files are created and stored in
+.Pa /var/nsd/zones/master/domain.tld.tmp .
+If the DNS subsystem was not enabled during install time,
+it can be enabled by simply enabling
+.Xr nsd 8 :
+.Bd -literal -offset width
+$ rcctl enable nsd
+$ rcctl start nsd
+.Ed
+.Pp
 Extra zone information for
 .Ar domain.tld
 can be added by putting it in
@@ -303,13 +315,16 @@ it is created with
 .Sh SEE ALSO
 .Xr dovecot 1 ,
 .Xr gpg 1 ,
+.Xr gpg-wks-server 1 ,
 .Xr smtpd.conf 5 ,
 .Xr rspamd 8 ,
 .Xr smtpd 8
+.Pp
+Extended online documentation is available at
+.Lk https://excision.bsd.ac .
 .Sh AUTHORS
 .Nm
 is written by
 .An Aisha Tammy Aq Mt excision@bsd.ac
 with the help of other open source contributors at
 .Lk https://github.com/Excision-Mail/Excision-Mail .
-
