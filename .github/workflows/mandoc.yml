@@ -17,4 +17,4 @@ jobs:
         sudo apt-get install -y mandoc
     - name: Check man pages
       run: |
-        mandoc -T lint -W warning roles/pre-excision/files/man8/excision.8
+        mandoc -T lint -W warning roles/pre_excision/files/man8/excision.8
