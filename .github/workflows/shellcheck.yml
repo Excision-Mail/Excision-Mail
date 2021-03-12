@@ -14,11 +14,11 @@ jobs:
     - name: Install Excision scripts
       run: |
         sudo mkdir -p /usr/local/bin /usr/local/lib/excision
-        sudo cp roles/pre-excision/files/excision /usr/local/bin/
-        sudo cp -r roles/pre-excision/files/excision_scripts/. /usr/local/lib/excision/
+        sudo cp roles/pre_excision/files/excision /usr/local/bin/
+        sudo cp -r roles/pre_excision/files/excision_scripts/. /usr/local/lib/excision/
     - name: Run shellcheck
       uses: ludeeus/action-shellcheck@master
       with:
-        scandir: './roles/pre-excision/files'
+        scandir: './roles/pre_excision/files'
       env:
         SHELLCHECK_OPTS: -ax -e 1117,2034,2181
