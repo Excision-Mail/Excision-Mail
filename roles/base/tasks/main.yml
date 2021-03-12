@@ -1,12 +1,13 @@
 ---
 - name: Make sure log files exist
   file:
-    path: /var/log/{{ item }}
+    path: "{{ item.file }}"
     state: touch
     owner: root
     group: wheel
-    mode: '0640'
-  with_items: {nsd, httpd, doas, clamd, freshclam, spamd, php-fpm, postgresql}
+    mode: "{{ item.mode | default('0640') }}"
+    modification_time: preserve
+  with_items: "{{ BASE_logfiles }}"
 
 - name: Generate login.conf
   copy:
@@ -29,8 +30,8 @@
   notify: reload syslog
 
 - name: Generate newsyslog conf
-  copy:
-    src: newsyslog.conf
+  template:
+    src: newsyslog.conf.j2
     dest: /etc/newsyslog.conf
     force: true
     owner: root

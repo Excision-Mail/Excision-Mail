@@ -18,7 +18,7 @@
 domains: 
   - name: <change-me> # e.g. aisha.cc
     nsd: true         # HIGHLY RECOMMENDED, else remove or set to false
-                      # also depends on enable_nsd: true
+                      # depends on enable_nsd: true
   #- name: domain2.tld
   #  nsd: false
   #- name: domain3.tld3
@@ -45,8 +45,9 @@ hostname: "mail.{{ domains[0].name }}" # can change it if you so prefer, but thi
 #       to go into a information-archive email folder. This is very easy to set up
 #       using mail filtering. I will add a small section on how to configure mail
 #       filtering in the appropriate section, so don't worry about that right now.
-admin: <change-me> # e.g. aisha
-
+admin:              <change-me> # e.g. aisha
+admin_password:     <change-me> # e.g. sup3rC00Lp@sswd
+admin_ssh_password: <change-me> # e.g. 3v3nc00l3r
 
 #####-------- OPTIONAL SECTION
 

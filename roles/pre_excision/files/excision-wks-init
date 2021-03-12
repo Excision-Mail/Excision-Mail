@@ -1,6 +1,6 @@
 #!/bin/sh
 
-# this is only run by the excision unpriv
+# this is only run by the 'excision' unpriveleged
 # user, so we have to define the folder we want
 wks_home="/var/lib/gnupg/wks"
 
@@ -10,27 +10,22 @@ gpg-wks-server --list-domains
 
 while read -r domain; do
 	# create the WKS mail submission address
-	echo "wks@$domain" > "$wks_home/$domain/submission-address"
-	# now we need to make sure that the wks@domain has a proper
-	# gpg key
+	printf %s\\n "wks@${domain}" > "${wks_home}/${domain}/submission-address"
+	# now we need to make sure that the wks@domain has a proper gpg key
 
 	# first check if it already exists
-	gpg2 -K "wks@$domain"
 	# if not then we create a key that lasts for ever
-	if [ $? -ne 0 ]; then
+	if gpg2 -K "wks@${domain}"; then
 		gpg2 --batch --passphrase "" --quick-gen-key "wks@$domain"
 	fi
-
-	# I think I did some black bagic voodoo here !!??
 
 	# get the fingerprint, with the blank space
 	# (this part will break on gpg output format change, so
 	#   keep track of gnupg releases)
-	fingerprint=$(gpg2 -K "wks@$domain" | sed "2q;d")
+	fingerprint=$(gpg2 -K "wks@${domain}" | sed "2q;d")
 
 	# now remove the empty space at the end
 	fingerprint=${fingerprint##*( )}
 
-	gpg-wks-server --install-key "$fingerprint" "wks@$domain"
+	gpg-wks-server --install-key "${fingerprint}" "wks@${domain}"
 done < /etc/mail/vdomains
-

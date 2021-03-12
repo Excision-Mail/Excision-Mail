@@ -1,19 +1,14 @@
 ---
 - name: Install required packages
   openbsd_pkg:
-    name: "{{ pre_excision_packages }}"
+    name: "{{ PE_packages }}"
     state: present
 
 - name: Enable required services
   service:
     name: "{{ item.name }}"
     enabled: true
-  with_items:
-    - {name: "dovecot"}
-    - {name: "httpd"}
-    - {name: "redis"}
-    - {name: "relayd"}
-    - {name: "rspamd"}
+  with_items: "{{ PE_services }}"
 
 - name: Create Excision config directories
   file:
@@ -22,22 +17,20 @@
     owner: root
     group: wheel
     mode: "{{ item.perm }}"
-  with_items:
-    - {name: "/etc/excision/dkim/private", perm: "0755"}
-    - {name: "/etc/excision/ssl/private", perm: "0755"}
-    - {name: "/etc/excision/nsd", perm: "0755"}
-    - {name: "/etc/excision/spam", perm: "0755"}
-    - {name: "/etc/excision/users", perm: "0700"}
-    - {name: "/etc/excision/users/user-data", perm: "0700"}
+  with_items: "{{ PE_config_dirs }}"
 
 - name: Create hostname file
   template:
     src: hostname.j2
     dest: /etc/excision/nsd/hostname
+    mode: '0644'
 
 - name: Make required groups
   group:
-    name: excision
+    name: "{{ item.name }}"
+  with_items:
+    - {name: "excision"}
+    - {name: "excision-passwd"}
 
 - name: Make excision user
   user:
@@ -46,24 +39,30 @@
     group: excision
     groups: ""
     login_class: daemon
-    password_lock: true
-    shell: /bin/ksh
+    shell: /sbin/nologin
     home: /var/excision-home
+    password_lock: true
+    password: "*************"
 
 - name: Disable logins for excision user
   file:
     state: absent
     path: /var/excision-home/.ssh/
 
-- name: Make excision-passwd managing user
+- name: Generate admin_ssh_password hash for excision-passwd user
+  shell: printf %s\\n "{{ admin_ssh_password }}" | encrypt
+  register: _PE_password_hash
+
+- name: Make excision-passwd user
   user:
     name: excision-passwd
     comment: Excision password manager
-    group: excision
-    groups: ""
+    group: excision-passwd
+    groups: excision
     login_class: default
     shell: /bin/ksh
     home: /var/excision-passwd
+    password: "{{ _PE_password_hash.stdout }}"
 
 - name: Allow excision-passwd to execute proper command
   lineinfile:
@@ -86,16 +85,7 @@
     force: true
     owner: excision
     group: excision
-    mode: '0644'
-
-- name: Create Excision scripts directory
-  file:
-    path: /usr/local/lib/excision/helpers
-    state: directory
-    force: true
-    owner: root
-    group: wheel
-    mode: '0700'
+    mode: '0755'
 
 - name: Install `excision` command
   copy:
@@ -104,7 +94,7 @@
     force: true
     owner: root
     group: wheel
-    mode: '0700'
+    mode: '0755'
   with_items:
     - name: excision
     - name: excision-change-user-passwd
@@ -116,7 +106,7 @@
     force: true
     owner: root
     group: wheel
-    mode: '0700'
+    mode: '0755'
 
 - name: Install `excision` man page
   copy:
@@ -125,8 +115,4 @@
     owner: root
     group: bin
     mode: '0644'
-  register: man_updated
-
-- name: Update man database
-  when: man_updated
-  command: makewhatis
+  notify: Update man database

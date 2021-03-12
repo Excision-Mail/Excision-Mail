@@ -7,7 +7,7 @@
     - vars.yml
 
   roles:
-    - { role: pre-excision,  tags: ['pre-excision']   }
+    - { role: pre_excision,  tags: ['pre_excision']   }
     - { role: base,          tags: ['base']           }
     - { role: nsd,           tags: ['nsd']            }
 
