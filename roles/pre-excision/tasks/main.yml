@@ -39,17 +39,23 @@
   group:
     name: excision
 
-- name: Make Excision user
+- name: Make excision user
   user:
     name: excision
     comment: Excision general manager
     group: excision
     groups: ""
     login_class: daemon
+    password_lock: true
     shell: /bin/ksh
     home: /var/excision-home
 
-- name: Make Excision password managing user
+- name: Disable logins for excision user
+  file:
+    state: absent
+    path: /var/excision-home/.ssh/
+
+- name: Make excision-passwd managing user
   user:
     name: excision-passwd
     comment: Excision password manager
@@ -67,9 +73,10 @@
     group: wheel
     mode: '0600'
     state: present
+    regexp: 'permit nopass excision-passwd.*'
     line: >
-      permit nopass
-      excision-passwd as root
+      permit nopass excision-passwd
+      as root
       cmd /usr/local/bin/excision-change-user-passwd
 
 - name: Install gpg-wks init script
