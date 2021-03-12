@@ -15,6 +15,6 @@
 # make your own email setup, ldap is
 # more complex than this whole setup put together
 
-"$emscripts/change-passwd" "$@"
+"${emscripts}/change-passwd" "$@"
 
-"$emscripts/virtual-regen"
+"${emscripts}/virtual-regen"
