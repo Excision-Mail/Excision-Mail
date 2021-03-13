@@ -39,7 +39,7 @@
     group: excision
     groups: ""
     login_class: daemon
-    shell: /sbin/nologin
+    shell: /bin/ksh
     home: /var/excision-home
     password_lock: true
     password: "*************"
