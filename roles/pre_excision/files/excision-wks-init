@@ -15,7 +15,7 @@ while read -r domain; do
 
 	# first check if it already exists
 	# if not then we create a key that lasts for ever
-	if gpg2 -K "wks@${domain}"; then
+	if ! gpg2 -K "wks@${domain}"; then
 		gpg2 --batch --passphrase "" --quick-gen-key "wks@$domain"
 	fi
 
