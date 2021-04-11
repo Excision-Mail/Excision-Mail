@@ -98,7 +98,7 @@ $config['des_key'] = '{{ rc_encryption_key }}';
 // List of active plugins (in plugins/ directory)
 $config['plugins'] = array(
 {% for plugin in roundcube_plugins %}
-{{ plugin.plugin }},
+'{{ plugin.plugin }}',
 {% endfor %}
 );
 
