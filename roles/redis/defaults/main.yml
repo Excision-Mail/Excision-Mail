@@ -1,0 +1,3 @@
+---
+redis_packages:
+  - redis

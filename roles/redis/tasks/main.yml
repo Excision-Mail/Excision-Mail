@@ -1,0 +1,17 @@
+---
+- name: Install redis package
+  openbsd_pkg:
+    name: "{{ redis_packages }}"
+    state: present
+  notify: start redis
+
+- name: Copy redis.conf template
+  copy:
+    src: redis.conf
+    dest: /etc/redis/redis.conf
+    owner: root
+    group: wheel
+    mode: 0644
+  notify: restart redis
+
+- meta: flush_handlers
