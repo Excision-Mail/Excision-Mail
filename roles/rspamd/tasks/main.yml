@@ -25,11 +25,6 @@
     mode: '0644'
   with_items: "{{ rspamd_templates }}"
 
-- name: Check redis is started
-  service:
-    name: redis
-    state: started
-
 - name: Check rspamd is started
   service:
     name: rspamd
@@ -39,7 +34,3 @@
   service:
     name: rspamd
     state: reloaded
-
-- name: Download pretrained datasets
-  include: rspamd_pretrain.yml
-  when: rspamd_enable_pretrain
