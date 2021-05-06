@@ -2,7 +2,7 @@
 - name: Add _rspamd to _redis group
   user:
     name: _rspamd
-    group: _redis
+    groups: _redis
     append: yes
 
 - name: Create rspamd local.d directory
