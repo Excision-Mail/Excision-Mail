@@ -24,7 +24,7 @@ filter check_fcrdns phase connect match !fcrdns junk
 filter senderscore proc-exec "filter-senderscore -junkBelow 70 -slowFactor 1000"
 
 # also use the rspamd filter
-filter rspamd proc-exec "filter-rspamd"
+filter rspamd proc-exec "filter-rspamd -url http://127.0.0.1:11333"
 
 # Tables
 #
