@@ -8,7 +8,7 @@ PE_packages:
   - "opensmtpd-filter-rspamd"
   - "opensmtpd-filter-senderscore"
   - "redis"
-  - "rspamd"
+  - "rspamd--"
 
 PE_services:
   - {name: "dovecot"}
