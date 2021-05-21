@@ -16,7 +16,7 @@
 
 - name: Copy davical private keys
   copy:
-    src: /etc/excision/dkim/private/dav.{{ item.name }}.key
+    src: /etc/excision/dkim/private/davRSA.{{ item.name }}.key
     dest: /var/www/etc/davical/keys/
     force: true
     remote_src: true
