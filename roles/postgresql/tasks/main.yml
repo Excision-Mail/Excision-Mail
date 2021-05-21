@@ -32,6 +32,20 @@
   become: yes
   become_user: _postgresql
 
+- name: ensure semmni for busy servers
+  lineinfile:
+    path: /etc/sysctl.conf
+    regexp: "^kern.seminfo.semmni"
+    line: "kern.seminfo.semmni=90"
+  notify: sysctl semmni
+
+- name: ensure semmns for busy servers
+  lineinfile:
+    path: /etc/sysctl.conf
+    regexp: "^kern.seminfo.semmns"
+    line: "kern.seminfo.semmns=2048"
+  notify: sysctl semmns
+
 - name: generate configuration
   template:
     src: postgresql.conf.j2
@@ -39,6 +53,7 @@
     owner: _postgresql
     group: _postgresql
     mode: 0600
+  notify: restart postgresql
 
 - name: generate pg_hba.conf
   copy:
@@ -50,23 +65,6 @@
   with_items:
     - pg_hba.conf
     - pg_ident.conf
-
-- name: ensure semmni for busy servers
-  lineinfile:
-    path: /etc/sysctl.conf
-    regexp: "^kern.seminfo.semmni"
-    line: "kern.seminfo.semmni=90"
-
-- name: ensure semmns for busy servers
-  lineinfile:
-    path: /etc/sysctl.conf
-    regexp: "^kern.seminfo.semmns"
-    line: "kern.seminfo.semmns=2048"
-
-- name: enable and start daemon
-  service:
-    name: postgresql
-    enabled: yes
-    state: restarted
+  notify: restart postgresql
 
 - meta: flush_handlers

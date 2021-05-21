@@ -8,3 +8,11 @@
   service:
     name: postgresql
     state: restarted
+    enabled: true
+
+- name: sysctl semmni
+  command: sysctl kern.seminfo.semmni=90
+
+- name: sysctl semmns
+  command: kern.seminfo.semmns=2048
+
