@@ -1,10 +1,11 @@
 # Excision Mail
 [![ansible-lint](https://github.com/Excision-Mail/Excision-Mail/workflows/ansible-lint/badge.svg)](https://github.com/Excision-Mail/Excision-Mail/actions?query=workflow%3Aansible-lint)
 [![shellcheck](https://github.com/Excision-Mail/Excision-Mail/workflows/shellcheck/badge.svg)](https://github.com/Excision-Mail/Excision-Mail/actions?query=workflow%3Ashellcheck)
-[![GitHub release (latest SemVer including pre-releases)](https://img.shields.io/github/v/release/Excision-Mail/Excision-Mail?include_prereleases)](https://github.com/Excision-Mail/Excision-Mail/releases)
-[![GitHub license](https://img.shields.io/github/license/Excision-Mail/Excision-Mail.svg)](https://github.com/Excision-Mail/Excision-Mail/blobl/master/LICENSE)
-[![GitHub issues](https://img.shields.io/github/issues-raw/Excision-Mail/Excision-Mail)](https://github.com/Excision-Mail/Excision-Mail/issues)
+[![release](https://img.shields.io/github/v/release/Excision-Mail/Excision-Mail?include_prereleases)](https://github.com/Excision-Mail/Excision-Mail/releases)
+[![license](https://img.shields.io/github/license/Excision-Mail/Excision-Mail.svg)](https://github.com/Excision-Mail/Excision-Mail/blobl/master/LICENSE)
+[![issues](https://img.shields.io/github/issues-raw/Excision-Mail/Excision-Mail)](https://github.com/Excision-Mail/Excision-Mail/issues)
 [![contributions welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat)](https://github.com/Excision-Mail/Excision-Mail/issues)
+[![support](https://img.shields.io/matrix/excision-mail:matrix.org?label=support&logo=matrix)](https://matrix.to/#/#excision-mail:matrix.org)
 
 Fullstack, security focused mailserver based on OpenSMTPD for OpenBSD using ansible
 
@@ -49,7 +50,7 @@ Go through the [installation overview](https://excision.bsd.ac/install) on the w
  
 ## Architecture Goals
  
-Excision aims to use as much of the base OpenBSD system and as few dependancies from ports as possible for maximum security.
+Excision Mail aims to use as much of the base OpenBSD system and as few dependancies from ports as possible for maximum security.
 
 #### Base system
 * [OpenSMTPD](https://www.opensmtpd.org/)  
@@ -82,7 +83,7 @@ There should be no differences between upgrading a previous install and starting
 * Be well documented  
 Every part of the setup should be clear and explained.  
 
-Excision tries to follow OpenBSD philosophy of being well documented and explaining all the choices that have been made.  
+Excision Mail tries to follow OpenBSD philosophy of being well documented and explaining all the choices that have been made.  
 **If it does not have good documentation, then it is still buggy**
 
 ## Requirements
@@ -94,6 +95,4 @@ System requirements (good for about 50 users)
 
 ## Contact and support
 The primary mode of contact for reporting bugs and getting support is through GitHub.  
-Excision also has an IRC [#excision-mail](https://webchat.freenode.net/?channels=#excision-mail) on freenode.  
-I am known as epsilonKNOT on freenode :)
-
+Excision Mail has a matrix channel [#excision-mail](https://matrix.to/#/#excision-mail:matrix.org).  

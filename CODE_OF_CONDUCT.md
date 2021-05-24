@@ -60,7 +60,7 @@ representative at an online or offline event.
 
 Instances of abusive, harassing, or otherwise unacceptable behavior may be
 reported to the community leaders responsible for enforcement at
-excision@bsd.ac or at #excision-mail on freenode.  
+excision@bsd.ac or at [#excision-mail](https://matrix.to/#/#excision-mail:matrix.org) on Matrix.  
 All complaints will be reviewed and investigated promptly and fairly.
 
 All community leaders are obligated to respect the privacy and security of the
