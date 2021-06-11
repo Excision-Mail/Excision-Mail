@@ -1,0 +1,12 @@
+---
+syslog_extra_logfiles:
+  - {file: "/var/www/logs/access.log", size: "*", when: "$W0", command: "pkill -USR1 -u root -U root -x httpd"}
+  - {file: "/var/www/logs/error.log", size: "250", command:"pkill -USR1 -u root -U root -x httpd"}
+  - {file: "/var/log/doas", program: "doas"}
+  - {file: "/var/log/ldapd", program: "ldapd"}
+  - {file: "/var/log/nsd", program: "nsd"}
+  - {file: "/var/log/spamd", program: "spamd"}
+  - {file: "/var/log/dovecot", program: "dovecot"}
+  - {file: "/var/log/clamd", program: "clamd"}
+  - {file: "/var/log/freshclam", program: "freshclam"}
+  - {file: "/var/log/rspamd/rspamd.log", user: "_rspamd", group: "_rspamd", count: 1, command: "pkill -USR1 -u _rspamd -U _rspamd -x rspamd"}
