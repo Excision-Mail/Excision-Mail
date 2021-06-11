@@ -15,7 +15,7 @@ fi
 # by default, we don't install it
 # up to the admin to make sure that it gets installed 
 zone_file_="/var/nsd/zones/master/$domain.zone"
-zone_file="$zone_file".tmp
+zone_file="$zone_file_".tmp
 
 newserial=$(($(date +%y%m%d%H%M) + 20000000))
 
@@ -37,4 +37,5 @@ if nsd-checkzone "$domain" "$zone_file"; then
 	rcctl restart nsd
 else
 	printf %s\\n "error in zone file syntax: $domain - $zone_file"
+	exit 1
 fi
