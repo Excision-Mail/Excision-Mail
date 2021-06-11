@@ -1,0 +1,45 @@
+---
+- name: Install gpg-wks init script
+  copy:
+    src: excision-wks-init
+    dest: /var/excision-home/
+    force: true
+    owner: excision
+    group: excision
+    mode: '0755'
+
+- name: Install `excision` command
+  copy:
+    src: excision
+    dest: /usr/local/bin/
+    force: true
+    owner: root
+    group: wheel
+    mode: '0755'
+
+- name: Install `excision-change-user-passwd` wrapper
+  copy:
+    src: excision-change-user-passwd
+    dest: /var/excision-passwd/
+    force: true
+    owner: excision-passwd
+    group: excision-passwd
+    mode: '0755'
+
+- name: Install Excision scripts
+  copy:
+    src: excision_scripts/
+    dest: /usr/local/lib/excision/
+    force: true
+    owner: root
+    group: wheel
+    mode: '0755'
+
+- name: Install `excision` man page
+  copy:
+    src: files/man8/excision.8
+    dest: /usr/local/man/man8/
+    owner: root
+    group: bin
+    mode: '0644'
+  notify: Update man database

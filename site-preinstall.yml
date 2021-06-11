@@ -1,13 +1,17 @@
-- name: Install/Upgrade Excision on this machine
+- name: Install/Upgrade Excision Mail pre-requisites
 
   hosts: mainserver
 
   vars_files:
     - group_vars/global.yml
+    - group_vars/pf.yml
+    - group_vars/syslog.yml
     - vars.yml
 
   roles:
-    - { role: pre_excision,  tags: ['pre_excision']   }
     - { role: base,          tags: ['base']           }
+    - { role: pf,            tags: ['pf']             }
+      when: enable_pf
+    - { role: syslog,        tags: ['syslog']         }
+      when: enable_syslog
     - { role: nsd,           tags: ['nsd']            }
-

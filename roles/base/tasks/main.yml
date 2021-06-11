@@ -1,68 +1,17 @@
 ---
-- name: Make sure log files exist
-  file:
-    path: "{{ item.file }}"
-    state: touch
-    owner: root
-    group: wheel
-    mode: "{{ item.mode | default('0640') }}"
-    modification_time: preserve
-  with_items: "{{ BASE_logfiles }}"
+- name: include packages
+  include: packages.yml
 
-- name: Generate login.conf
-  copy:
-    src: login.conf
-    dest: /etc/login.conf
-    force: true
-    owner: root
-    group: wheel
-    mode: '0644'
-  notify: rebuild login database
+- name: include services
+  include: services.yml
 
-- name: Generate syslog conf
-  copy:
-    src: syslog.conf
-    dest: /etc/syslog.conf
-    force: true
-    owner: root
-    group: wheel
-    mode: '0644'
-  notify: reload syslog
+- name: include users
+  include: users.yml
 
-- name: Generate newsyslog conf
-  template:
-    src: newsyslog.conf.j2
-    dest: /etc/newsyslog.conf
-    force: true
-    owner: root
-    group: wheel
-    mode: '0644'
-  notify: reload newsyslog
+- name: include scripts
+  include: scripts.yml
 
-- name: Make sure pf table files exists
-  file:
-    path: /etc/excision/spam/{{ item }}
-    state: touch
-    owner: root
-    group: wheel
-    mode: '0644'
-  with_items: {nospamd, bigmailers}
-
-- name: Generate pf config
-  template:
-    src: pf.conf.j2
-    dest: /etc/pf.conf
-    owner: root
-    group: wheel
-    mode: '0600'
-  notify: reload pf
-
-- name: Add Excision daily cron job
-  cron:
-    name: Excision daily-report
-    job: "/usr/local/bin/excision daily-report"
-    user: root
-    hour: "7"
-    minute: "30"
+- name: include configs
+  include: configs.yml
 
 - meta: flush_handlers

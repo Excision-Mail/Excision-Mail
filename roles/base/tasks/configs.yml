@@ -1,0 +1,40 @@
+---
+- name: create hostname file
+  copy:
+    content: |
+      {{ hostname }}
+    dest: /etc/myname
+    mode: '0644'
+    user: root
+    group: wheel
+  notify: set hostname
+
+- name: create excision config directories
+  file:
+    name: "{{ item.name }}"
+    state: directory
+    owner: root
+    group: wheel
+    mode: "{{ item.perm }}"
+    modification_time: preserve
+    access_time: preserve
+  with_items: "{{ base_config_dirs }}"
+
+- name: generate login.conf
+  copy:
+    src: login.conf
+    dest: /etc/login.conf
+    force: true
+    owner: root
+    group: wheel
+    mode: '0644'
+  notify: rebuild login database
+
+- name: add daily-report cron job
+  cron:
+    name: Excision daily-report
+    job: "/usr/local/bin/excision daily-report"
+    user: root
+    hour: "7"
+    minute: "30"
+

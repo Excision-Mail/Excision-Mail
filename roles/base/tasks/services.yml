@@ -1,0 +1,6 @@
+---
+- name: enable required services
+  service:
+    name: "{{ item.name }}"
+    enabled: true
+  with_items: "{{ base_services }}"

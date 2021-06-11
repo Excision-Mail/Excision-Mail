@@ -2,13 +2,8 @@
 - name: rebuild login database
   command: cap_mkdb /etc/login.conf
 
-- name: reload syslog
-  service:
-    name: syslogd
-    state: reloaded
+- name: set hostname
+  command: hostname "{{ hostname }}"
 
-- name: reload newsyslog
-  command: newsyslog
-
-- name: reload pf
-  command: pfctl -f /etc/pf.conf
+- name: update man database
+  command: makewhatis
