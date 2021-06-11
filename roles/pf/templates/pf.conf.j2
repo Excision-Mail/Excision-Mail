@@ -1,0 +1,64 @@
+# {{ ansible_managed }}
+
+# to get the contents of a table
+#    $ pfctl -t tablename -T show
+#
+
+# stop bruteforce attackers that try the hug of death
+table <bruteforce> persist
+
+# options for pf performance
+set loginterface egress
+set optimization normal
+set block-policy drop
+set syncookies adaptive (start 25%, end 12%)
+
+# better not mess with the loopback interface
+set skip on lo
+
+# Sanitizing packet content
+# no-df + random-id = unique IP identifiers
+anchor "scrub" in {
+	match in all scrub (no-df random-id)
+}
+
+# Block spoofed traffic
+antispoof log quick for { (egress) lo0 }
+
+block all
+
+pass proto icmp
+pass proto icmp6
+
+{% if pf_private_interfaces is defined %}
+{% for pif in pf_private_interfaces %}
+pass quick on {{ pif }}
+{% endfor %}
+{% endif %}
+
+block quick from <bruteforce>
+
+# a nice and simple bruteforce block on every password protected port
+# by allowing only {{ pf_maxconn }} connections from every ip and also making sure
+# that no more than {{ pf_maxconn }} connections are established in {{ pf_timelimit }} seconds.
+# violators are put into timeout, in <bruteforce>, for two days
+pass in on egress proto tcp from any to any port { {{ pf_tcp_ports_protected | join(', ') }} } \
+	flags S/SA keep state \
+	(max-src-conn {{ pf_maxconn }}, max-src-conn-rate {{ pf_maxconn }}/{{ pf_timelimit }}, \
+	overload <bruteforce> flush global)
+
+{% if pf_tcp_ports|length > 0 %}
+pass in on egress proto tcp to port { {{ pf_tcp_ports | join(', ') }} }
+{% endif %}
+
+{% if pf_udp_ports|length > 0 %}
+pass in on egress proto udp to port { {{ pf_udp_ports | join(', ') }} }
+{% endif %}
+
+{% if pf_redirect|length > 0 %}
+{% for prdr in pf_redirect %}
+pass in on egress proto tcp to port {{ prdr.in_port }} divert-to {{ prdr.rdr_ip }} port {{ prdr.rdr_port }}
+{% endfor %}
+{% endif %}
+
+pass out

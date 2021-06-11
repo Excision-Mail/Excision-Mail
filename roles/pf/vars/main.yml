@@ -1,0 +1,4 @@
+---
+pf_udp_ports: "{{ pf_default_udp_ports + pf_extra_udp_ports }}"
+pf_tcp_ports: "{{ pf_default_tcp_ports + pf_extra_tcp_ports }}"
+pf_tcp_ports_protected: "{{ pf_default_tcp_ports_protected + pf_extra_tcp_ports_protected }}"

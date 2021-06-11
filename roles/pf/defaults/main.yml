@@ -1,0 +1,26 @@
+---
+pf_ssh_port: ssh
+
+pf_default_udp_ports:
+  - domain
+
+pf_default_tcp_ports:
+  - smtp
+  - domain
+  - http
+
+pf_default_tcp_ports_protected:
+  - "{{ pf_ssh_port }}"
+  - submission
+  - smtps
+  - imaps
+  - pop3s
+  - sieve
+
+pf_extra_udp_ports: []
+pf_extra_tcp_ports: []
+pf_extra_tcp_ports_protected: []
+pf_private_interfaces: []
+pf_maxconn: 100
+pf_timelimit: 10
+pf_redirect: []
