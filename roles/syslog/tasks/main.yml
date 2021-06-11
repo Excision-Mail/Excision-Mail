@@ -1,0 +1,31 @@
+---
+- name: make sure log files exist
+  file:
+    path: "{{ item.file }}"
+    state: touch
+    owner: "{{ item.user | default('root') }}"
+    group: "{{ item.group | default('wheel') }}"
+    mode: "{{ item.mode | default('0640') }}"
+    modification_time: preserve
+    access_time: preserve
+  with_items: "{{ syslog_logfiles }}"
+
+- name: generate syslog conf
+  template:
+    src: syslog.conf.j2
+    dest: /etc/syslog.conf
+    force: true
+    owner: root
+    group: wheel
+    mode: '0644'
+  notify: restart syslog
+
+- name: Generate newsyslog conf
+  template:
+    src: newsyslog.conf.j2
+    dest: /etc/newsyslog.conf
+    force: true
+    owner: root
+    group: wheel
+    mode: '0644'
+  notify: restart newsyslog
