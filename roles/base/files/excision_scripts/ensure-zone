@@ -14,7 +14,8 @@ fi
 
 # by default, we don't install it
 # up to the admin to make sure that it gets installed 
-zone_file="/var/nsd/zones/master/$domain.zone.tmp"
+zone_file_="/var/nsd/zones/master/$domain.zone"
+zone_file="$zone_file".tmp
 
 newserial=$(($(date +%y%m%d%H%M) + 20000000))
 
@@ -31,3 +32,9 @@ printf "\n" >> "$zone_file"
 
 sh "$vfix" root wheel 644 "$zone_file"
 
+if nsd-checkzone "$domain" "$zone_file"; then
+	mv "$zone_file" "$zone_file_"
+	rcctl restart nsd
+else
+	printf %s\\n "error in zone file syntax: $domain - $zone_file"
+fi

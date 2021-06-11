@@ -135,16 +135,6 @@ If no
 .Ar domain.tld
 is specified, it defaults to the main domain for the server.
 .Pp
-This does not activate the new
-.Sy zonefile .
-The system admin should check the generated
-.Sy zonefile
-and then run
-.Bd -literal -offset width
-$ mv /var/nsd/zones/master/domain.tld{.tmp,}
-$ rcctl restart nsd
-.Ed
-.Pp
 .It Cm fix-perms
 Do a minimal fix of permissions of all files related to Excision Mail.
 .Pp
