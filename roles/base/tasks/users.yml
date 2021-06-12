@@ -23,10 +23,6 @@
     state: absent
     path: /var/excision-home/.ssh/
 
-- name: generate ssh password hash for excision-passwd user
-  shell: printf %s\\n "{{ base_excision_passwd_password }}" | encrypt
-  register: _base_excision_passwd_password_hash
-
 - name: make excision-passwd user
   user:
     name: excision-passwd

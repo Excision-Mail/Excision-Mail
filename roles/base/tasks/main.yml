@@ -14,4 +14,5 @@
 - name: include configs
   include: configs.yml
 
-- meta: flush_handlers
+- name: flush_handlers
+  meta: flush_handlers
