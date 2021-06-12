@@ -1,0 +1,5 @@
+---
+- name: restart nsd
+  service:
+    name: nsd
+    state: restarted
