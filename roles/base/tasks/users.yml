@@ -36,7 +36,8 @@
     login_class: default
     shell: /bin/ksh
     home: /var/excision-passwd
-    password: "{{ _base_excision_passwd_password_hash.stdout }}"
+    password: "*************"
+    password_lock: true
 
 - name: allow excision-passwd to execute proper command
   lineinfile:

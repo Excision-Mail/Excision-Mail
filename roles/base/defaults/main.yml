@@ -23,5 +23,3 @@ base_config_dirs:
   - {name: "/etc/excision/spam", perm: "0755"}
   - {name: "/etc/excision/users", perm: "0700"}
   - {name: "/etc/excision/users/user-data", perm: "0700"}
-
-base_excision_passwd_password: lookup('community.general.random_string', length=64)

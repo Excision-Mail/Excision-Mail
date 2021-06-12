@@ -6,10 +6,10 @@
 # domain, assuming that the template zone file 
 # exists in the /etc/excision/nsd folder
 
-if [ "$#" -eq 0 ]; then
-	domain=$(head -n 1 /etc/mail/vdomains)
-else
-	domain="$1"
+domain="$1"
+nsd_restart_=1
+if [ "$#" -eq 2 ]; then
+	nsd_restart_="$2"
 fi
 
 # by default, we don't install it
@@ -34,7 +34,7 @@ sh "$vfix" root wheel 644 "$zone_file"
 
 if nsd-checkzone "$domain" "$zone_file"; then
 	mv "$zone_file" "$zone_file_"
-	rcctl restart nsd
+	[ "$nsd_restart_" = 0 ] || rcctl restart nsd
 else
 	printf %s\\n "error in zone file syntax: $domain - $zone_file"
 	exit 1

@@ -5,9 +5,30 @@
       {{ hostname }}
     dest: /etc/myname
     mode: '0644'
-    user: root
+    owner: root
     group: wheel
+    modification_time: preserve
+    access_time: preserve
   notify: set hostname
+
+- name: create mailname file
+  copy:
+    content: |
+      {{ hostname }}
+    dest: /etc/mail/mailname
+    mode: '0644'
+    owner: root
+    group: wheel
+    modification_time: preserve
+    access_time: preserve
+
+- name: create vdomains file
+  template:
+    src: vdomains.j2
+    dest: /etc/mail/vdomains
+    mode: '0644'
+    owner: root
+    group: wheel
 
 - name: create excision config directories
   file:
@@ -20,6 +41,16 @@
     access_time: preserve
   with_items: "{{ base_config_dirs }}"
 
+- name: ensure passwd file exists
+  file:
+    path: /etc/excision/users/passwd
+    state: touch
+    owner: root
+    group: wheel
+    mode: '0600'
+    modification_time: preserve
+    access_time: preserve
+
 - name: generate login.conf
   copy:
     src: login.conf
@@ -28,6 +59,8 @@
     owner: root
     group: wheel
     mode: '0644'
+    modification_time: preserve
+    access_time: preserve
   notify: rebuild login database
 
 - name: add daily-report cron job
@@ -37,4 +70,3 @@
     user: root
     hour: "7"
     minute: "30"
-
