@@ -1,0 +1,17 @@
+---
+- name: generate zone main files
+  template:
+    src: domain.zone.j2
+    dest: "/etc/excision/nsd/{{ item.name }}.zone"
+    mode: '0644'
+    owner: root
+    group: wheel
+  with_items: "{{ domains }}"
+
+- name: generate dkim certificates
+  command: excision ensure-dkim
+  ignore_errors: true
+
+- name: generate zone final files
+  command: excision ensure-zone "{{ item.name }}" 0
+  with_items: "{{ domains }}"
