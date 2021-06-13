@@ -1,0 +1,4 @@
+---
+subdomains: "{{ [ mail_subdomain ] + required_subdomains + extra_subdomains }}"
+smtpd_username_delimiter: "{{ username_delimiter }}"
+davical_username_delimiter: "{{ username_delimiter }}"

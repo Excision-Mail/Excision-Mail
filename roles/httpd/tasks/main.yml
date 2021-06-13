@@ -1,18 +1,18 @@
 ---
-- name: Create httpd domain directory
+- name: create httpd domain directory
   file:
     path: "/var/www/htdocs/{{ item.name }}"
     state: directory
   with_items: "{{ domains }}"
 
-- name: Create mail directory for mozilla autoconfig
+- name: create mail directory for mozilla autoconfig
   file:
     path: "/var/www/mail/{{ item.name }}"
     state: directory
   with_items: "{{ domains }}"
 
 # https://wiki.mozilla.org/Thunderbird:Autoconfiguration#Implementation
-- name: Copy mozilla config file to mail
+- name: copy mozilla config file to mail
   template:
     src: config-v1.1.xml.j2
     dest: "/var/www/mail/{{ item.name }}/config-v1.1.xml"
@@ -26,18 +26,18 @@
 
 # https://github.com/gronke/email-autodiscover/blob/master/mail/autodiscover.xml
 # https://docs.microsoft.com/en-us/previous-versions/office/office-2010/cc511507(v=office.14)?redirectedfrom=MSDN#Anchor_3
-- name: Copy autodiscover config file to autodiscover
+- name: copy autodiscover config file to autodiscover
   template:
     src: Autodiscover.xml.j2
     dest: "/var/www/Autodiscover/{{ item.name }}/Autodiscover.xml"
   with_items: "{{ domains }}"
 
-- name: Create mta-sts directory
+- name: create mta-sts directory
   file:
     path: /var/www/mta-sts
     state: directory
 
-- name: Copy mta-sts.txt file
+- name: copy mta-sts.txt file
   template:
     src: mta-sts.txt.j2
     dest: /var/www/mta-sts/mta-sts.txt
@@ -45,15 +45,17 @@
 - name: Make gpg-wks-server hierarchy
   command: excision ensure-gpg
 
-- name: Ensure httpd-extras exists (maybe empty)
+- name: ensure httpd-extras exists (maybe empty)
   file:
     path: /etc/httpd-extras.conf
     state: touch
     owner: root
     group: wheel
     mode: '0644'
+    modification_time: preserve
+    access_time: preserve
 
-- name: Create httpd config
+- name: create httpd config
   template:
     src: httpd.conf.j2
     dest: /etc/httpd.conf
@@ -62,4 +64,5 @@
     mode: '0644'
   notify: restart httpd
 
-- meta: flush_handlers
+- name: flush_handlers
+  meta: flush_handlers

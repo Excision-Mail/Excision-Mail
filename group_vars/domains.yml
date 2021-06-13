@@ -1,0 +1,17 @@
+---
+mail_subdomain: mail
+
+required_subdomains:
+  - openpgpkey
+  - wkd
+  - autoconfig
+  - autodiscover
+  - mta-sts
+  - imap
+  - pop3
+  - smtp
+  - rspamd
+
+extra_subdomains:
+  - dav
+  - webmail

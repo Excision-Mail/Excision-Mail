@@ -6,11 +6,17 @@
   vars_files:
     - group_vars/global.yml
     - vars.yml
+    - extrapolate.yml
     
   roles:
-    - { role: httpd-extra,   tags: ['httpd-extra']    }
-    - { role: php,           tags: ['php']            }
-    - { role: postgresql,    tags: ['postgresql']     }
-    - { role: davical,       tags: ['davical']        }
-    - { role: roundcube,     tags: ['roundcube']      }
+    - { role: httpd-extra,   tags: ['httpd'],
+        when: enable_extras                           }
+    - { role: php,           tags: ['php'],
+        when: enable_extras and enable_php            }
+    - { role: postgresql,    tags: ['postgresql'],
+        when: enable_extras and enable_postgresql     }
+    - { role: davical,       tags: ['davical'],
+        when: enable_extras and enable_davical        }
+    - { role: roundcube,     tags: ['roundcube'],
+        when: enable_extras and enable_roundcube      }
 

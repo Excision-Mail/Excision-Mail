@@ -6,18 +6,16 @@ types {
 }
 
 http_port="{{ http_port }}"
-http_interface="{{ http_interface }}"
 https_port="{{ https_port }}"
-https_interface="{{ https_interface }}"
 
-server "{{ hostname }}" {
+server "default" {
 {% for sdomain in subdomains %}
 {% for domain in domains %}
 	alias "{{ sdomain }}.{{ domain.name }}"
 {% endfor %}
 {% endfor %}
 
-	listen on $http_interface port $http_port
+	listen on * port $http_port
 
 	tcp nodelay
 
@@ -35,11 +33,11 @@ server "{{ hostname }}" {
 {% for domain in domains %}
 
 server "nonexistent.{{ domain.name }}" {
-{% for rdomain in required_domains %}
+{% for rdomain in required_subdomains %}
 	alias "{{ rdomain }}.{{ domain.name }}"
 {% endfor %}
 
-	listen on $https_interface port $https_port
+	listen on * port $https_port
 
 	tcp nodelay
 

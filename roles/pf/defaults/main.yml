@@ -8,6 +8,7 @@ pf_default_tcp_ports:
   - smtp
   - domain
   - http
+  - https
 
 pf_default_tcp_ports_protected:
   - "{{ pf_ssh_port }}"

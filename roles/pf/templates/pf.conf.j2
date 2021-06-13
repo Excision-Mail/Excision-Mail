@@ -55,10 +55,4 @@ pass in on egress proto tcp to port { {{ pf_tcp_ports | join(', ') }} }
 pass in on egress proto udp to port { {{ pf_udp_ports | join(', ') }} }
 {% endif %}
 
-{% if pf_redirect|length > 0 %}
-{% for prdr in pf_redirect %}
-pass in on egress proto tcp to port {{ prdr.in_port }} divert-to {{ prdr.rdr_ip }} port {{ prdr.rdr_port }}
-{% endfor %}
-{% endif %}
-
 pass out

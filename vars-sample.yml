@@ -1,82 +1,62 @@
-# Variables information file
+# Variables information sample file
 
-# Each option has been described in as much detail as possible
-# READ EVERYTHING VERY CLOSELY
+# Each option has been described in as much detail as possible.
+# READ EVERYTHING VERY CLOSELY.
 
 #####-------- REQUIRED SECTION
 
 # This are the domains for which the mail server will be set up.
-# This should not contain any subdomains, only the main one
 # NOTE: You can have as many domains as you want in this list
-#       for each domain you can decide to enable/disable NSD
-#       It is highly advised to enable NSD as it does a lot
-#       of certificate management, subdomain management
-#       and record management for authentication
+#       for each domain you can decide to enable/disable NSD separately.
+#       It is strongly advised to enable NSD as it does a lot
+#       of certificate management, subdomain management and record
+#       management for authentication.
+#       Seconday DNS overview - https://excision.bsd.ac/guides/secondary/
 #       If you don't enable nsd for a domain, it is on you
-#       to ensure that all records are properly managed
+#       to ensure that all records are properly managed -
 #       https://excision.bsd.ac/guides/manualdns/
 domains: 
-  - name: <change-me> # e.g. aisha.cc
-    nsd: true         # HIGHLY RECOMMENDED, else remove or set to false
-                      # depends on enable_nsd: true
+  - name: <change-me> # e.g. bsd.ac
+    nsd: True         # HIGHLY RECOMMENDED, else remove or set to False
+                      # depends on enable_nsd: True (see OPTIONAL SECTION below)
   #- name: domain2.tld
-  #  nsd: false
+  #  nsd: False
   #- name: domain3.tld3
-  #  nsd: true
+  #  nsd: True
 
-# The hostname is one which is what the ip here is hosting
-# the one which is going to act as the subdomain, if the hostname here
+# The hostname is what the ip here is going to be called.
+# If the hostname here
 # is put to mail, then the ip here is going to be directed via 
 # mail.domain.tld
-# It is generally a good idea to call this something like mail, mail1
+# It is generally a good idea to call this something like mail, mail1, vmail
 # or something similar, to make it clear to the outside world that this
-# is an actualy server which was set up with mail in mind
+# is an actual server which was set up with mail in mind.
 # NOTE: the reverse dns lookup should also resolve to whatever
 #       you input over here: hostname.domain.tld
-#       e.g. my hostname is called mail and the reverse dns resolves to
-#       mail.aisha.cc
-hostname: "mail.{{ domains[0].name }}" # can change it if you so prefer, but this is a nice one
+#       e.g. for bsd.ac, the hostname is called mail.bsd.ac and the
+#       reverse dns also resolves to mail.bsd.ac
+hostname: "{{ mail_subdomain }}.{{ domains[0].name }}" # can change it if you so prefer, but this is a nice one
 
 # This is the user that will be created and all server information emails
 # daily reports and outside domain reports will be send to admin@domain.tld
-# This is not an actualy system user, but an email only user: admin@domain
-# NOTE: Excision is configured so that you can actually use this account
+# This is not an actualy system user, but an email only user: admin@domain.tld
+# NOTE: Excision Mail is configured so that you can actually use this account
 #       as your daily email, by filterting all emails that are domain related
 #       to go into a information-archive email folder. This is very easy to set up
-#       using mail filtering. I will add a small section on how to configure mail
-#       filtering in the appropriate section, so don't worry about that right now.
-admin:              <change-me> # e.g. aisha
-admin_password:     <change-me> # e.g. sup3rC00Lp@sswd
-admin_ssh_password: <change-me> # e.g. 3v3nc00l3r
+#       using mail filtering - 
+admin: <change-me> # e.g. aisha
+
+# public ipv4/ipv6 address of this server 
+# We need to get this manually instead of automatically in the case
+# that this server is behind a NAT and is only reachable via forwarded ports
+ipv4: <change-me> # e.g. 1.2.3.4
+ipv6: <change-me> # e.g. dead:beef
 
 #####-------- OPTIONAL SECTION
 
-# Username delimiter to give all users access to infinite aliases
-# Is set to + by default can by set to any single character
-# NOTE: If you set it to some ascii character (such as 'a') a lot of 
-# users will stop getting their mails if they have this character in 
-# their username. Use with care, but + . - _ are good choices
-#username_delimiter: "+"
-
-# The clamav antivirus is used to detect virus signatures in emails
-# By default it is enabled and all the necessary services are loaded 
-# You can disable the installation of the antivirus if you are low on resources
-# and would rather rely on spamd and rspamd (which are generally enough)
-#enable_clamav: false # set to true to enable (disabled by default)
-
-# OpenBSD spamd is a very efficient method to reduce spam
-# It works on an ip level and causes the spammers resources to take a large
-# hit. The disadvantage is that when someone send you emails for the first time
-# they will be met with a bit of lag and the message will be delayed by around
-# 30 minutes. But after the first mail has been delivered, any subsequent mail
-# will be delivered fine.
-#enable_spamd: false # set to true to enable (disabled by default)
-
 # HIGHLY RECOMMENDED TO USE THIS SECTION
 #
-# Complex: This section is bit more intricate and can be skipped
-#
-# If you want to make Excision manage nsd on your behalf you should say yes here
+# If you want to make Excision Mail manage nsd on your behalf you should say yes here
 # It is really recommended to do this as configurin NSD manually is really really
 # hard given the horrible web interfaces used by service providers
 # In the worst case where you want to do it yourself, you can visit the wiki page 
@@ -84,92 +64,28 @@ admin_ssh_password: <change-me> # e.g. 3v3nc00l3r
 # of the way. 
 # Be aware that configuring it yourself is going to take upwards of 7-8 hours, 
 # unless you are experienced with DNS setup
-#enable_nsd: false # set to true to enable (disabled by default)
+#enable_nsd: False # set to True to enable (disabled by default)
 #
-# ipv4/ipv6 address of this server
-# We need to get this manually instead of automatically in the case
-# that this server is behind a NAT and is only reachable via forwarded ports
-# TODO: currently the configuration is not configurable if you don't have an
-#       ipv6, but it should be done very soon. Given that most hosting providers
-#       give an ipv6 you shouldn't be worried about it too much.
-#ipv4: <change-me> # e.g. 1.2.3.4
-#ipv6: <change-me> # e.g. dead:beef
-#
-# We know that the standard NSD config doesn't cover all bases so we have an addon
-# config available in the highly likely chance that you have more subdomains to manage.
-# It may be that you have some extra subdomains not hosted on this machine or 
-# some other nsd configuration, e.g. google-site-verification txt records or something
-# else that should be added to the default nsd config file. Any such configurations
-# can de added to a file and Excision will dump the contents at the end of the default
-# config.
-# NOTE: Some subdomains are currently automatically configured to point to the current machine
-#       so make sure that those are not redefined in your addon file.
-# restricted subdomains: www, <hostname>, imap, smtp, pop3, autoconfig, 
-#                        autodiscover, wkd, mta-sts, dav, webmail
-# HINT: first run do the install without the addon and see what is generated
-#       if you want to see if your addon is compatible (it most likely is)
-#nsd_addon: <change-me>
-# 
-# The following two settings are needed if you enable_nsd
-# Secondary nameservers are those which are our `slaves` because these 
-# nameservers are the ones to which we will be sending NOTIFY and AXFR
 # NOTE: These are NOT the same as the ip's of the nameservers of the 
 #       DNS hosting provider, such as ns1.dnsmadeeasy.com. These are
 #       given to you when you configure the DNS provider as a secondary 
 #       service, not when using as the primary 
-# TODO: For some reason only ipv4 ones work correctly, even though you can
-#       add ipv6 names here (maybe I should read some more)
-# order doesn't matter
 #secondary_nameservers:
-#        - ipv4: <change-me> # e.g. 69.65.50.192 # freedns2 (afraid.org)
-#        - ipv6: <change-me> # e.g. 2a00:1768:1001:9::31:1 # some cloudns server
-#        - ipv4: <change-me> # add as many as you want... :)
+#  - ipv4: <change-me> # e.g. 69.65.50.192 # freedns2 (afraid.org)
+#  - ipv6: <change-me> # e.g. 2a00:1768:1001:9::31:1 # some cloudns server
+#  - ipv4: <change-me> # add as many as you want... :)
 #        
-# These nameservers are used by others in the internet to find your servers
+# These nameservers are used by others on the web to find your servers
 # through DNS querying.
-# They are the ones that should resolve to ns1.dnsmadeeasy.com/ns1.<dns-provider.tld>
-# or something of that form, which makes it clear that they are DNS servers
+# They are the ones that should resolve to pns31.cloudns.net/ns42.<dns-provider.tld>
+# or something of that form, which makes it clear that they are DNS servers.
 # Each bullet point is one nameserver with at most one ipv4 and one ipv6
-# You can have a nameserver with an ipv4 and no ipv6 (also the other way around, 
-# but don't use any nameserver of this kind)
+# You can have a nameserver with an ipv4 and no ipv6 (also the other way around)
 #public_nameservers:
-#        - ipv4: <change-me>
-#          ipv6: <change-me>
-#        - ipv4: <change-me>
-
-
-# Almost each option here is independant of others and it is fine to even delete the 
-# option and not even define it. Excision has checks to see if the option is defined
-# and only then takes any steps.
-
-
-# SSH
-# It is most likely the case that you are installing this on a headless VPS with 
-# only ssh access in which case it is very advisable to change the port of ssh
-# to something other than the default 22, unless you like getting hackers constantly bombarding
-# your port to check out what you messed up
-#ssh_port: 2345
-
-
-
-# In addition to the ssh port if you want to open some extra TCP/UDP ports
-# you can define them here and 
-#additional_tcp_ports:
-#     - <change-me>
-#     - <change-me>
-#additional_tcp_ports:
-#     - <change-me>
-#     - <change-me>
-
-
-
-# Private interface
-# By default Excision hardens your firewall to only allow the needed ports to communicate
-# with the internet and blocks all other ports from being accessed by others. This is a
-# safety check in case of vulnerabilities in any of the ported softwares.
-# If you have any interface that you want to open fully you can define it here.
-#private_interface: <change-me>  # on the off chance that this doesn't cover you use cases
-                                 # you should probably roll out your own firewall config
-                                 # as it is impossible for a small automated script as Excision
-                                 # to set up the cute beautiful beast that is pf
-
+#  - name: pns31.cloudns.net
+#    ipv4: 185.136.96.66
+#    ipv6: 2a06:fb00:1::1:66
+#  - name: <change-me>
+#    ipv4: <change-me>
+#    ipv6: <change-me>
+#  - ipv4: <change-me>

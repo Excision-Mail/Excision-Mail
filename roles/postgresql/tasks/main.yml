@@ -1,14 +1,12 @@
 ---
-- name: install postgresql packages
+- name: Install PostgreSQL packages
   openbsd_pkg:
     name: "{{ item }}"
     state: present
-  with_items:
-    - postgresql-server
-    - postgresql-client
-    - py3-psycopg2
+  with_items: "{{ PSQL_packages }}"
+  when: false
 
-- name: set up permissions on /var/www/{tmp,run}
+- name: Set up permissions on /var/www/{tmp,run}
   file:
     path: /var/www/{{ item }}
     state: directory
@@ -18,19 +16,22 @@
   with_items:
     - tmp
     - run
+  notify: Restart PostgreSQL
 
-- name: add postgres user to www group
+- name: Add postgres user to www group
   user:
     name: _postgresql
     groups: www
     append: yes
+  notify: Restart PostgreSQL
 
-- name: initialize database
+- name: Initialize PostgreSQL
   command: initdb -D /var/postgresql/data -U postgres -E UTF8 -A peer
   args:
     creates: /var/postgresql/data/PG_VERSION
   become: yes
   become_user: _postgresql
+<<<<<<< Updated upstream
 
 - name: ensure semmni for busy servers
   lineinfile:
@@ -47,15 +48,25 @@
   notify: sysctl semmns
 
 - name: generate configuration
+=======
+  notify: Restart PostgreSQL
+  when: false
+  
+- name: Generate PostgreSQL config
+>>>>>>> Stashed changes
   template:
     src: postgresql.conf.j2
     dest: /var/postgresql/data/postgresql.conf
     owner: _postgresql
     group: _postgresql
     mode: 0600
+<<<<<<< Updated upstream
   notify: restart postgresql
+=======
+  notify: Restart PostgreSQL
+>>>>>>> Stashed changes
 
-- name: generate pg_hba.conf
+- name: Generate PostgreSQL user configs
   copy:
     src: '{{ item }}'
     dest: /var/postgresql/data/{{ item }}
@@ -65,6 +76,24 @@
   with_items:
     - pg_hba.conf
     - pg_ident.conf
+<<<<<<< Updated upstream
   notify: restart postgresql
+=======
+  notify: Restart PostgreSQL
+
+- name: Ensure semmni for busy servers
+  lineinfile:
+    path: /etc/sysctl.conf
+    regexp: "^kern.seminfo.semmni"
+    line: "kern.seminfo.semmni={{ PSQL_semmni }}"
+  notify: Restart PostgreSQL
+
+- name: Ensure semmns for busy servers
+  lineinfile:
+    path: /etc/sysctl.conf
+    regexp: "^kern.seminfo.semmns"
+    line: "kern.seminfo.semmns={{ PSQL_semmns }}"
+  notify: Restart PostgreSQL
+>>>>>>> Stashed changes
 
 - meta: flush_handlers

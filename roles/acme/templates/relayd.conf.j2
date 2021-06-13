@@ -1,5 +1,3 @@
-
-relayd_interface="{{ relayd_interface }}"
 relayd_port="{{ relayd_port }}"
 https_port="{{ https_port }}"
 
@@ -16,11 +14,11 @@ http protocol tlsinspect {
 	block
 	pass request header "Host" value "{{ hostname }}" forward to <local>
 {% for domain in domains %}
-{% for rdomain in required_domains %}
+{% for rdomain in required_subdomains %}
 	pass request header "Host" value "{{ rdomain }}.{{ domain.name }}" forward to <local>
 {% endfor %}
 {% if enable_extras %}
-{% for edomain in extra_domains %}
+{% for edomain in extra_subdomains %}
 	pass request header "Host" value "{{ edomain }}.{{ domain.name }}" forward to <extras_ip>
 {% endfor %}
 {% endif %}
@@ -54,11 +52,11 @@ http protocol tlsinspect {
 	match response header set "X-Robots-Tag"           value "index, nofollow"
 	match response header set "X-Xss-Protection"       value "1; mode=block"
 
-  match response header set "Strict-Transport-Security" value "max-age=2592000; preload; subdomains;"
+	match response header set "Strict-Transport-Security" value "max-age=2592000; preload;"
 }
 
 relay tlsinspect {
-	listen on $relayd_interface port $relayd_port tls
+	listen on "*" port $relayd_port tls
 
 	protocol tlsinspect
 

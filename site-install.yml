@@ -1,18 +1,24 @@
-- name: Install/Upgrade Excision on this machine
+- name: Install/Upgrade Excision Mails main utilities
 
   hosts:
     - mainserver
 
   vars_files:
-    - group_vars/global.yml
+    - group_vars/options.yml
+    - group_vars/pf.yml
+    - group_vars/syslog.yml
+    - group_vars/domains.yml
+    - roles/httpd/defaults/main.yml
+    - roles/httpd-extra/defaults/main.yml
+    - roles/acme/defaults/main.yml
     - vars.yml
+    - group_vars/extrapolate.yml
 
   roles:
     - { role: httpd,         tags: ['httpd']          }
     - { role: acme,          tags: ['acme']           }
-    - { role: spamd,         tags: ['spamd']          }
+    - { role: clamav,        tags: ['clamav'],
+        when: enable_clamav                           }
     - { role: rspamd,        tags: ['rspamd']         }
-    - { role: clamav,        tags: ['clamav']         }
     - { role: smtpd,         tags: ['smtpd']          }
     - { role: dovecot,       tags: ['dovecot']        }
-

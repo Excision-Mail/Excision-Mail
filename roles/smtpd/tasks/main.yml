@@ -1,62 +1,40 @@
-- name: Copy base aliases file
+---
+- name: generate local aliases file
   template:
-          src: aliases.j2
-          dest: /etc/mail/aliases
+    src: aliases.j2
+    dest: /etc/mail/aliases
 
-- name: Make sure that passwd file exists
-  file:
-          path: /etc/excision/users/passwd
-          state: touch
-          owner: root
-          group: wheel
-          mode: '0600'
-
-- name: Create user-data folder
-  file:
-          path: /etc/excision/users/user-data
-          state: directory
-          owner: root
-          group: wheel
-          mode: '0700'
-
-- name: Add admin user for primary domain with random password (ignore if already exists)
+- name: add admin user for primary domain with random password (ignore if it already exists)
   shell: openssl rand -hex 32 | excision add-user "{{ admin }}@{{ domains[0].name }}"
   ignore_errors: yes
 
-- name: Add wks users for all domains with random password (ignore if already exists)
+- name: add wks user for all domains with random password (ignore if they already exists)
   shell: openssl rand -hex 32 | excision add-user "wks@{{ item.name }}"
   ignore_errors: yes
   with_items: "{{ domains }}"
 
-- name: Add all the needed aliases for admin for all domains (ignore if already exist)
+- name: add all the needed aliases for admin for all domains (ignore if they already exist)
   command: excision add-alias "{{ item[0] }}@{{ item[1].name }}" "{{ admin }}@{{ domains[0].name }}"
   ignore_errors: yes
   with_nested:
-    - "{{ rfc_aliases }}"
+    - "{{ smtpd_aliases }}"
     - "{{ domains }}"
 
-# Any items belonging to _smtpd group are 640 and wheel are 644
-# passwd is an exception as it needs to be read by both dovecot and smtpd
-- name: Make sure that needed files exist with proper permissions
+- name: ensure all smtpd table files exist
   file:
-          path: "/etc/mail/{{ item.name }}"
-          state: touch
-          owner: "{{ item.user }}"
-          group: "{{ item.group }}"
-          mode: "{{ item.perm }}"
-  with_items:
-          - { name: "aliases", user: "root", group: "wheel",  perm: "0644" }
-          - { name: "mailname", user: "root", group: "wheel", perm: "0644" }
-          - { name: "virtual", user: "root", group: "_smtpd", perm: "0640" }
-          - { name: "revirt", user: "root", group: "_smtpd", perm: "0640" }
-          - { name: "vdomains", user: "root", group: "wheel", perm: "0644" }
-          - { name: "passwd", user: "_smtpd", group: "_dovecot", perm: "0440" }
+    path: "/etc/mail/{{ item.name }}"
+    state: touch
+    mode: "{{ item.perm }}"
+    owner: "{{ item.user }}"
+    group: "{{ item.group }}"
+    modification_time: preserve
+    access_time: preserve
+  with_items: "{{ smtpd_tables }}"
 
-- name: Generate smtpd config
+- name: generate smtpd config
   template:
-          src: smtpd.conf.j2
-          dest: /etc/mail/smtpd.conf
-          owner: root
-          group: wheel
-          mode: '0644'
-
+    src: smtpd.conf.j2
+    dest: /etc/mail/smtpd.conf
+    mode: '0644'
+    owner: root
+    group: wheel
