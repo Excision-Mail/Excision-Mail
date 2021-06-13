@@ -56,7 +56,7 @@ http protocol tlsinspect {
 }
 
 relay tlsinspect {
-	listen on "*" port $relayd_port tls
+	listen on egress port $relayd_port tls
 
 	protocol tlsinspect
 
