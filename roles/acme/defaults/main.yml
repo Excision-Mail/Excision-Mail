@@ -1,3 +1,2 @@
 ---
 relayd_port: 443
-relayd_interface: "*"
