@@ -4,6 +4,7 @@
     name: _rspamd
     groups: _redis
     append: yes
+    create_home: no
 
 - name: Create rspamd local.d directory
   file:
