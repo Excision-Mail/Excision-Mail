@@ -55,13 +55,11 @@ table	submission-address \
 # Local messages
 listen on socket \
 	filter rspamd
-{% if private_interface is defined %}
 #
-# If we defined a private interface, we probably want to get emails 
-# on that interface without mucking around with filters and
-# what not, so lets just listen there quietly
+# Private interfaces
+{% for pif in private_interfaces %}
 listen on {{ private_interface }}
-{% endif %}
+{% endfor %}
 #
 # Incoming messages from outside to people in <vdomain>
 # this filter checks for spam vs ham on smtp port
