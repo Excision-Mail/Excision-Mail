@@ -3,12 +3,12 @@ $TTL	10800		; 3h ; used for all entries without ttl values, hence it can be over
 			; but also small enough that if something changes it gets transferred fast enough through the network
 $ORIGIN	{{ item.name }}.
 
-@	1d	SOA	ns1.{{ item.name }}.	root.{{ item.name }}. (
+@	1d	SOA	{{ public_nameservers[0].name }}.	webmaster.{{ item.name }}. (
 	EXCISIONSERIAL		; serial
-	3h			; refresh
-	3m			; retry
+	4h			; refresh
+	4m			; retry
 	1w			; expire
-	1d			; minimum
+	2m			; minimum
 )
 
 ;; ttl has been removed from all records in favor of the default ttl
@@ -26,17 +26,9 @@ $ORIGIN	{{ item.name }}.
 
 ; we set the acceptable nameservers for this domain
 ; don't trust cloudflare
-{% if (public_nameservers is defined) and (public_nameservers|length > 0) %}
 {% for ps in public_nameservers %}
-@	IN	NS	ns{{ loop.index }}.{{ item.name }}.
-{% if ps.ipv4 is defined %}
-ns{{ loop.index }}	IN	A	{{ ps.ipv4 }}
-{% endif %}
-{% if ps.ipv6 is defined %}
-ns{{ loop.index }}	IN	AAAA	{{ ps.ipv6 }}
-{% endif %}
+@	IN	NS	{{ ps.name }}.
 {% endfor %}
-{% endif %}
 
 ; these are the domain names that will be accepted on this server
 {% if ipv4 is defined %}

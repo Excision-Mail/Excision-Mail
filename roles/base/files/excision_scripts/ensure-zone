@@ -17,7 +17,7 @@ fi
 zone_file_="/var/nsd/zones/master/$domain.zone"
 zone_file="$zone_file_".tmp
 
-newserial=$(($(date +%y%m%d%H%M) + 20000000))
+newserial=$(date +%y%m%d%H%M)
 
 sed -e "s/EXCISIONSERIAL/$newserial/g" "$nsd_home/$domain.zone" > "$zone_file"
 
