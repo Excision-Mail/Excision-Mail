@@ -6,44 +6,41 @@
 #####-------- REQUIRED SECTION
 
 # This are the domains for which the mail server will be set up.
-# NOTE: You can have as many domains as you want in this list
-#       for each domain you can decide to enable/disable NSD separately.
+# NOTE: It is possible to have as many domains as needed in this list.
+#       For each domain it is possible to enable/disable NSD separately.
 #       It is strongly advised to enable NSD as it does a lot
 #       of certificate management, subdomain management and record
 #       management for authentication.
-#       Seconday DNS overview - https://excision.bsd.ac/guides/secondary/
-#       If you don't enable nsd for a domain, it is on you
-#       to ensure that all records are properly managed -
-#       https://excision.bsd.ac/guides/manualdns/
+#       Seconday DNS overview:
+#           https://excision.bsd.ac/guides/secondary/
+#       If nsd is not enabled for a domain, it is to be ensured that all
+#       records are properly managed manually:
+#           https://excision.bsd.ac/guides/manualdns/
 domains: 
   - name: <change-me> # e.g. bsd.ac
-    nsd: True         # HIGHLY RECOMMENDED, else remove or set to False
-                      # depends on enable_nsd: True (see OPTIONAL SECTION below)
+    nsd: True         # HIGHLY RECOMMENDED, defaults to False if not present
   #- name: domain2.tld
   #  nsd: False
   #- name: domain3.tld3
-  #  nsd: True
 
-# The hostname is what the ip here is going to be called.
-# If the hostname here
-# is put to mail, then the ip here is going to be directed via 
-# mail.domain.tld
-# It is generally a good idea to call this something like mail, mail1, vmail
+# The mail_subdomain is what the IP here is going to be called.
+# If the mail_subdomain here is put to 'mail', and the first
+# domain is called bsd.ac, then the ip here is going to
+# resolve to - mail.bsd.ac
+# It is generally a good idea to give it informative names - mail, mail1, vmail
 # or something similar, to make it clear to the outside world that this
-# is an actual server which was set up with mail in mind.
+# is an actual server which was set up with mail in mind
 # NOTE: the reverse dns lookup should also resolve to whatever
-#       you input over here: hostname.domain.tld
-#       e.g. for bsd.ac, the hostname is called mail.bsd.ac and the
-#       reverse dns also resolves to mail.bsd.ac
-hostname: "{{ mail_subdomain }}.{{ domains[0].name }}" # can change it if you so prefer, but this is a nice one
+#       mail_subdomain is used: {{ mail_subdomain }}.{{ domains[0].name }}
+mail_subdomain: mail
 
-# This is the user that will be created and all server information emails
-# daily reports and outside domain reports will be send to admin@domain.tld
-# This is not an actualy system user, but an email only user: admin@domain.tld
-# NOTE: Excision Mail is configured so that you can actually use this account
-#       as your daily email, by filterting all emails that are domain related
+# This is the virtual user that will be created and all server information emails,
+# daily reports and outside domain reports will be send to 'admin@domain.tld'
+# This is not an actual system user, but an email only user
+# NOTE: Excision Mail is configured so that this account can be used as for
+#       day-to-day usage, by filterting all emails that are domain related
 #       to go into a information-archive email folder. This is very easy to set up
-#       using mail filtering - 
+#       using mail filtering via serverside sieve.
 admin: <change-me> # e.g. aisha
 
 # public ipv4/ipv6 address of this server 
@@ -56,31 +53,29 @@ ipv6: <change-me> # e.g. dead:beef
 
 # HIGHLY RECOMMENDED TO USE THIS SECTION
 #
-# If you want to make Excision Mail manage nsd on your behalf you should say yes here
-# It is really recommended to do this as configurin NSD manually is really really
-# hard given the horrible web interfaces used by service providers
-# In the worst case where you want to do it yourself, you can visit the wiki page 
-# and the NSD role for documentation. It is highly detailed and explains every step 
+# It is really recommended to do enable nsd management via Excision Mail
+# as configuring NSD manually is really really painful given the horrible
+# web interfaces used by service providers.
+# In case it is desired to manully manage DNS, the wiki page and the NSD role
+# for documentation provide a highly detailed overvie and explain every step 
 # of the way. 
-# Be aware that configuring it yourself is going to take upwards of 7-8 hours, 
-# unless you are experienced with DNS setup
-#enable_nsd: False # set to True to enable (disabled by default)
+# Be aware that configuring DNS manually can take upwards of 7-8 hours, unless
+# experienced with DNS setup.
 #
 # NOTE: These are NOT the same as the ip's of the nameservers of the 
 #       DNS hosting provider, such as ns1.dnsmadeeasy.com. These are
-#       given to you when you configure the DNS provider as a secondary 
-#       service, not when using as the primary 
+#       given by the DNS provider when using a secondary DNS service.
 #secondary_nameservers:
 #  - ipv4: <change-me> # e.g. 69.65.50.192 # freedns2 (afraid.org)
 #  - ipv6: <change-me> # e.g. 2a00:1768:1001:9::31:1 # some cloudns server
-#  - ipv4: <change-me> # add as many as you want... :)
+#  - ipv4: <change-me> # add as many as desired... :)
 #        
-# These nameservers are used by others on the web to find your servers
-# through DNS querying.
-# They are the ones that should resolve to pns31.cloudns.net/ns42.<dns-provider.tld>
+# These nameservers are used by users and clients on the web through DNS querying.
+# These are the ones that should resolve to pns31.cloudns.net/ns42.dns-provider.tld
 # or something of that form, which makes it clear that they are DNS servers.
 # Each bullet point is one nameserver with at most one ipv4 and one ipv6
-# You can have a nameserver with an ipv4 and no ipv6 (also the other way around)
+# It is possible to have a nameserver with an ipv4 and no ipv6 (also the other way
+# around) but each nameserver should have a proper 'name' (given by the provider)
 #public_nameservers:
 #  - name: pns31.cloudns.net
 #    ipv4: 185.136.96.66
@@ -88,4 +83,7 @@ ipv6: <change-me> # e.g. dead:beef
 #  - name: <change-me>
 #    ipv4: <change-me>
 #    ipv6: <change-me>
-#  - ipv4: <change-me>
+#  - name: <change-me>
+#    ipv4: <change-me>
+#  - name: <change-me>
+#    ipv6: <change-me>
