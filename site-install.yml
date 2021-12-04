@@ -15,10 +15,22 @@
     - group_vars/extrapolate.yml
 
   roles:
-    - { role: httpd,         tags: ['httpd']          }
-    - { role: acme,          tags: ['acme']           }
-    - { role: clamav,        tags: ['clamav'],
-        when: enable_clamav                           }
-    - { role: rspamd,        tags: ['rspamd']         }
-    - { role: smtpd,         tags: ['smtpd']          }
-    - { role: dovecot,       tags: ['dovecot']        }
+    - role: httpd
+      tags:
+        - 'httpd'
+    - role: acme
+      tags:
+        - 'acme'
+    - role: clamav
+      tags:
+        - 'clamav'
+      when: enable_clamav
+    - role: rspamd
+      tags:
+        - 'rspamd'
+    - role: smtpd
+      tags:
+        - 'smtpd'
+    - role: dovecot
+      tags:
+        - 'dovecot'
