@@ -1,7 +1,7 @@
 ---
-- name: get excision UID
+- name: get excision uid
   command: id -u excision
-  register: excisionUID
+  register: excision_uid
   changed_when: false
 
 - name: enable dovecot
