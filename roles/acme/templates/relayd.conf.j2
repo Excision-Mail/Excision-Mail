@@ -1,3 +1,6 @@
+# {{ ansible_managed }}
+
+# port definitions
 relayd_port="{{ relayd_port }}"
 https_port="{{ https_port }}"
 
@@ -24,7 +27,7 @@ http protocol tlsinspect {
 {% endif %}
 {% endfor %}
 
-	### TCP performance options 
+	### TCP performance options
 	tcp { nodelay, sack, socket buffer 65536, backlog 100 }
 
 	### Return HTTP/HTML error pages
@@ -35,7 +38,7 @@ http protocol tlsinspect {
 	tls { cipher-server-preference, no tlsv1.0, ciphers "HIGH" }
 
 	# credit: https://doc.huc.fr.eu.org/en/web/httpd/relayd-headers-httpd/
-	match request header set "X-Forwarded-By"   value "$SERVER_ADDR:$SERVER_PORT"    
+	match request header set "X-Forwarded-By"   value "$SERVER_ADDR:$SERVER_PORT"
 	match request header set "X-Forwarded-For"  value "$REMOTE_ADDR"
 
 	match request header remove "Proxy"
@@ -44,7 +47,7 @@ http protocol tlsinspect {
 	#match response header set "Content-Security-Policy" value "default-src 'self'"
 	match response header set "Frame-Options"           value "SAMEORIGIN"
 	match response header set "Referrer-Policy"         value "strict-origin"
-  
+
 	match response header set "X-Content-Type-Options" value "nosniff"
 	match response header set "X-Download-Options"     value "noopen"
 	match response header set "X-Frame-Options"        value "SAMEORIGIN"
@@ -65,4 +68,3 @@ relay tlsinspect {
 	forward to <extras_ip> port $extras_port
 {% endif %}
 }
-

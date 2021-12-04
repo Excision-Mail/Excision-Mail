@@ -32,11 +32,10 @@ $ORIGIN	{{ item.name }}.
 
 ; these are the domain names that will be accepted on this server
 {% if ipv4 is defined %}
-{{ hostname.split('.')[:-2] | join('.') }}	IN	A	{{ ipv4 }}
+{{ mail_subdomain }}	IN	A	{{ ipv4 }}
 {% endif %}
-
 {% if ipv6 is defined %}
-{{ hostname.split('.')[:-2] | join('.') }}	IN	AAAA	{{ ipv6 }}
+{{ mail_subdomain }}	IN	AAAA	{{ ipv6 }}
 {% endif %}
 
 ; currently we don't have a backup MX server

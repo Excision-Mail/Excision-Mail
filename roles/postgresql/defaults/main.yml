@@ -1,21 +1,21 @@
 ---
-PSQL_packages:
+psql_packages:
   - postgresql-server
   - postgresql-client
   - py3-psycopg2
 
-PSQL_addresses:
+psql_addresses:
   - localhost
   - "{{ extras_interface }}"
 
-PSQL_socket_dirs:
+psql_socket_dirs:
   - /tmp
   - /var/www/tmp
 
-PSQL_max_connections: 40
-PSQL_shared_buffers: 128MB
+psql_max_connections: 40
+psql_shared_buffers: 128MB
 
-PSQL_semmni: 90
-PSQL_semmns: 2048
+psql_semmni: 90
+psql_semmns: 2048
 
-PSQL_timezone: "{{ timezone | default('UTC') }}"
+psql_timezone: "{{ timezone | default('UTC') }}"

@@ -1,12 +1,12 @@
 ---
-- name: Add _rspamd to _redis group
+- name: add _rspamd to _redis group
   user:
     name: _rspamd
     groups: _redis
-    append: yes
-    create_home: no
+    append: true
+    create_home: false
 
-- name: Create rspamd local.d directory
+- name: create rspamd local.d directory
   file:
     path: /etc/rspamd/local.d/
     state: directory
@@ -14,7 +14,7 @@
     group: wheel
     mode: '0755'
 
-- name: Create rspamd local confs
+- name: create rspamd local configs
   copy:
     src: etc_rspamd_locald/
     dest: /etc/rspamd/local.d/
@@ -22,8 +22,9 @@
     owner: root
     group: wheel
     mode: '0644'
+  notify: restart rspamd
 
-- name: Create rspamd local templated confs
+- name: generate rspamd local configs from templates
   template:
     src: "{{ item.name }}"
     dest: "/etc/rspamd/local.d/{{ item.name | replace('.j2', '') }}"
@@ -31,13 +32,13 @@
     group: wheel
     mode: '0644'
   with_items: "{{ rspamd_templates }}"
+  notify: restart rspamd
 
-- name: Check rspamd is started
+- name: enable rspamd
   service:
     name: rspamd
+    enabled: true
     state: started
 
-- name: Check rspamd is reloaded
-  service:
-    name: rspamd
-    state: reloaded
+- name: flush_handlers
+  meta: flush_handlers

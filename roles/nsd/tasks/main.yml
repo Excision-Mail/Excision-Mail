@@ -1,9 +1,4 @@
 ---
-- name: enable nsd
-  service:
-    name: nsd
-    enabled: True
-
 - name: generate nsd config
   template:
     src: nsd.conf.j2
@@ -12,3 +7,12 @@
     group: _nsd
     mode: '0640'
   notify: restart nsd
+
+- name: enable nsd
+  service:
+    name: nsd
+    enabled: true
+    state: started
+
+- name: flush_handlers
+  meta: flush_handlers

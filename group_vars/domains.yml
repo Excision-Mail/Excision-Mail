@@ -15,3 +15,5 @@ required_subdomains:
 extra_subdomains:
   - dav
   - webmail
+
+agg_subdomains: "{{ required_subdomains + extra_subdomains }}"

@@ -1,12 +1,11 @@
 ---
-- name: Install PostgreSQL packages
+- name: install postgresql packages
   openbsd_pkg:
     name: "{{ item }}"
     state: present
-  with_items: "{{ PSQL_packages }}"
-  when: false
+  with_items: "{{ psql_packages }}"
 
-- name: Set up permissions on /var/www/{tmp,run}
+- name: set up permissions on /var/www/{tmp,run}
   file:
     path: /var/www/{{ item }}
     state: directory
@@ -16,57 +15,31 @@
   with_items:
     - tmp
     - run
-  notify: Restart PostgreSQL
 
-- name: Add postgres user to www group
+- name: add _postgresql user to www group
   user:
     name: _postgresql
     groups: www
-    append: yes
-  notify: Restart PostgreSQL
+    append: true
+  notify: restart postgresql
 
-- name: Initialize PostgreSQL
+- name: initialize postgresql
   command: initdb -D /var/postgresql/data -U postgres -E UTF8 -A peer
   args:
     creates: /var/postgresql/data/PG_VERSION
-  become: yes
+  become: true
   become_user: _postgresql
-<<<<<<< Updated upstream
-
-- name: ensure semmni for busy servers
-  lineinfile:
-    path: /etc/sysctl.conf
-    regexp: "^kern.seminfo.semmni"
-    line: "kern.seminfo.semmni=90"
-  notify: sysctl semmni
-
-- name: ensure semmns for busy servers
-  lineinfile:
-    path: /etc/sysctl.conf
-    regexp: "^kern.seminfo.semmns"
-    line: "kern.seminfo.semmns=2048"
-  notify: sysctl semmns
 
 - name: generate configuration
-=======
-  notify: Restart PostgreSQL
-  when: false
-  
-- name: Generate PostgreSQL config
->>>>>>> Stashed changes
   template:
     src: postgresql.conf.j2
     dest: /var/postgresql/data/postgresql.conf
     owner: _postgresql
     group: _postgresql
     mode: 0600
-<<<<<<< Updated upstream
   notify: restart postgresql
-=======
-  notify: Restart PostgreSQL
->>>>>>> Stashed changes
 
-- name: Generate PostgreSQL user configs
+- name: generate user configurations
   copy:
     src: '{{ item }}'
     dest: /var/postgresql/data/{{ item }}
@@ -76,24 +49,37 @@
   with_items:
     - pg_hba.conf
     - pg_ident.conf
-<<<<<<< Updated upstream
   notify: restart postgresql
-=======
-  notify: Restart PostgreSQL
+
+- name: ensure sysctl.conf exists
+  file:
+    path: /etc/sysctl.conf
+    state: touch
+    owner: root
+    group: wheel
+    mode: '0644'
+    modification_time: preserve
+    access_time: preserve
 
 - name: Ensure semmni for busy servers
   lineinfile:
     path: /etc/sysctl.conf
     regexp: "^kern.seminfo.semmni"
-    line: "kern.seminfo.semmni={{ PSQL_semmni }}"
-  notify: Restart PostgreSQL
+    line: "kern.seminfo.semmni={{ psql_semmni }}"
+  notify: sysctl semmni
 
 - name: Ensure semmns for busy servers
   lineinfile:
     path: /etc/sysctl.conf
     regexp: "^kern.seminfo.semmns"
-    line: "kern.seminfo.semmns={{ PSQL_semmns }}"
-  notify: Restart PostgreSQL
->>>>>>> Stashed changes
+    line: "kern.seminfo.semmns={{ psql_semmns }}"
+  notify: sysctl semmns
 
-- meta: flush_handlers
+- name: flush_handlers
+  meta: flush_handlers
+
+- name: enable postgresql
+  service:
+    name: postgresql
+    enabled: true
+    state: started

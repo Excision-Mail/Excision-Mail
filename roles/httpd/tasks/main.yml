@@ -1,48 +1,53 @@
 ---
-- name: create httpd domain directory
+- name: create httpd directories
   file:
-    path: "/var/www/htdocs/{{ item.name }}"
+    path: "/var/www/{{ item[1].name }}/{{ item[0].name }}"
     state: directory
-  with_items: "{{ domains }}"
-
-- name: create mail directory for mozilla autoconfig
-  file:
-    path: "/var/www/mail/{{ item.name }}"
-    state: directory
-  with_items: "{{ domains }}"
-
-# https://wiki.mozilla.org/Thunderbird:Autoconfiguration#Implementation
-- name: copy mozilla config file to mail
-  template:
-    src: config-v1.1.xml.j2
-    dest: "/var/www/mail/{{ item.name }}/config-v1.1.xml"
-  with_items: "{{ domains }}"
-
-- name: Create autodiscover directory for microsoft autodiscover
-  file:
-    path: "/var/www/Autodiscover/{{ item.name }}"
-    state: directory
-  with_items: "{{ domains }}"
-
-# https://github.com/gronke/email-autodiscover/blob/master/mail/autodiscover.xml
-# https://docs.microsoft.com/en-us/previous-versions/office/office-2010/cc511507(v=office.14)?redirectedfrom=MSDN#Anchor_3
-- name: copy autodiscover config file to autodiscover
-  template:
-    src: Autodiscover.xml.j2
-    dest: "/var/www/Autodiscover/{{ item.name }}/Autodiscover.xml"
-  with_items: "{{ domains }}"
+    owner: root
+    group: wheel
+    mode: '0755'
+  with_nested:
+    - "{{ domains }}"
+    - "{{ httpd_folders }}"
 
 - name: create mta-sts directory
   file:
     path: /var/www/mta-sts
     state: directory
+    owner: root
+    group: wheel
+    mode: '0755'
 
-- name: copy mta-sts.txt file
+- name: generate mta-sts.txt file
   template:
     src: mta-sts.txt.j2
     dest: /var/www/mta-sts/mta-sts.txt
+    owner: root
+    group: wheel
+    mode: '0644'
 
-- name: Make gpg-wks-server hierarchy
+# https://wiki.mozilla.org/Thunderbird:Autoconfiguration#Implementation
+- name: generate mozilla config files
+  template:
+    src: config-v1.1.xml.j2
+    dest: "/var/www/mail/{{ item.name }}/config-v1.1.xml"
+    owner: root
+    group: wheel
+    mode: '0644'
+  with_items: "{{ domains }}"
+
+# https://github.com/gronke/email-autodiscover/blob/master/mail/autodiscover.xml
+# https://docs.microsoft.com/en-us/previous-versions/office/office-2010/cc511507(v=office.14)?redirectedfrom=MSDN#Anchor_3
+- name: generate autodiscover config files
+  template:
+    src: Autodiscover.xml.j2
+    dest: "/var/www/Autodiscover/{{ item.name }}/Autodiscover.xml"
+    owner: root
+    group: wheel
+    mode: '0644'
+  with_items: "{{ domains }}"
+
+- name: ensure gpg-wks-server hierarchy   # noqa no-changed-when
   command: excision ensure-gpg
 
 - name: ensure httpd-extras exists (maybe empty)
@@ -63,6 +68,12 @@
     group: wheel
     mode: '0644'
   notify: restart httpd
+
+- name: enable httpd
+  service:
+    name: httpd
+    enabled: true
+    state: started
 
 - name: flush_handlers
   meta: flush_handlers

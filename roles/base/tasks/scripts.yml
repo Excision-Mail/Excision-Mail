@@ -17,16 +17,7 @@
     group: wheel
     mode: '0755'
 
-- name: install `excision-change-user-passwd` wrapper
-  copy:
-    src: excision-change-user-passwd
-    dest: /var/excision-passwd/
-    force: true
-    owner: excision-passwd
-    group: excision-passwd
-    mode: '0755'
-
-- name: install Excision scripts
+- name: install helper scripts
   copy:
     src: excision_scripts/
     dest: /usr/local/lib/excision/

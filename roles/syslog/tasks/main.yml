@@ -20,7 +20,7 @@
     mode: '0644'
   notify: restart syslog
 
-- name: Generate newsyslog conf
+- name: generate newsyslog conf
   template:
     src: newsyslog.conf.j2
     dest: /etc/newsyslog.conf

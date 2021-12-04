@@ -1,3 +1,4 @@
+# {{ ansible_managed }}
 authority letsencrypt {
 	api url "https://acme-v02.api.letsencrypt.org/directory"
 	account key "/etc/acme/letsencrypt-privkey.pem"
@@ -8,10 +9,22 @@ authority letsencrypt-staging {
 	account key "/etc/acme/letsencrypt-staging-privkey.pem"
 }
 
-domain {{ hostname }} {
+authority buypass {
+	api url "https://api.buypass.com/acme/directory"
+	account key "/etc/acme/buypass-privkey.pem"
+	contact "mailto:me@example.com"
+}
+
+authority buypass-test {
+	api url "https://api.test4.buypass.no/acme/directory"
+	account key "/etc/acme/buypass-test-privkey.pem"
+	contact "mailto:me@example.com"
+}
+
+domain {{ mail_subdomain }}.{{ domains[0].name }} {
 	alternative names { \
-{% for sdomain in subdomains %}
 {% for domain in domains %}
+{% for sdomain in agg_subdomains %}
 		"{{ sdomain }}.{{ domain.name }}" \
 {% endfor %}
 {% endfor %}
@@ -20,4 +33,3 @@ domain {{ hostname }} {
 	domain full chain certificate "/etc/excision/ssl/{{ domains[0].name }}.crt"
 	sign with letsencrypt
 }
-

@@ -1,13 +1,13 @@
-- name: Install/Upgrade Excision Mails main utilities
+- name: Install/Upgrade Excision Mail main utilities
 
   hosts:
     - mainserver
 
   vars_files:
     - group_vars/options.yml
-    - group_vars/pf.yml
-    - group_vars/syslog.yml
     - group_vars/domains.yml
+    - role_vars/pf.yml
+    - role_vars/syslog.yml
     - roles/httpd/defaults/main.yml
     - roles/httpd-extra/defaults/main.yml
     - roles/acme/defaults/main.yml

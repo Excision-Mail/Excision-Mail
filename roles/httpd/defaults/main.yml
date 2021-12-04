@@ -1,3 +1,8 @@
 ---
+httpd_folders:
+  - {name: "mail"}
+  - {name: "htdocs"}
+  - {name: "Autodiscover"}
+
 http_port: 80
 https_port: 1984

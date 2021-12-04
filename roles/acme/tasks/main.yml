@@ -1,40 +1,42 @@
 ---
-- name: Create acme config
+- name: create acme config
   template:
-          src: acme-client.conf.j2
-          dest: /etc/excision/ssl/acme-client.conf
-          owner: root
-          group: wheel
-          mode: '0644'
+    src: acme-client.conf.j2
+    dest: /etc/excision/ssl/acme-client.conf
+    owner: root
+    group: wheel
+    mode: "0644"
 
-- name: Create acme certs
+- name: create acme certs
   command: excision renew-certs
-  ignore_errors: true
+  register: renew_certs
+  failed_when: renew_certs.rc == 1
+  changed_when: renew_certs.rc == 0
 
-- name: Create symlinks for relayd certificates
+- name: create symlinks for relayd certificates
   file:
-          src: "/etc/excision/ssl/{{ item.name }}"
-          dest: "/etc/ssl/{{ item.name }}"
-          owner: root
-          group: wheel
-          state: link
-  with_items:
-          - name: "private/{{ domains[0].name }}.key"
-          - name: "{{ domains[0].name }}.crt"
-          - name: "{{ domains[0].name }}.ocsp"
+    src: "/etc/excision/ssl/{{ item[0].prefix | default('') }}{{ item[1].name }}{{ item[0].suffix }}"
+    dest: "/etc/ssl/{{ item[0].prefix | default('') }}{{ item[1].name }}{{ item[0].suffix }}"
+    owner: root
+    group: wheel
+    state: link
+  with_nested:
+    - "{{ padding }}"
+    - "{{ domains }}"
 
-- name: Create relayd config
+- name: create relayd config
   template:
-          src: relayd.conf.j2
-          dest: /etc/relayd.conf
-          owner: root
-          group: wheel
-          mode: '0600'
+    src: relayd.conf.j2
+    dest: /etc/relayd.conf
+    owner: root
+    group: wheel
+    mode: "0600"
 
-- name: Restart relayd
+- name: restart relayd
   service:
-          name: relayd
-          state: restarted
-          enabled: yes
+    name: relayd
+    state: restarted
+    enabled: true
 
-- meta: flush_handlers
+- name: flush_handlers
+  meta: flush_handlers

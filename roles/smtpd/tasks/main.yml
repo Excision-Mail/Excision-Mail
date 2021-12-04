@@ -3,22 +3,35 @@
   template:
     src: aliases.j2
     dest: /etc/mail/aliases
+    owner: root
+    group: wheel
+    mode: '0640'
+  notify: restart smtpd
 
-- name: add admin user for primary domain with random password (ignore if it already exists)
-  shell: openssl rand -hex 32 | excision add-user "{{ admin }}@{{ domains[0].name }}"
-  ignore_errors: yes
+- name: add admin user
+  shell: set -o pipefail && openssl rand -hex 32 | excision add-user "{{ admin }}@{{ domains[0].name }}"
+  notify: restart smtpd
+  register: __smtpd_admin
+  changed_when: __smtpd_admin.rc == 0
+  failed_when: __smtpd_wks.rc != 0 and __smtpd_wks.rc != 2
 
-- name: add wks user for all domains with random password (ignore if they already exists)
-  shell: openssl rand -hex 32 | excision add-user "wks@{{ item.name }}"
-  ignore_errors: yes
+- name: add web-key-server users
+  shell: set -o pipefail && openssl rand -hex 32 | excision add-user "wks@{{ item.name }}"
   with_items: "{{ domains }}"
+  notify: restart smtpd
+  register: __smtpd_wks
+  changed_when: __smtpd_wks.rc == 0
+  failed_when: __smtpd_wks.rc != 0 && __smtpd_wks.rc != 2
 
-- name: add all the needed aliases for admin for all domains (ignore if they already exist)
+- name: add aliases for admin
   command: excision add-alias "{{ item[0] }}@{{ item[1].name }}" "{{ admin }}@{{ domains[0].name }}"
-  ignore_errors: yes
   with_nested:
     - "{{ smtpd_aliases }}"
     - "{{ domains }}"
+  notify: restart smtpd
+  register: __smtpd_alias
+  changed_when: __smtpd_alias.rc == 0
+  failed_when: __smtpd_alias.rc != 0 && __smtpd_alias.rc != 2
 
 - name: ensure all smtpd table files exist
   file:
@@ -35,6 +48,16 @@
   template:
     src: smtpd.conf.j2
     dest: /etc/mail/smtpd.conf
-    mode: '0644'
     owner: root
     group: wheel
+    mode: '0644'
+  notify: restart smtpd
+
+- name: enable smtpd
+  service:
+    name: smtpd
+    enabled: true
+    state: started
+
+- name: flush_handlers
+  meta: flush_handlers

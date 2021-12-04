@@ -1,13 +1,12 @@
 ---
-- name: Restart PostgreSQL
+- name: restart postgresql
   service:
     name: postgresql
-    state: restarted
     enabled: true
+    state: restarted
 
 - name: sysctl semmni
   command: sysctl kern.seminfo.semmni=90
 
 - name: sysctl semmns
-  command: kern.seminfo.semmns=2048
-
+  command: sysctl kern.seminfo.semmns=2048

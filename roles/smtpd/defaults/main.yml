@@ -1,4 +1,5 @@
 smtpd_aliases:
+  - "excision"
   - "postmaster"
   - "abuse"
   - "noc"
@@ -9,16 +10,15 @@ smtpd_aliases:
   - "webmaster"
   - "dmarcreports"
   - "tlsreports"
-  - "excision"
   - "calendar"
 
 smtpd_tables:
-  - { name: "aliases", user: "root", group: "wheel",  perm: "0640" }
-  - { name: "mailname", user: "root", group: "wheel", perm: "0640" }
-  - { name: "virtual", user: "root", group: "_smtpd", perm: "0640" }
-  - { name: "revirt", user: "root", group: "_smtpd", perm: "0640" }
-  - { name: "vdomains", user: "root", group: "wheel", perm: "0640" }
-  - { name: "passwd", user: "_smtpd", group: "_dovecot", perm: "0440" }
+  - {name: "aliases", user: "root", group: "wheel", perm: "0640"}
+  - {name: "mailname", user: "root", group: "wheel", perm: "0640"}
+  - {name: "virtual", user: "root", group: "_smtpd", perm: "0640"}
+  - {name: "revirt", user: "root", group: "_smtpd", perm: "0640"}
+  - {name: "vdomains", user: "root", group: "wheel", perm: "0640"}
+  - {name: "passwd", user: "_smtpd", group: "_dovecot", perm: "0440"}
 
 smtpd_max_attachment_size: 32
 

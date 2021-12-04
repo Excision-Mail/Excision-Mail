@@ -16,7 +16,7 @@
 #
 # location = [<type>:]path[;<option>[=<value>][;...]]
 #
-# If the type prefix is omitted, the script location type is 'file' and the 
+# If the type prefix is omitted, the script location type is 'file' and the
 # location is interpreted as a local filesystem path pointing to a Sieve script
 # file or directory. Refer to Pigeonhole wiki or INSTALL file for more
 # information.
@@ -27,7 +27,7 @@ plugin {
   # delivery. The "include" extension uses this location for retrieving
   # :personal" scripts. This is also where the  ManageSieve service will store
   # the user's scripts, if supported.
-  # 
+  #
   # Currently only the 'file:' location type supports ManageSieve operation.
   # Other location types like 'dict:' and 'ldap:' can currently only
   # be used as a read-only script source ().
@@ -46,8 +46,8 @@ plugin {
   #     script.
   #sieve_default = /var/dovecot/sieve/default.sieve
 
-  # The name by which the default Sieve script (as configured by the 
-  # sieve_default setting) is visible to the user through ManageSieve. 
+  # The name by which the default Sieve script (as configured by the
+  # sieve_default setting) is visible to the user through ManageSieve.
   #sieve_default_name =
 
   # Location for ":global" include scripts as used by the "include" extension.
@@ -63,7 +63,7 @@ plugin {
   #sieve_discard =
 
   # Location Sieve of scripts that need to be executed before the user's
-  # personal script. If a 'file' location path points to a directory, all the 
+  # personal script. If a 'file' location path points to a directory, all the
   # Sieve scripts contained therein (with the proper `.sieve' extension) are
   # executed. The order of execution within that directory is determined by the
   # file names, using a normal 8bit per-character comparison.
@@ -130,7 +130,7 @@ plugin {
   # localpart and uses the first one encountered. The :user part is
   # left of the separator and the :detail part is right. This setting
   # is also used by Dovecot's LMTP service.
-  recipient_delimiter = {{ davical_username_delimiter }}
+  recipient_delimiter = {{ dovecot_username_delimiter }}
 
   # The maximum size of a Sieve script. The compiler will refuse to compile any
   # script larger than this limit. If set to 0, no limit on the script size is
@@ -191,18 +191,18 @@ plugin {
   ## TRACE DEBUGGING
   # Trace debugging provides detailed insight in the operations performed by
   # the Sieve script. These settings apply to both the LDA Sieve plugin and the
-  # IMAPSIEVE plugin. 
+  # IMAPSIEVE plugin.
   #
   # WARNING: On a busy server, this functionality can quickly fill up the trace
   # directory with a lot of trace files. Enable this only temporarily and as
   # selective as possible.
-  
+
   # The directory where trace files are written. Trace debugging is disabled if
-  # this setting is not configured or if the directory does not exist. If the 
+  # this setting is not configured or if the directory does not exist. If the
   # path is relative or it starts with "~/" it is interpreted relative to the
   # current user's home directory.
   #sieve_trace_dir =
-  
+
   # The verbosity level of the trace messages. Trace debugging is disabled if
   # this setting is not configured. Possible values are:
   #
@@ -213,13 +213,12 @@ plugin {
   #   "matching"       - Print all executed commands, performed tests and the
   #                      values matched in those tests.
   #sieve_trace_level =
-  
+
   # Enables highly verbose debugging messages that are usually only useful for
   # developers.
   #sieve_trace_debug = no
-  
+
   # Enables showing byte code addresses in the trace output, rather than only
   # the source line numbers.
-  #sieve_trace_addresses = no 
+  #sieve_trace_addresses = no
 }
-

@@ -1,5 +1,2 @@
 enable_list:
   - yaml
-
-skip_list:
-  - var-naming

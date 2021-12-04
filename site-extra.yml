@@ -1,13 +1,15 @@
-- name: Install/Upgrade Excision on this machine
+- name: Install/Upgrade Excision Mail extra utilities
 
   hosts:
     - extraserver
 
   vars_files:
-    - group_vars/global.yml
+    - group_vars/options.yml
+    - group_vars/domains.yml
+    - group_vars/extras.yml
     - vars.yml
-    - extrapolate.yml
-    
+    - group_vars/extrapolate.yml
+
   roles:
     - { role: httpd-extra,   tags: ['httpd'],
         when: enable_extras                           }
@@ -15,8 +17,7 @@
         when: enable_extras and enable_php            }
     - { role: postgresql,    tags: ['postgresql'],
         when: enable_extras and enable_postgresql     }
-    - { role: davical,       tags: ['davical'],
-        when: enable_extras and enable_davical        }
     - { role: roundcube,     tags: ['roundcube'],
         when: enable_extras and enable_roundcube      }
-
+#    - { role: davical,       tags: ['davical'],
+#        when: enable_extras and enable_davical        }

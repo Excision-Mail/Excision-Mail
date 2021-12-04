@@ -1,10 +1,8 @@
 ---
 - name: install roundcube packages
   openbsd_pkg:
-    name: "{{ item }}"
+    name: "{{ roundcube_packages }}"
     state: present
-  with_items:
-    - roundcubemail
 
 - name: create config file for roundcubemail
   template:
@@ -20,4 +18,5 @@
 - name: include roundcue postgresql
   include: roundcube_pgsql.yml
 
-- meta: flush_handlers
+- name: flush_handlers
+  meta: flush_handlers

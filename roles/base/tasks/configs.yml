@@ -11,6 +11,17 @@
     access_time: preserve
   notify: set hostname
 
+- name: create mail_subdomain file
+  copy:
+    content: |
+      {{ mail_subdomain }}
+    dest: /etc/excision/nsd/mail_subdomain
+    mode: '0644'
+    owner: root
+    group: wheel
+    modification_time: preserve
+    access_time: preserve
+
 - name: create mailname file
   copy:
     content: |

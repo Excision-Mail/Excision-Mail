@@ -1,0 +1,10 @@
+passdb {
+  driver = ldap
+  args = /etc/dovecot/dovecot-ldap-passdb.conf.ext
+}
+
+userdb {
+  driver = ldap
+  args = /etc/dovecot/dovecot-ldap-userdb.conf.ext
+  default_fields = uid=excision gid=excision home=/var/excision/%d/%n quota_rule=*:storage=15G
+}

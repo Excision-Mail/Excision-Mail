@@ -1,2 +1,39 @@
 ---
-davical_username_delimiter: "+"
+dovecot_directories:
+  - {path: "/var/excision"}
+  - {path: "/usr/local/lib/dovecot/sieve"}
+  - {path: "/var/dovecot/sieve/before"}
+  - {path: "/var/dovecot/sieve-pipe"}
+
+dovecot_config_files:
+  - {name: "10-auth.conf"}
+  - {name: "10-master.conf"}
+  - {name: "15-mailboxes.conf"}
+  - {name: "20-imap.conf"}
+  - {name: "20-lmtp.conf"}
+  - {name: "20-managesieve.conf"}
+  - {name: "90-plugin.conf"}
+  - {name: "90-quota.conf"}
+  - {name: "90-sieve-extprograms.conf"}
+  - {name: "auth-ldap.conf.ext"}
+  - {name: "dovecot-trash.conf.ext"}
+
+dovecot_sieve_files:
+  - {name: "report-ham.sieve", mode: "0660"}
+  - {name: "report-spam.sieve", mode: "0660"}
+  - {name: "spamtest.sieve", mode: "0660", path: "/var/dovecot/sieve/before"}
+  - {name: "sa-learn-ham.sh"}
+  - {name: "sa-learn-spam.sh"}
+  - {name: "quota-warning.sh"}
+  - {name: "dovecot-lda.sh"}
+  - {name: "wks-server.sh"}
+
+dovecot_templates:
+  - {name: "10-mail.conf"}
+  - {name: "10-ssl.conf"}
+  - {name: "15-lda.conf"}
+  - {name: "90-sieve.conf"}
+  - {name: "00-wks.sieve", path: "/var/dovecot/sieve/before", user: "excision", group: "excision", mode: "0660"}
+  - {name: "dovecot-ldap.conf.ext", path: "/etc/dovecot", mode: "0600"}
+
+dovecot_username_delimiter: "+"

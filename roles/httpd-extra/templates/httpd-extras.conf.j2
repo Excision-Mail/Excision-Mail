@@ -1,4 +1,4 @@
-extras_interface="{{ extras_interface }}"
+extras_interface="{{ extras_ip }}"
 extras_port="{{ extras_port }}"
 
 server "webmail.{{ domains[0].name }}" {
@@ -25,13 +25,16 @@ server "webmail.{{ domains[0].name }}" {
 	location "/SQL*"                  { block }
 	location "/UPGRADING"             { block }
 	location "/bin*"                  { block }
-	location "/composer**"            { block }
+	location "/composer*"             { block }
 	location "/config*"               { block }
 	location "/db*"                   { block }
 	location "/installer*"            { block }
 	location "/logs*"                 { block }
 	location "/plugin*"               { block }
-	location "/program*"              { block }
+	location "/program/include*"      { block }
+        location "/program/lib*"          { block }
+        location "/program/localization*" { block }
+        location "/program/steps*"        { block }
 	location "/temp*"                 { block }
 
 	location "*.php" {

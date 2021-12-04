@@ -1,5 +1,8 @@
 ---
-roundcube_extras: false
+roundcube_packages:
+  - "roundcubemail"
+  - "git"
+  - "gtar--"
 
 roundcube_base_plugins:
   - plugin: "newmail_notifier"
@@ -8,17 +11,19 @@ roundcube_base_plugins:
   - plugin: "subscriptions_option"
   - plugin: "archive"
   - plugin: "zipdownload"
+  - plugin: "password"
 
-roundcube_extra_plugins:
+roundcube_extra_plugins_git:
   - plugin: "custom_from"
     repo: "https://github.com/r3c/custom_from"
-    version: "a7a5524536f40f9dd51e6b77f939d47bb41e9f54"
+    version: "1.6.5"
   - plugin: "persistent_login"
     repo: "https://github.com/mfreiholz/persistent_login"
-    version: " version-5.2.0"
+    version: "9ae409858e6e15b587d59d914f63a94a6f862aa2"
+#  - plugin: "nextcloud"
+#    repo: "https://github.com/texxasrulez/roundcube-plugin-nextcloud"
+#    version: "0.3.0"
+
+roundcube_extra_plugins_tgz:
   - plugin: "carddav"
-    repo: "https://github.com/blind-coder/rcmcarddav"
-    version: "v4.0.0-alpha1"
-  - plugin: "nextcloud"
-    repo: "https://github.com/texxasrulez/roundcube-plugin-nextcloud"
-    version: "0.3.0"
+    src: "https://github.com/mstilkerich/rcmcarddav/releases/download/v4.3.0/carddav-v4.3.0.tar.gz"

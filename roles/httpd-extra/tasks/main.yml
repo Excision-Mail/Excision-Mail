@@ -1,19 +1,35 @@
 ---
+- name: ensure httpd.conf exists
+  file:
+    path: /etc/httpd.conf
+    state: touch
+    owner: root
+    group: wheel
+    mode: '0644'
+    modification_time: preserve
+    access_time: preserve
+
 - name: ensure httpd-extras.conf is included in httpd.conf
   lineinfile:
     path: /etc/httpd.conf
     line: 'include "/etc/httpd-extras.conf"'
     state: present
-  register: extras_in_config
+  notify: restart httpd
 
 - name: generate httpd-extras.conf
   template:
     src: httpd-extras.conf.j2
     dest: /etc/httpd-extras.conf
-  register: extras_config
+    owner: root
+    group: wheel
+    mode: '0644'
+  notify: restart httpd
 
-- name: restart httpd
+- name: enable httpd
   service:
     name: httpd
-    state: restarted
-  when: extras_in_config.changed or extras_config.changed
+    enabled: true
+    state: started
+
+- name: flush_handlers
+  meta: flush_handlers

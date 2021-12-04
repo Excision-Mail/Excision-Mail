@@ -57,8 +57,8 @@ listen on socket \
 	filter rspamd
 #
 # Private interfaces
-{% for pif in private_interfaces %}
-listen on {{ private_interface }}
+{% for pif in pf_private_interfaces %}
+listen on {{ pif }}
 {% endfor %}
 #
 # Incoming messages from outside to people in <vdomain>
@@ -66,19 +66,19 @@ listen on {{ private_interface }}
 listen on egress \
 	tls pki {{ domains[0].name }} \
 	filter { check_dyndns, check_rdns, check_fcrdns, senderscore, rspamd }
-# 
+#
 # User submitted messages on two ports 465-SSL/TLS and 587-STARTTLS
 # this filter signs the outgoing emails using the rspamd dkim_signing module
 listen on egress port smtps \
 	smtps pki {{ domains[0].name }} \
 	auth <passwd> received-auth \
 	senders <revirt> \
-	filter rspamd 
+	filter rspamd
 listen on egress port submission \
 	tls-require pki {{ domains[0].name }} \
 	auth <passwd> received-auth \
 	senders <revirt> \
-	filter rspamd 
+	filter rspamd
 
 # Sending messages
 #
@@ -114,7 +114,7 @@ match	from any auth \
 	for domain <vdomains> \
 	rcpt-to <submission-address> \
 	action "dovecot-lmtp"
-# 
+#
 # accept mail from outside sent to our <vdomains>
 # BUT not those who are coming for key-submission
 match	from any \

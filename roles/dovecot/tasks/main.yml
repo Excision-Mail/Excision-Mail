@@ -1,128 +1,66 @@
-- name: Get excision UID
+---
+- name: get excision UID
   command: id -u excision
   register: excisionUID
+  changed_when: false
 
-- name: Create mail directory
-  file:
-          path: /var/excision
-          state: directory
-          owner: excision
-          group: excision
-          mode: '0770'
-
-- name: Set sieve directory permissions
-  file:
-          path: /usr/local/lib/dovecot/sieve
-          state: directory
-          owner: excision
-          group: excision
-          mode: '0770'
-
-- name: Create sieve-before directory
-  file:
-          path: /var/dovecot/sieve/before
-          state: directory
-          owner: excision
-          group: excision
-          mode: '0770'
-
-- name: Create sieve-pipe directory
-  file:
-          path: /var/dovecot/sieve-pipe
-          state: directory
-          owner: excision
-          group: excision
-          mode: '0770'
-
-- name: Copy dovecot local configs
-  copy:
-          src: etc_dovecot_confd/
-          dest: /etc/dovecot/conf.d/
-          force: yes
-          owner: root
-          group: wheel
-          mode: '0644'
-
-- name: Generate dovecot mail local config
-  template:
-          src: 10-mail.conf.j2
-          dest: /etc/dovecot/conf.d/10-mail.conf
-          owner: root
-          group: wheel
-          mode: '0644'
-
-- name: Generate dovecot ssl local config
-  template:
-          src: 10-ssl.conf.j2
-          dest: /etc/dovecot/conf.d/10-ssl.conf
-          owner: root
-          group: wheel
-          mode: '0644'
-
-- name: Generate dovecot sieve local config
-  template:
-          src: 15-lda.conf.j2
-          dest: /etc/dovecot/conf.d/15-lda.conf
-          owner: root
-          group: wheel
-          mode: '0644'
-
-- name: Generate dovecot lda local config
-  template:
-          src: 90-sieve.conf.j2
-          dest: /etc/dovecot/conf.d/90-sieve.conf
-          owner: root
-          group: wheel
-          mode: '0644'
-
-- name: Add sievec scripts
-  copy:
-          src: sieve/
-          dest: /usr/local/lib/dovecot/sieve/
-          force: yes
-          owner: excision
-          group: excision
-          mode: '0660'
-
-- name: Add sieve shell scripts
-  copy:
-          src: sieve-shell/
-          dest: /usr/local/lib/dovecot/sieve/
-          force: yes
-          owner: excision
-          group: excision
-          mode: '0770'
-
-- name: Add quota warning script
-  template:
-          src: quota-warning.sh.j2
-          dest: /usr/local/lib/dovecot/sieve/quota-warning.sh
-          owner: excision
-          group: excision
-          mode: '0770'
-
-- name: Add sievec-before scripts
-  copy:
-          src: sieve-before/
-          dest: /var/dovecot/sieve/before/
-          force: yes
-          owner: excision
-          group: excision
-          mode: '0660'
-
-- name: Add wks-server sievec-before script
-  template:
-          src: 00-wks.sieve.j2
-          dest: /var/dovecot/sieve/before/00-wks.sieve
-          owner: excision
-          group: excision
-          mode: '0660'
-
-- name: Restart dovecot and smtpd services
+- name: enable dovecot
   service:
-          name: "{{ item.name }}"
-          state: restarted
-  with_items:
-          - name: dovecot
-          - name: smtpd
+    name: dovecot
+    enabled: true
 
+- name: create dovecot directories
+  file:
+    path: "{{ item.path }}"
+    owner: "{{ item.user | default('excision') }}"
+    group: "{{ item.group | default('excision') }}"
+    mode: "{{ item.mode | default('0770') }}"
+    state: directory
+  with_items: "{{ dovecot_directories }}"
+  notify: restart dovecot
+
+- name: copy dovecot sieve files
+  copy:
+    src: "{{ item.name }}"
+    dest: "{{ item.path | default('/usr/local/lib/dovecot/sieve') }}/{{ item.name }}"
+    owner: "{{ item.user | default('excision') }}"
+    group: "{{ item.group | default('excision') }}"
+    mode: "{{ item.mode | default('0770') }}"
+    force: true
+  with_items: "{{ dovecot_sieve_files }}"
+  notify: restart dovecot
+
+- name: copy dovecot template files
+  template:
+    src: "{{ item.name }}.j2"
+    dest: "{{ item.path | default('/etc/dovecot/conf.d') }}/{{ item.name }}"
+    owner: "{{ item.user | default('root') }}"
+    group: "{{ item.group | default('wheel') }}"
+    mode: "{{ item.mode | default('0644') }}"
+  with_items: "{{ dovecot_templates }}"
+  notify: restart dovecot
+
+- name: copy dovecot config files
+  copy:
+    src: "{{ item.name }}"
+    dest: "{{ item.path | default('/etc/dovecot/conf.d') }}/{{ item.name }}"
+    owner: "{{ item.user | default('root') }}"
+    group: "{{ item.group | default('wheel') }}"
+    mode: "{{ item.mode | default('0644') }}"
+    force: true
+  with_items: "{{ dovecot_config_files }}"
+  notify: restart dovecot
+
+- name: symlink dovecot ldap config
+  file:
+    src: "dovecot-ldap.conf.ext"
+    dest: "/etc/dovecot/dovecot-ldap-{{ item.name }}.conf.ext"
+    state: link
+    force: true
+  with_items:
+    - {name: "passdb"}
+    - {name: "userdb"}
+  notify: restart dovecot
+
+- name: flush_handlers
+  meta: flush_handlers

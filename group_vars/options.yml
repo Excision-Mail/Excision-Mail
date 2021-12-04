@@ -15,7 +15,7 @@ enable_roundcube:    true
 #####
 # Username delimiter to give all users access to infinite aliases
 # Is set to + by default can by set to any single character
-# NOTE: If you set it to some ascii character (such as 'a') a lot of 
-# users will stop getting their mails if they have this character in 
+# NOTE: If set to some ascii character (such as 'a') a lot of
+# users will stop getting their mails if they have this character in
 # their username. Use with care, but + . - _ are good choices
-#username_delimiter: "+"
+username_delimiter: "+"

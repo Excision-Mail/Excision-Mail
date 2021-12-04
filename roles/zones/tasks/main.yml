@@ -8,10 +8,9 @@
     group: wheel
   with_items: "{{ domains }}"
 
-- name: generate dkim certificates
+- name: generate dkim certificates   # noqa no-changed-when
   command: excision ensure-dkim
-  ignore_errors: true
 
-- name: generate zone final files
+- name: generate zone final files   # noqa no-changed-when
   command: excision ensure-zone "{{ item.name }}" 0
   with_items: "{{ domains }}"

@@ -5,17 +5,17 @@
 
   vars_files:
     - group_vars/options.yml
-    - group_vars/pf.yml
-    - group_vars/syslog.yml
     - group_vars/domains.yml
+    - role_vars/pf.yml
+    - role_vars/syslog.yml
     - vars.yml
     - group_vars/extrapolate.yml
 
   roles:
     - { role: base,          tags: ['base']           }
-    - { role: pf,            tags: ['pf'],
+    - { role: pf,            tags: ['base', 'pf'],
         when: enable_pf                               }
-    - { role: syslog,        tags: ['syslog'],
+    - { role: syslog,        tags: ['base', 'syslog'],
         when: enable_syslog                           }
     - { role: zones,         tags: ['zones', 'nsd']   }
     - { role: nsd,           tags: ['nsd'],

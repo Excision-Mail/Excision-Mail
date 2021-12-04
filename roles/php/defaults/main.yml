@@ -1,5 +1,5 @@
 ---
-php_pkg_version: 7.4.19
+php_pkg_version: 7.4.26
 
 php_extensions:
   - "php"
@@ -9,3 +9,4 @@ php_extensions:
   - "php-pdo_pgsql"
   - "php-imap"
   - "php-ldap"
+  - "php-zip"

@@ -56,14 +56,14 @@
 
 # - Connection Settings -
 
-listen_addresses = '{{ PSQL_addresses | join (",") }}'		# what IP address(es) to listen on;
+listen_addresses = '{{ psql_addresses | join (",") }}'		# what IP address(es) to listen on;
 					# comma-separated list of addresses;
 					# defaults to 'localhost'; use '*' for all
 					# (change requires restart)
 #port = 5432				# (change requires restart)
-max_connections = {{ PSQL_max_connections }}			# (change requires restart)
+max_connections = {{ psql_max_connections }}			# (change requires restart)
 #superuser_reserved_connections = 3	# (change requires restart)
-unix_socket_directories = '{{ PSQL_socket_dirs | join (",") }}'	# comma-separated list of directories
+unix_socket_directories = '{{ psql_socket_dirs | join (",") }}'	# comma-separated list of directories
 					# (change requires restart)
 #unix_socket_group = ''			# (change requires restart)
 #unix_socket_permissions = 0777		# begin with 0 to use octal notation
@@ -118,7 +118,7 @@ unix_socket_directories = '{{ PSQL_socket_dirs | join (",") }}'	# comma-separate
 
 # - Memory -
 
-shared_buffers = {{ PSQL_shared_buffers }}			# min 128kB
+shared_buffers = {{ psql_shared_buffers }}			# min 128kB
 					# (change requires restart)
 #huge_pages = try			# on, off, or try
 					# (change requires restart)
@@ -536,7 +536,7 @@ log_min_error_statement = warning	# values in order of decreasing detail:
 #log_temp_files = -1			# log temporary files equal or larger
 					# than the specified size in kilobytes;
 					# -1 disables, 0 logs all temp files
-log_timezone = '{{ PSQL_timezone }}'
+log_timezone = '{{ psql_timezone }}'
 
 #------------------------------------------------------------------------------
 # PROCESS TITLE

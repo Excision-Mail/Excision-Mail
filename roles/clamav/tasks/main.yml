@@ -1,5 +1,55 @@
-- name: Include the optional clamav config if it is enabled
-  include: clamav_optional.yml
-  when: enable_clamav
+- name: install clamav package
+  openbsd_pkg:
+    name: clamav
+    state: present
 
-- meta: flush_handlers
+- name: enable clamav services
+  service:
+    name: "{{ item.name }}"
+    enabled: true
+  with_items:
+    - {name: "clamd"}
+    - {name: "freshclam"}
+
+- name: install clamd init script
+  copy:
+    src: clamd
+    dest: /etc/rc.d/clamd
+    owner: root
+    group: bin
+    mode: '0755'
+
+- name: copy antivirus configs for rspamd
+  copy:
+    src: "{{ item.name }}"
+    dest: "/etc/rspamd/local.d/{{ item.name }}"
+    owner: root
+    group: wheel
+    mode: '0644'
+  with_items:
+    - {name: "antivirus.conf"}
+    - {name: "antivirus_group.conf"}
+  notify: reload rspamd
+
+- name: install freshclam conf
+  copy:
+    src: freshclam.conf
+    dest: /etc/freshclam.conf
+    owner: root
+    group: wheel
+    mode: '0644'
+  notify:
+    - install freshclam list
+    - restart freshclam
+
+- name: install clamd conf
+  copy:
+    src: clamd.conf
+    dest: /etc/clamd.conf
+    owner: root
+    group: wheel
+    mode: '0644'
+  notify: restart clamd
+
+- name: flush_handlers
+  meta: flush_handlers

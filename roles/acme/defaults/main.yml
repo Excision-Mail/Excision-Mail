@@ -1,2 +1,8 @@
 ---
+padding:
+      - prefix: "private/"
+        suffix: ".key"
+      - suffix: ".crt"
+      - suffix: ".ocsp"
+
 relayd_port: 443

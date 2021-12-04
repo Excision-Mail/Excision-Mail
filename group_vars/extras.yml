@@ -4,22 +4,21 @@ timezone: "US/Eastern"
 max_attachment_sizeM: 32
 max_attachment_size: "{{ max_attachment_sizeM * 1048576 }}"
 
-# these generally don't need to be changed even if you want
-# to use a multi machine setup
+# these generally don't need to be changed even if using a multi machine setup
 relayd_port: 1729
 https_port: 1984
 http_port: 80
 
 ## webmail, caldav and carddav
 #
-# if you enable extras you have an option 
-# to set them up on a separate machine and let the two machines
-# interact with each other through a private network/VPN
-# wireguard is a really good candidate to setup such a VPN
-# in which case you can set the extras_ip to the wireguard peer IP
-# and in the above configuration set http/s interface to tun0/wg0
-extras_ip: 127.0.0.1                       # if using wireguard, set to the peer ip of
-                                           # extraserver, like 10.7.0.3
-extras_interface: "{{ https_interface }}"  # this should then be set to wg0/tun0
-extras_port: "{{ relayd_port }}"           #
-extras_not_home: false                     # this should then be set to true
+# If extras are enabled there is an option to set them up
+# on a separate machine and let the two machines
+# interact with each other through a private network/VPN.
+# Wireguard is a really good candidate to setup such a VPN,
+# in which case it is possible to set the 'extras_ip' to the
+# wireguard peer IP and in the above configuration set http/s
+# interface to tun0/wg0
+extras_ip: 127.0.0.1
+extras_interface: "{{ https_interface }}"
+extras_port: "{{ https_port }}"
+extras_not_home: false

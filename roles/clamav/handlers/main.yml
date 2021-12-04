@@ -3,13 +3,15 @@
 
 - name: restart clamd
   service:
-          name: clamd
-          enabled: yes
-          state: restarted
+    name: clamd
+    state: restarted
 
 - name: restart freshclam
   service:
-          name: freshclam
-          enabled: yes
-          state: restarted
+    name: freshclam
+    state: restarted
 
+- name: reload rspamd
+  service:
+    name: rspamd
+    state: reloaded
