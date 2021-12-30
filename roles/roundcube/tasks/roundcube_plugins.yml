@@ -9,11 +9,12 @@
 
 - name: extract archived plugins
   unarchive:
-    src: "https://github.com/mstilkerich/rcmcarddav/releases/download/v4.3.0/carddav-v4.3.0.tar.gz"
+    src: "{{ item.src }}"
     dest: "/var/www/roundcubemail/plugins"
     remote_src: true
     owner: www
     group: www
+  with_items: "{{ roundcube_extra_plugins_tgz }}"
 
 - name: create config for plugins
   copy:
@@ -24,7 +25,7 @@
     mode: '0644'
   loop: "{{ lookup('fileglob', 'plugin_configs/*', wantlist=true) }}"
 
-- name: own the directories for plugins
+- name: own the directories for plugins  # noqa 208
   file:
     path: "/var/www/roundcubemail/plugins"
     state: directory

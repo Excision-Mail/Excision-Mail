@@ -13,10 +13,10 @@
     mode: 0644
 
 - name: include roundcube plugins
-  include: roundcube_plugins.yml
+  import_tasks: roundcube_plugins.yml
 
 - name: include roundcue postgresql
-  include: roundcube_pgsql.yml
+  import_tasks: roundcube_pgsql.yml
 
 - name: flush_handlers
   meta: flush_handlers

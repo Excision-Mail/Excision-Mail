@@ -1,18 +1,18 @@
 ---
 - name: include packages
-  include: packages.yml
+  import_tasks: packages.yml
 
 - name: include services
-  include: services.yml
+  import_tasks: services.yml
 
 - name: include users
-  include: users.yml
+  import_tasks: users.yml
 
 - name: include scripts
-  include: scripts.yml
+  import_tasks: scripts.yml
 
 - name: include configs
-  include: configs.yml
+  import_tasks: configs.yml
 
 - name: flush_handlers
   meta: flush_handlers
