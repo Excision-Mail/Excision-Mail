@@ -1,0 +1,9 @@
+---
+- name: create knot template
+  template:
+    src: knot.conf.j2
+    dest: /etc/knot/knot.conf
+    owner: root
+    group: wheel
+    mode: '0640'
+  notify: restart knot
