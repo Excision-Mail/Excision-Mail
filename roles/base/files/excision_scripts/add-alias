@@ -14,8 +14,10 @@ alias=$1
 user=$2
 
 # first we get the status of the current inputs
-alias_status=$(sh "$emscripts/helpers/check-user" "$alias")
-user_status=$(sh "$emscripts/helpers/check-user" "$user")
+alias_out=$(sh "$emscripts/helpers/check-user" "$alias")
+alias_status=$?
+user_out=$(sh "$emscripts/helpers/check-user" "$user")
+user_status=$?
 
 # Make sure that user exists
 case $user_status in
@@ -24,22 +26,25 @@ case $user_status in
 		exit 1
 		;;
 	2)
-		echo "User is actually an alias to another user"
-		exit 2
+		echo "User is actually an alias to another user: $user_out"
+		exit 3
 		;;
-	*)
+	1)
 		echo "User exists, proceeding to check the alias"
 		;;
 esac
 
 case $alias_status in
 	2)
-		echo "Alias already used by a user"
-		exit 3
+		echo "Alias already used by a user - $alias_out"
+		if [ "$alias_out" = "$user" ]; then
+			exit 2;
+		fi
+		exit 4
 		;;
 	1)
 		echo "Alias is already a real user on the system"
-		exit 4
+		exit 5
 		;;
 	*)
 		echo "Alias is not currently in use, proceeding to add it"

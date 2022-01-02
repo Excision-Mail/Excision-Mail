@@ -1,25 +1,21 @@
 #!/bin/sh
 
-# Output: 0 -> Doesn't exist
-#         1 -> Exists
-#         2 -> Exists as alias for another user  
+# Output / return code:  ""  / 0 -> Doesn't exist as either alias or user
+#                        ""  / 1 -> Exists as a user
+#                       user / 2 -> Exists as alias for another user
 
 . /usr/local/lib/excision/helpers/variables
 
 username="$1"
 
 if [ -e "$user_home/user-data/$username" ]; then
-	echo 1
- 	exit 0;
+ 	exit 1;
 fi
 
 for user in "$user_home/user-data/"*; do
 	[ -e "$user" ] || continue
-	if grep -q "^$username$" "$user"; then
-		echo 2
-		exit 0
+	if grep -q "^$username\$" "$user"; then
+		echo "$(basename $user)"
+		exit 2
 	fi
 done
-
-echo 0
-

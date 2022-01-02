@@ -8,23 +8,23 @@
 . /usr/local/lib/excision/helpers/variables
 
 if [ "$#" -eq 0 ]; then
-	echo "Incorrect number of arguments to add-user: user@domain [0/1 (for adding ssh-key)]"
+	echo "Incorrect number of arguments to add-user: user@domain"
 	exit 255
 fi
 
 user="$1"
-add_ssh="$2"
 
-user_status=$(sh "$emscripts/helpers/check-user" "$user")
+user_out=$(sh "$emscripts/helpers/check-user" "$user")
+user_status=$?
 
 case $user_status in
 	1)
 		echo "User $user already exists as real user"
-		exit 1
+		exit 2
 		;;
 	2)
-		echo "User $user already exists as an alias"
-		exit 2
+		echo "User $user already exists as an alias for a user - $user_out"
+		exit 1
 		;;
 	*)
 		echo "User $user currently not in system, proceeding to add them"
@@ -35,19 +35,9 @@ printf "Password: "
 read -r password
 printf "\n"
 
-# now the second part where we allow users to change their passwords
-# by letting them ssh to excision-passwd user
-
-# if we don't want the funtionality to change password
-# we can skip this part
-if [ "$add_ssh" -eq 1 ]; then
-	sh "$emscripts/add-user-key" "$user"
-fi
-
 touch "$user_home/user-data/$user"
 chmod 700 "$user_home/user-data/$user"
 
 password=$(echo "$password" | smtpctl encrypt)
 
 echo "$user:$password::::::::" >> "$user_home/passwd"
-
