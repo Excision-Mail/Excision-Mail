@@ -12,6 +12,14 @@ ssl = required
 ssl_cert = </etc/excision/ssl/{{ domains[0].name }}.crt
 ssl_key = </etc/excision/ssl/private/{{ domains[0].name }}.key
 
+{% for domain in domains[1:] %}
+local_name imap.{{ domain.name }} {
+	ssl_cert = </etc/excision/ssl/{{ domain.name }}.crt
+	ssl_key = </etc/excision/ssl/private/{{ domain.name }}.key
+}
+
+{% endfor %}
+
 # If key file is password protected, give the password here. Alternatively
 # give it when starting dovecot with -p parameter. Since this file is often
 # world-readable, you may want to place this setting instead to a different
@@ -21,7 +29,7 @@ ssl_key = </etc/excision/ssl/private/{{ domains[0].name }}.key
 # PEM encoded trusted certificate authority. Set this only if you intend to use
 # ssl_verify_client_cert=yes. The file should contain the CA certificate(s)
 # followed by the matching CRL(s). (e.g. ssl_ca = </etc/ssl/certs/ca.pem)
-#ssl_ca = 
+#ssl_ca =
 
 # Require that CRL check succeeds for client certificates.
 #ssl_require_crl = yes

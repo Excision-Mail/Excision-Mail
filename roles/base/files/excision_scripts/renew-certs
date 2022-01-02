@@ -3,28 +3,27 @@
 . /usr/local/lib/excision/helpers/variables
 
 mail_subdomain=$(head -n 1 "$nsd_home/mail_subdomain")
-domain=$(head -n 1 /etc/mail/vdomains)
 
 echo "### Renewing acme certificates"
 acme_status=2
 had_error=0
-acme-client -v -f "$ssl_home/acme-client.conf" "$mail_subdomain.$domain"
-curr_status=$?
-if [ $curr_status -eq 0 ]; then
-	acme_status=0
-fi
-if [ $curr_status -eq 1 ]; then
-	had_error=1
-else
-	ocspcheck -N -o "$ssl_home/$domain.ocsp" "$ssl_home/$domain.crt"
-fi
+while read -r domain; do
+	acme-client -v -f "$ssl_home/acme-client.conf" "$mail_subdomain.$domain"
+	curr_status=$?
+	if [ $curr_status -eq 0 ]; then
+		acme_status=0
+	fi
+	if [ $curr_status -eq 1 ]; then
+		had_error=1
+	else
+		ocspcheck -N -o "$ssl_home/$domain.ocsp" "$ssl_home/$domain.crt"
+	fi
+done < /etc/mail/vdomains
 
-if [ $had_error -ne 1 ]; then
+if [ $had_error -ne 1 -a $acme_status -eq 0 ]; then
 	printf "\n### Reloading services\n"
 	rcctl reload relayd dovecot
-	if [ $acme_status -eq 0 ]; then
-		rcctl restart smtpd
-	fi
+	rcctl restart smtpd
 fi
 
 if [ $had_error -eq 1 ]; then

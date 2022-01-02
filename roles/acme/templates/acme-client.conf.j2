@@ -21,15 +21,16 @@ authority buypass-test {
 	contact "mailto:me@example.com"
 }
 
-domain {{ mail_subdomain }}.{{ domains[0].name }} {
-	alternative names { \
 {% for domain in domains %}
+domain {{ mail_subdomain }}.{{ domain.name }} {
+	alternative names { \
 {% for sdomain in agg_subdomains %}
 		"{{ sdomain }}.{{ domain.name }}" \
 {% endfor %}
-{% endfor %}
 	}
-	domain key "/etc/excision/ssl/private/{{ domains[0].name }}.key"
-	domain full chain certificate "/etc/excision/ssl/{{ domains[0].name }}.crt"
+	domain key "/etc/excision/ssl/private/{{ domain.name }}.key"
+	domain full chain certificate "/etc/excision/ssl/{{ domain.name }}.crt"
 	sign with letsencrypt
 }
+
+{% endfor %}

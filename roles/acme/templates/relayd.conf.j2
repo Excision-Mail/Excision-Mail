@@ -34,7 +34,9 @@ http protocol tlsinspect {
 	return error
 
 	### Security options
-	tls keypair "{{ domains[0].name }}"
+{% for domain in domains %}
+	tls keypair "{{ domain.name }}"
+{% endfor %}
 	tls { cipher-server-preference, no tlsv1.0, ciphers "HIGH" }
 
 	# credit: https://doc.huc.fr.eu.org/en/web/httpd/relayd-headers-httpd/
