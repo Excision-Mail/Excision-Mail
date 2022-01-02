@@ -26,6 +26,10 @@ acl:
     address: [ {% for ns in secondary_nameservers %}{% if loop.index > 1 %}, {% endif %}{% if ns.ipv4 is defined %}{{ ns.ipv4 }}{% elif ns.ipv6 is defined %}{{ ns.ipv6 }}{% endif %}{% endfor %} ]
     action: transfer
 
+- id: self_update
+    address: [ {% if ipv4 is defined %}{{ ipv4 }}{% endif %}{% if ipv4 is defined and ipv6 is defined %}, {% endif %}{% if ipv6 is defined %}{{ ipv6 }}{% endif %} ]
+    action: update
+
   - id: others
     address: [ 0.0.0.0/0, ::/0 ]
     action: [ transfer ]
@@ -42,7 +46,7 @@ zone:
     notify: [ {% for ns in secondary_nameservers %}{% if loop.index > 1 %}, {% endif %}secondary_{{ loop.index }}{% endfor %} ]
     dnssec-signing: on
     module: mod-queryacl/default_deny
-    acl: secondary_transfer
+    acl: [ secondary_transfer, self_update ]
     zonefile-sync: -1
     zonefile-load: difference-no-serial
     journal-max-depth: 65536
