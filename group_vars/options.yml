@@ -1,7 +1,7 @@
 ---
 #####
 # optional role enabling
-enable_nsd:          false
+enable_dns:          false
 enable_pf:           true
 enable_syslog:       true
 enable_clamav:       false

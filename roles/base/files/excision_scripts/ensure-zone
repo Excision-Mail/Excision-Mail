@@ -1,41 +1,59 @@
-#!/bin/sh
+#!/bin/ksh
 
 . /usr/local/lib/excision/helpers/variables
 
 # this script creates a zone file for the given
-# domain, assuming that the template zone file 
+# domain, assuming that the template zone file
 # exists in the /etc/excision/nsd folder
 
 domain="$1"
-nsd_restart_=1
-if [ "$#" -eq 2 ]; then
-	nsd_restart_="$2"
+knot_reload=1
+if [ $# -eq 2 ]; then
+	knot_reload="$2"
 fi
-
 # by default, we don't install it
-# up to the admin to make sure that it gets installed 
-zone_file_="/var/nsd/zones/master/$domain.zone"
-zone_file="$zone_file_".tmp
+# up to the admin to make sure that it gets installed
+zone_file_orig="/var/db/knot/$domain.zone"
+zone_file_back="$zone_file_orig".back
+zone_file_temp="$zone_file_orig".temp
 
-newserial=$(date +%y%m%d%H%M)
+newserial=$(date +%Y%m%dT%H%M%S)
 
-sed -e "s/EXCISIONSERIAL/$newserial/g" "$nsd_home/$domain.zone" > "$zone_file"
+sed -e "s/MTA_STS_SERIAL/$newserial/g" "$nsd_home/$domain.zone" > "$zone_file_temp"
 
-cat "$dkim_home/excisionRSA.$domain.txt" >> "$zone_file"
-cat "$dkim_home/davRSA.$domain.txt" >> "$zone_file"
+cat "$dkim_home/excisionRSA.$domain.txt" >> "$zone_file_temp"
+cat "$dkim_home/davRSA.$domain.txt" >> "$zone_file_temp"
 
 # if we had an addon file, we also add its contents
 # very useful for hosting your other dynamic DNS websites
-[ -e "$nsd_home/$domain.zone.addon" ] && cat "$nsd_home/$domain.zone.addon" >> "$zone_file"
+[ -r "$nsd_home/$domain.zone.addon" ] && cat "$nsd_home/$domain.zone.addon" >> "$zone_file_temp"
 
-printf "\n" >> "$zone_file"
+printf "\n" >> "$zone_file_temp"
 
-sh "$vfix" root wheel 644 "$zone_file"
+sh "$vfix" _knot wheel 660 "$zone_file_temp"
 
-if nsd-checkzone "$domain" "$zone_file"; then
-	mv "$zone_file" "$zone_file_"
-	[ "$nsd_restart_" = 0 ] || rcctl restart nsd
+echo "freezing zone"
+knotc zone-freeze "$domain"
+
+mv "$zone_file_orig" "$zone_file_back"
+mv "$zone_file_temp" "$zone_file_orig"
+
+echo "checking new zone file"
+if knotc zone-check "$domain"; then
+	if [ "$knot_reload" -eq 1 ]; then
+		echo "using new zone file"
+		knotc zone-reload "$domain"
+	else
+		echo "warning - new zone file thawed but not loaded"
+	fi
+        echo "unfreezing zone"
+	knotc zone-thaw "$domain"
+	rm "$zone_file_back"
 else
+	echo "restoring and using previous zone file"
+	mv "$zone_file_back" "$zone_file_orig"
+        echo "unfreezing zone"
+	knotc zone-thaw "$domain"
 	printf %s\\n "error in zone file syntax: $domain - $zone_file"
 	exit 1
 fi

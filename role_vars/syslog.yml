@@ -4,7 +4,7 @@ syslog_extra_logfiles:
   - {file: "/var/www/logs/error.log", size: "250", command:"pkill -USR1 -u root -U root -x httpd"}
   - {file: "/var/log/doas", program: "doas"}
   - {file: "/var/log/ldapd", program: "ldapd"}
-  - {file: "/var/log/nsd", program: "nsd"}
+  - {file: "/var/log/knot", program: "knot"}
   - {file: "/var/log/spamd", program: "spamd"}
   - {file: "/var/log/dovecot", program: "dovecot"}
   - {file: "/var/log/clamd", program: "clamd"}

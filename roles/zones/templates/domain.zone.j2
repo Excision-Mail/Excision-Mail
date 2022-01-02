@@ -1,10 +1,8 @@
-$TTL	10800		; 3h ; used for all entries without ttl values, hence it can be overloaded by individual entries
-			; We should keep this at a reasonable number so as to not get too many requests 
-			; but also small enough that if something changes it gets transferred fast enough through the network
+$TTL	10800
 $ORIGIN	{{ item.name }}.
 
 @	1d	SOA	{{ public_nameservers[0].name }}.	webmaster.{{ item.name }}. (
-	EXCISIONSERIAL		; serial
+	1000000			; serial - unused - knot will setup its own serial management
 	4h			; refresh
 	4m			; retry
 	1w			; expire
@@ -16,7 +14,7 @@ $ORIGIN	{{ item.name }}.
 
 ;; for record types definitions some nice links are
 ;;   https://en.wikipedia.org/wiki/List_of_DNS_record_types (not that nice actually)
-;;   
+;;
 
 ; CAA
 ; this ensures that only certificates issues by letsencrypt should be trusted for this domain
@@ -46,7 +44,7 @@ $ORIGIN	{{ item.name }}.
 ; the IMAP/SMTP configurations; specifically mozilla
 ;; autodiscover is used by mail clients based on outlook
 ; damn you microsoft; why not just use autoconfig
-;; also set up other well known CNAME records in case of 
+;; also set up other well known CNAME records in case of
 ; older non compliant clients
 ;; wkd is used for the web key directory service
 ; which allows us to use openpgp encryption on the email
@@ -67,7 +65,7 @@ $ORIGIN	{{ item.name }}.
 ;; SRV record format: https://en.wikipedia.org/wiki/SRV_record#Record_format
 ;; service._proto	IN	SRV	priority	weight	port	address
 ;;					(lower is used first)
-;;							(used for load balancing on client side, 
+;;							(used for load balancing on client side,
 ;;							which makes it basically worthless)
 ; we also detail all the services used and the ports that they map to
 _openpgpkey._tcp	IN	SRV	0	0	443	openpgpkey.{{ item.name }}.
@@ -96,8 +94,7 @@ _ischedules._tcp  IN  SRV 0 1 443 dav.{{ item.name }}.
 _dmarc	IN	TXT	"v=DMARC1;p=reject;pct=100;rua=mailto:dmarcreports@{{ item.name }};"
 ; these two are needed to finalize MTA-STS (along with publishing the policy in a mta-sts.txt file in httpd
 _smtp._tls	IN	TXT	"v=TLSRPTv1;rua=mailto:tlsreports@{{ item.name }};"
-_mta-sts	IN	TXT	"v=STSv1;id=EXCISIONSERIAL;"
+_mta-sts	IN	TXT	"v=STSv1;id=MTA_STS_SERIAL;"
 
 ; SSHFP records are added here to make sure that
-; DNS validation can be done before connection 
-; TODO: more useful with DNSSEC
+; DNS validation can be done before connection

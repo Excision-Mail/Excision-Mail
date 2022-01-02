@@ -9,13 +9,13 @@
 .Cm add-alias
 .Ar alias@domainA.tldA user@domainB.tldB
 .Nm
-.Cm add-user
+.Cm add-user |
+.Cm delete-user |
+.Cm delete-alias
 .Ar user@domain.tld
-.Op Ar 1
 .Nm
 .Cm add-user-key |
-.Cm change-passwd |
-.Cm deleteall-user-keys
+.Cm change-passwd
 .Ar user@domain.tld
 .Nm
 .Cm daily-report |
@@ -28,7 +28,7 @@
 .Cm virtual-regen
 .Nm
 .Cm ensure-zone
-.Op Ar domain.tld
+.Ar domain.tld
 .Sh DESCRIPTION
 The
 .Nm
@@ -68,25 +68,11 @@ See
 .Sx USERS
 for details about account types.
 .Pp
-.It Cm add-user Ar user@domain.tld Op Ar 1
+.It Cm add-user Ar user@domain.tld
 .Pp
 Add
 .Ar user@domain.tld
-as a regular user, with optionally asking for an openssh
-key, if the second argument is specified and is
-.Ql 1 .
-.Pp
-An openssh key is needed if
-.Ar user@domain.tld
-wishes to have password changing permissions for their
-own account.
-.Pp
-.It Cm add-user-key Ar user@domain.tld
-.Pp
-Prompt for adding an openssh key for
-.Ar user@domain.tld .
-.Pp
-A user can have multiple openssh keys.
+as a regular user.
 .Pp
 .It Cm change-passwd Ar user@domain.tld
 .Pp
@@ -98,23 +84,13 @@ This takes effect immediately.
 .Pp
 Run the daily report and update script manually.
 .Pp
-.It Cm deleteall-user-keys Ar user@domain.tld
-.Pp
-Remove all openssh keys for
-.Ar user@domain.tld .
-.Pp
-This will disable the
-.Ar user@domain.tld
-account from being able to change their password.
-.Pp
 .It Cm ensure-dkim
 .Pp
 Ensure that the DKIM certificates for all domains are valid.
 .Pp
 .It Cm ensure-gpg
 .Pp
-Ensure minimal sanity of the GPG system to allow users
-to use
+Ensure minimal sanity of the GPG system to allow users to use
 .Xr gpg-wks-server 1 .
 .Pp
 .It Cm ensure-zone Op Ar domain.tld
@@ -124,10 +100,9 @@ Create the
 for
 .Ar domain.tld
 in
-.Pa /var/nsd/zones/master/domain.tld.tmp .
-If no
-.Ar domain.tld
-is specified, it defaults to the main domain for the server.
+.Pa /var/db/knot/domain.tld
+and reload it via
+.Xr knot 8 .
 .Pp
 .It Cm fix-perms
 Do a minimal fix of permissions of all files related to Excision Mail.
@@ -153,12 +128,6 @@ Validate the current users and aliases, and check for inconsistencies.
 .It Cm virtual-regen
 .Pp
 Regenerate the user database and reload the services.
-.Pp
-.Sy NOTE :
-This does not validate the user database prior to regenerating it.
-The sytem admin must run
-.Cm userdb-check
-before running this command.
 .Pp
 .It Cm whitelist-bigmailer Ar domain.tld
 .Pp
@@ -272,21 +241,21 @@ Users can manage their published keys using the
 key publication protocol.
 .Sh DNS
 The DNS management subsystem is an optional system using
-.Xr nsd 8 .
+.Xr knotd 8 .
 .Pp
 All domains registered in Excision Mail have their zonefiles
 generated using
 .Cm ensure-zone .
 Even if the DNS subsystem is not used, the zone files
 are generated as a reference for manually managing the DNS.
-The temporary zone files are created and stored in
-.Pa /var/nsd/zones/master/domain.tld.tmp .
+The zone files are created and stored in
+.Pa /var/db/knot/domain.tld .
 If the DNS subsystem was not enabled during install time,
 it can be enabled by simply enabling
-.Xr nsd 8 :
+.Xr knot 8 :
 .Bd -literal -offset width
-$ rcctl enable nsd
-$ rcctl start nsd
+$ rcctl enable knot
+$ rcctl start knot
 .Ed
 .Pp
 Extra zone information for

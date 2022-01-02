@@ -3,11 +3,10 @@ subdomains: "{{ [ mail_subdomain ] + required_subdomains + extra_subdomains }}"
 
 hostname: "{{ mail_subdomain }}.{{ domains[0].name }}"
 
-enable_nsd: "{{ domains | map(attribute='nsd', default=False) is any}}"
+enable_dns: "{{ domains | map(attribute='dns', default=False) is any}}"
 
 smtpd_username_delimiter: "{{ username_delimiter }}"
 
 dovecot_username_delimiter: "{{ username_delimiter }}"
 
 davical_username_delimiter: "{{ username_delimiter }}"
-

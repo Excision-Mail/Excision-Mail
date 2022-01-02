@@ -7,20 +7,20 @@
 
 # This are the domains for which the mail server will be set up.
 # NOTE: It is possible to have as many domains as needed in this list.
-#       For each domain it is possible to enable/disable NSD separately.
-#       It is strongly advised to enable NSD as it does a lot
-#       of certificate management, subdomain management and record
-#       management for authentication.
+#       For each domain it is possible to enable/disable DNS separately.
+#       It is strongly advised to enable DNS as it does a lot
+#       of certificate, subdomain, DNS records and DNSSEC management
+#       for authentication.
 #       Seconday DNS overview:
 #           https://excision.bsd.ac/guides/secondary/
-#       If nsd is not enabled for a domain, it is to be ensured that all
+#       If dns is not enabled for a domain, it is to be ensured that all
 #       records are properly managed manually:
 #           https://excision.bsd.ac/guides/manualdns/
-domains: 
+domains:
   - name: <change-me> # e.g. bsd.ac
-    nsd: True         # HIGHLY RECOMMENDED, defaults to False if not present
+    dns: true         # HIGHLY RECOMMENDED, defaults to False if not present
   #- name: domain2.tld
-  #  nsd: False
+  #  dns: false
   #- name: domain3.tld3
 
 # The mail_subdomain is what the IP here is going to be called.
@@ -43,7 +43,7 @@ mail_subdomain: mail
 #       using mail filtering via serverside sieve.
 admin: <change-me> # e.g. aisha
 
-# public ipv4/ipv6 address of this server 
+# public ipv4/ipv6 address of this server
 # We need to get this manually instead of automatically in the case
 # that this server is behind a NAT and is only reachable via forwarded ports
 ipv4: <change-me> # e.g. 1.2.3.4
@@ -53,23 +53,23 @@ ipv6: <change-me> # e.g. dead:beef
 
 # HIGHLY RECOMMENDED TO USE THIS SECTION
 #
-# It is really recommended to do enable nsd management via Excision Mail
-# as configuring NSD manually is really really painful given the horrible
+# It is really recommended to do enable dns management via Excision Mail
+# as configuring dns manually is really really painful given the horrible
 # web interfaces used by service providers.
-# In case it is desired to manully manage DNS, the wiki page and the NSD role
-# for documentation provide a highly detailed overvie and explain every step 
-# of the way. 
+# In case it is desired to manully manage DNS, the wiki page and the *knot* role
+# for documentation provide a highly detailed overvie and explain every step
+# of the way.
 # Be aware that configuring DNS manually can take upwards of 7-8 hours, unless
 # experienced with DNS setup.
 #
-# NOTE: These are NOT the same as the ip's of the nameservers of the 
+# NOTE: These are NOT the same as the ip's of the nameservers of the
 #       DNS hosting provider, such as ns1.dnsmadeeasy.com. These are
 #       given by the DNS provider when using a secondary DNS service.
 #secondary_nameservers:
 #  - ipv4: <change-me> # e.g. 69.65.50.192 # freedns2 (afraid.org)
 #  - ipv6: <change-me> # e.g. 2a00:1768:1001:9::31:1 # some cloudns server
 #  - ipv4: <change-me> # add as many as desired... :)
-#        
+#
 # These nameservers are used by users and clients on the web through DNS querying.
 # These are the ones that should resolve to pns31.cloudns.net/ns42.dns-provider.tld
 # or something of that form, which makes it clear that they are DNS servers.

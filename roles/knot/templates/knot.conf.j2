@@ -1,7 +1,7 @@
 server:
     rundir: "/var/run/knot"
     user: _knot:_knot
-    listen: [ {{ ipv4 }}@53, {% if ipv6 is defined %}{{ ipv6 }}@53{% endif %} ]
+    listen: [ {% if ipv4 is defined %}{{ ipv4 }}@53{% endif %}{% if ipv4 is defined and ipv6 is defined %}, {% endif %}{% if ipv6 is defined %}{{ ipv6 }}@53{% endif %} ]
 
 log:
   - target: syslog
@@ -43,5 +43,9 @@ zone:
     dnssec-signing: on
     module: mod-queryacl/default_deny
     acl: secondary_transfer
+    zonefile-sync: -1
+    zonefile-load: difference-no-serial
+    journal-max-depth: 65536
+    journal-content: all
 
 {% endfor %}

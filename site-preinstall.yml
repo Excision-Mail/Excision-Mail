@@ -1,3 +1,4 @@
+---
 - name: Install/Upgrade Excision Mail pre-requisites
 
   hosts:
@@ -28,8 +29,8 @@
     - role: zones
       tags:
         - 'zones'
-        - 'nsd'
-    - role: nsd
+        - 'dns'
+    - role: knot
       tags:
-        - 'nsd'
-      when: enable_nsd
+        - 'dns'
+      when: enable_dns

@@ -1,5 +1,5 @@
 ---
-- name: create knot template
+- name: generate knot config
   template:
     src: knot.conf.j2
     dest: /etc/knot/knot.conf
@@ -7,3 +7,12 @@
     group: wheel
     mode: '0640'
   notify: restart knot
+
+- name: enable knot
+  service:
+    name: knot
+    enabled: true
+    state: started
+
+- name: flush_handlers
+  meta: flush_handlers
