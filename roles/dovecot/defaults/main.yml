@@ -16,6 +16,7 @@ dovecot_config_files:
   - {name: "90-quota.conf"}
   - {name: "90-sieve-extprograms.conf"}
   - {name: "auth-ldap.conf.ext"}
+  - {name: "auth-passwdfile.conf.ext"}
   - {name: "dovecot-trash.conf.ext"}
 
 dovecot_sieve_files:
