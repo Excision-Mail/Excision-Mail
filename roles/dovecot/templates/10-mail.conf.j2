@@ -79,6 +79,14 @@ namespace inbox {
   # See 15-mailboxes.conf for definitions of special mailboxes.
 }
 
+{% if dovecot_virtual %}
+namespace virtual {
+  separator = /
+  prefix = virtual/
+  location = virtual:/var/excision/%d/%n/Maildir/virtual:LAYOUT=fs
+}
+{% endif %}
+
 # Example shared namespace configuration
 #namespace {
   #type = shared
@@ -216,7 +224,7 @@ mail_plugin_dir = /usr/local/lib/dovecot
 
 # Space separated list of plugins to load for all services. Plugins specific to
 # IMAP, LDA, etc. are added to this list in their own .conf files.
-mail_plugins = $mail_plugins quota trash zlib notify replication # fts fts_squat listescape
+mail_plugins = $mail_plugins quota trash zlib notify replication {% if dovecot_virtual %}virtual{% endif %}# fts fts_squat listescape
 
 ##
 ## Mailbox handling optimizations
