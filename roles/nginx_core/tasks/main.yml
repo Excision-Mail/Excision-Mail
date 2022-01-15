@@ -30,7 +30,7 @@
   service:
     name: nginx
     state: started
-    enabled: yes
+    enabled: true
 
 - name: flush_handlers
   meta: flush_handlers
