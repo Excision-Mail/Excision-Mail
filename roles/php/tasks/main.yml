@@ -1,7 +1,7 @@
 ---
 - name: install php extensions
   openbsd_pkg:
-    name: "{{ item }}-{{ php_pkg_version }}"
+    name: "{{ item }}%{{ php_version }}"
     state: present
   with_items: "{{ php_extensions }}"
   notify: restart php-fpm

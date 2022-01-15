@@ -1,3 +1,4 @@
+---
 - name: Install/Upgrade Excision Mail extra utilities
 
   hosts:
@@ -11,10 +12,14 @@
     - group_vars/extrapolate.yml
 
   roles:
-    - role: httpd-extra
+    - role: nginx_core
       tags:
-        - 'httpd'
-      when: enable_extras
+        - 'extras'
+        - 'nginx'
+    - role: nginx_extra_sites
+      tags:
+        - 'extras'
+        - 'nginx'
     - role: php
       tags:
         - 'php'

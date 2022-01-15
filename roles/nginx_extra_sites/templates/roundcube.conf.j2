@@ -1,0 +1,28 @@
+server  {
+    listen	{{ extras_port }};
+    listen	[::]:{{ extras_port }};
+
+{% for domain in domains %}
+    server_name webmail.{{ domain.name }};
+{% endfor %}
+
+    root /roundcubemail;
+
+    location ^~ /\. {
+        deny all;
+    }
+    location ^~ ^/(CHANGELOG|INSTALL|LICENSE|README|SQL|UPGRADING) {
+        deny all;
+    }
+    location ^~ ^/(bin|composer|config|db|installer|logs|plugin|temp) {
+        deny all;
+    }
+
+    location ~ \.php$ {
+        try_files $uri $uri/ =404;
+        fastcgi_pass unix:run/php-fpm.sock;
+        fastcgi_index index.php;
+        fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+        include fastcgi_params;
+    }
+}

@@ -34,3 +34,4 @@
     recurse: true
     modification_time: preserve
     access_time: preserve
+  changed_when: false

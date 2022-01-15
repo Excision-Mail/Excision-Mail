@@ -1,3 +1,2 @@
 ---
-php_version: "{{ php_pkg_version.split('.')[:2] | join('.') }}"
 php_fpm: 'php{{ php_version | replace(".", "") }}_fpm'

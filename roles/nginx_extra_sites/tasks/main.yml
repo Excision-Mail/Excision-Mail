@@ -1,0 +1,23 @@
+---
+- name: generate nginx extra configs
+  template:
+    src: "{{ item }}.j2"
+    dest: "/etc/nginx/sites-available/{{ item }}"
+    owner: root
+    group: wheel
+    mode: "0644"
+  with_items: "{{ extra_configs }}"
+  notify: restart nginx
+
+- name: symlink extra configs
+  file:
+    src: "../sites-available/{{ item }}"
+    dest: "/etc/nginx/sites-enabled/{{ item }}"
+    owner: root
+    group: wheel
+    state: link
+  with_items: "{{ extra_configs }}"
+  notify: restart nginx
+
+- name: flush_handlers
+  meta: flush_handlers

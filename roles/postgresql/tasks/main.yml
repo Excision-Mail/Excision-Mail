@@ -5,16 +5,13 @@
     state: present
   with_items: "{{ psql_packages }}"
 
-- name: set up permissions on /var/www/{tmp,run}
+- name: set up permissions on /var/www/tmp
   file:
-    path: /var/www/{{ item }}
+    path: /var/www/tmp
     state: directory
-    mode: 01775
+    mode: 0777
     owner: www
     group: www
-  with_items:
-    - tmp
-    - run
 
 - name: add _postgresql user to www group
   user:
@@ -75,11 +72,11 @@
     line: "kern.seminfo.semmns={{ psql_semmns }}"
   notify: sysctl semmns
 
-- name: flush_handlers
-  meta: flush_handlers
-
 - name: enable postgresql
   service:
     name: postgresql
     enabled: true
     state: started
+
+- name: flush_handlers
+  meta: flush_handlers

@@ -1,0 +1,43 @@
+---
+- name: create domain base configs
+  template:
+    src: site.conf.j2
+    dest: "/etc/nginx/sites-available/{{ item.name }}.conf"
+    owner: root
+    group: wheel
+    mode: '0644'
+  with_items: "{{ domains }}"
+  notify: restart nginx
+
+- name: symlink domain configs
+  file:
+    src: "../sites-available/{{ item.name }}.conf"
+    dest: "/etc/nginx/sites-enabled/{{ item.name }}.conf"
+    owner: root
+    group: wheel
+    state: link
+  with_items: "{{ domains }}"
+  notify: restart nginx
+
+- name: create extras proxy config
+  template:
+    src: site.extra_proxy.conf.j2
+    dest: "/etc/nginx/sites-available/{{ item.name }}.extra_proxy.conf"
+    owner: root
+    group: wheel
+    mode: '0644'
+  with_items: "{{ domains }}"
+  notify: restart nginx
+
+- name: symlink extras proxy config
+  file:
+    src: "../sites-available/{{ item.name }}.extra_proxy.conf"
+    dest: "/etc/nginx/sites-enabled/{{ item.name }}.extra_proxy.conf"
+    owner: root
+    group: wheel
+    state: link
+  with_items: "{{ domains }}"
+  notify: restart nginx
+
+- name: flush_handlers
+  meta: flush_handlers

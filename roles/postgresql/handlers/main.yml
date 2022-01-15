@@ -6,7 +6,7 @@
     state: restarted
 
 - name: sysctl semmni
-  command: sysctl kern.seminfo.semmni=90
+  command: sysctl kern.seminfo.semmni={{ psql_semmni }}
 
 - name: sysctl semmns
-  command: sysctl kern.seminfo.semmns=2048
+  command: sysctl kern.seminfo.semmns={{ psql_semmns }}

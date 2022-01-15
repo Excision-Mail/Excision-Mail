@@ -1,0 +1,51 @@
+server {
+    listen		443 ssl;
+    listen		[::]:443 ssl;
+
+    ssl_certificate /etc/ssl/{{ item.name }}.crt;
+    ssl_certificate_key /etc/ssl/private/{{ item.name }}.key;
+    ssl_stapling on;
+    ssl_stapling_verify on;
+
+    server_name {{ mail_subdomain }}.{{ item.name }};
+{% for sdomain in required_subdomains %}
+    server_name {{ sdomain }}.{{ item.name }};
+{% endfor %}
+
+    include configs/http_headers.conf;
+
+    # ACME challenge over HTTPS
+    location /.well-known/acme-challenge/ {
+        rewrite ^/.well-known/acme-challenge/(.*) /$1 break;
+        root /acme;
+    }
+
+    # SMTP MTA Strict Transport Security
+    location /.well-known/mta-sts.txt {
+        rewrite ^/.well-known/(.*) /$1 break;
+        root /mta-sts;
+    }
+
+    # OpenPGP Web Key Directory
+    location /.well-known/openpgpkey/{{ item.name }}/ {
+        rewrite ^/.well-known/openpgpkey/{{ item.name }}/(.*) /$1 break;
+        root /openpgpkey/{{ item.name }};
+    }
+
+    # Autodiscover file for Microsoft
+    location /Autodiscover/ {
+	rewrite ^/Autodiscover/(.*) /$1 break;
+    	root /Autodiscover/{{ item.name }};
+    }
+
+    # OpenPGP Web Key Directory
+    location /mail/ {
+        rewrite ^/mail/(.*) /$1 break;
+        root /mail/{{ item.name }};
+    }
+
+    # rest of the files are queried in their respective folders
+    location / {
+        root /htdocs/{{ item.name }};
+    }
+}

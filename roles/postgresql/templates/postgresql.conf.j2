@@ -88,7 +88,7 @@ unix_socket_directories = '{{ psql_socket_dirs | join (",") }}'	# comma-separate
 # - Authentication -
 
 #authentication_timeout = 1min		# 1s-600s
-#password_encryption = md5		# md5 or scram-sha-256
+password_encryption = scram-sha-256	# md5 or scram-sha-256
 #db_user_namespace = off
 
 # GSSAPI using Kerberos
@@ -118,7 +118,7 @@ unix_socket_directories = '{{ psql_socket_dirs | join (",") }}'	# comma-separate
 
 # - Memory -
 
-shared_buffers = {{ psql_shared_buffers }}			# min 128kB
+shared_buffers = 128MB			# min 128kB
 					# (change requires restart)
 #huge_pages = try			# on, off, or try
 					# (change requires restart)

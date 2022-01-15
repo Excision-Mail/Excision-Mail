@@ -6,14 +6,12 @@ psql_packages:
 
 psql_addresses:
   - localhost
-  - "{{ extras_interface }}"
 
 psql_socket_dirs:
   - /tmp
   - /var/www/tmp
 
 psql_max_connections: 40
-psql_shared_buffers: 128MB
 
 psql_semmni: 90
 psql_semmns: 2048

@@ -1,0 +1,18 @@
+server {
+    listen		443 ssl;
+    listen		[::]:443 ssl;
+
+    ssl_certificate /etc/ssl/{{ item.name }}.crt;
+    ssl_certificate_key /etc/ssl/private/{{ item.name }}.key;
+    ssl_stapling on;
+    ssl_stapling_verify on;
+
+    server_name webmail.{{ item.name }};
+
+    include configs/http_headers.conf;
+
+    location / {
+        include configs/proxy.conf;
+	proxy_pass http://{{ extras_ip }}:{{ extras_port }};
+    }
+}

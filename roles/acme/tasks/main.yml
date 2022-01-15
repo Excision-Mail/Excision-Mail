@@ -13,7 +13,7 @@
   failed_when: renew_certs.rc == 1
   changed_when: renew_certs.rc == 0
 
-- name: create symlinks for relayd certificates
+- name: create symlinks for certificates
   file:
     src: "/etc/excision/ssl/{{ item[0].prefix | default('') }}{{ item[1].name }}{{ item[0].suffix }}"
     dest: "/etc/ssl/{{ item[0].prefix | default('') }}{{ item[1].name }}{{ item[0].suffix }}"
@@ -23,20 +23,3 @@
   with_nested:
     - "{{ padding }}"
     - "{{ domains }}"
-
-- name: create relayd config
-  template:
-    src: relayd.conf.j2
-    dest: /etc/relayd.conf
-    owner: root
-    group: wheel
-    mode: "0600"
-
-- name: restart relayd
-  service:
-    name: relayd
-    state: restarted
-    enabled: true
-
-- name: flush_handlers
-  meta: flush_handlers
