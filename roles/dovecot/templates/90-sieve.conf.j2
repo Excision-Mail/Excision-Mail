@@ -130,7 +130,7 @@ plugin {
   # localpart and uses the first one encountered. The :user part is
   # left of the separator and the :detail part is right. This setting
   # is also used by Dovecot's LMTP service.
-  recipient_delimiter = {{ dovecot_username_delimiter }}
+  recipient_delimiter = {{ username_delimiter }}
 
   # The maximum size of a Sieve script. The compiler will refuse to compile any
   # script larger than this limit. If set to 0, no limit on the script size is

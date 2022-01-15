@@ -1,9 +1,6 @@
 ---
 timezone: "America/New_York"
 
-max_attachment_size: 32
-max_attachment_size_bytes: "{{ max_attachment_size * 1048576 }}"
-
 ## webmail, caldav and carddav
 #
 # If extras are enabled there is an option to set them up

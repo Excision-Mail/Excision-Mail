@@ -37,5 +37,4 @@ dovecot_templates:
   - {name: "00-wks.sieve", path: "/var/dovecot/sieve/before", user: "excision", group: "excision", mode: "0660"}
   - {name: "dovecot-ldap.conf.ext", path: "/etc/dovecot", mode: "0600"}
 
-dovecot_username_delimiter: "+"
 dovecot_virtual: false

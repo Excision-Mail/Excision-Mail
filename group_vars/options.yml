@@ -19,3 +19,6 @@ enable_roundcube:    true
 # users will stop getting their mails if they have this character in
 # their username. Use with care, but + . - _ are good choices
 username_delimiter: "+"
+
+#####
+max_attachment_size: 32  # in MB

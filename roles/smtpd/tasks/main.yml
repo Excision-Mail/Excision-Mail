@@ -23,15 +23,15 @@
   changed_when: __smtpd_wks.rc == 0
   failed_when: __smtpd_wks.rc != 0 and __smtpd_wks.rc != 2
 
-- name: add aliases for admin
-  command: excision add-alias "{{ item[0] }}@{{ item[1].name }}" "{{ admin }}@{{ domains[0].name }}"
-  with_nested:
-    - "{{ smtpd_aliases }}"
-    - "{{ domains }}"
-  notify: restart smtpd
-  register: __smtpd_alias
-  changed_when: __smtpd_alias.rc == 0
-  failed_when: __smtpd_alias.rc != 0 and __smtpd_alias.rc != 2
+#- name: add aliases for admin
+#  command: excision add-alias "{{ item[0] }}@{{ item[1].name }}" "{{ admin }}@{{ domains[0].name }}"
+#  with_nested:
+#    - "{{ smtpd_aliases }}"
+#    - "{{ domains }}"
+#  notify: restart smtpd
+#  register: __smtpd_alias
+#  changed_when: __smtpd_alias.rc == 0
+#  failed_when: __smtpd_alias.rc != 0 and __smtpd_alias.rc != 2
 
 - name: ensure all smtpd table files exist
   file:

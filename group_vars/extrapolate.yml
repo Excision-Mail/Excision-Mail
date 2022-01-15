@@ -5,8 +5,4 @@ hostname: "{{ mail_subdomain }}.{{ domains[0].name }}"
 
 enable_dns: "{{ domains | map(attribute='dns', default=False) is any}}"
 
-smtpd_username_delimiter: "{{ username_delimiter }}"
-
-dovecot_username_delimiter: "{{ username_delimiter }}"
-
-davical_username_delimiter: "{{ username_delimiter }}"
+max_attachment_size_bytes: "{{ max_attachment_size * 1048576 }}"

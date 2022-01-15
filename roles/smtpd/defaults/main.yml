@@ -20,6 +20,4 @@ smtpd_tables:
   - {name: "vdomains", user: "root", group: "wheel", perm: "0640"}
   - {name: "passwd", user: "_smtpd", group: "_dovecot", perm: "0440"}
 
-smtpd_max_attachment_size: 32
-
-smtpd_username_delimiter: "+"
+smtpd_legacy_protocols: false

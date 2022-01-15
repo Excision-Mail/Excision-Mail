@@ -2,9 +2,9 @@
 queue compression
 queue ttl 4d
 bounce warn-interval 1h, 6h, 2d # default: 4h
-smtp max-message-size {{ smtpd_max_attachment_size + 1 }}M
+smtp max-message-size {{ max_attachment_size }}M
 
-smtp sub-addr-delim '{{ smtpd_username_delimiter }}'
+smtp sub-addr-delim '{{ username_delimiter }}'
 
 # actual mail handling
 {% for domain in domains %}
@@ -70,6 +70,9 @@ listen on egress \
 {% for domain in domains %}
 	pki {{ domain.name }} \
 {% endfor %}
+{% if smtpd_legacy_protocols %}
+	protocols "legacy" ciphers "compat" \
+{% endif %}
 	filter { check_dyndns, check_rdns, check_fcrdns, senderscore, rspamd }
 #
 # User submitted messages on two ports 465-SSL/TLS and 587-STARTTLS
@@ -79,6 +82,9 @@ listen on egress port smtps \
 {% for domain in domains %}
 	pki {{ domain.name }} \
 {% endfor %}
+{% if smtpd_legacy_protocols %}
+	protocols "legacy" ciphers "compat" \
+{% endif %}
 	auth <passwd> received-auth \
 	senders <revirt> \
 	filter rspamd
@@ -87,6 +93,9 @@ listen on egress port submission \
 {% for domain in domains %}
 	pki {{ domain.name }} \
 {% endfor %}
+{% if smtpd_legacy_protocols %}
+	protocols "legacy" ciphers "compat" \
+{% endif %}
 	auth <passwd> received-auth \
 	senders <revirt> \
 	filter rspamd
