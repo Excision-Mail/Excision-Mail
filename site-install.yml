@@ -1,3 +1,4 @@
+---
 - name: Install/Upgrade Excision Mail main utilities
 
   hosts:
@@ -8,19 +9,19 @@
     - group_vars/domains.yml
     - role_vars/pf.yml
     - role_vars/syslog.yml
-    - roles/httpd/defaults/main.yml
-    - roles/httpd-extra/defaults/main.yml
-    - roles/acme/defaults/main.yml
     - vars.yml
     - group_vars/extrapolate.yml
 
   roles:
-    - role: httpd
+    - role: nginx_core
       tags:
-        - 'httpd'
+        - 'nginx'
     - role: acme
       tags:
         - 'acme'
+    - role: nginx_main_sites
+      tags:
+        - 'nginx'
     - role: clamav
       tags:
         - 'clamav'
