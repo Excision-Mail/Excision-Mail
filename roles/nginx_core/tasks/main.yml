@@ -1,4 +1,9 @@
 ---
+- name: install nginx package
+  package:
+    name: nginx
+    state: present
+
 - name: create nginx directories
   file:
     path: "/etc/nginx/{{ item }}"
