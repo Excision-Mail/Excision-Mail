@@ -1,6 +1,6 @@
 ---
 - name: install php extensions
-  openbsd_pkg:
+  package:
     name: "{{ item }}%{{ php_version }}"
     state: present
   with_items: "{{ php_extensions }}"

@@ -1,5 +1,6 @@
+---
 - name: install clamav package
-  openbsd_pkg:
+  package:
     name: clamav
     state: present
 

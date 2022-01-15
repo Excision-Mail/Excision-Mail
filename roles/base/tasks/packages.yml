@@ -1,5 +1,5 @@
 ---
 - name: install required packages
-  openbsd_pkg:
+  package:
     name: "{{ base_packages }}"
     state: present

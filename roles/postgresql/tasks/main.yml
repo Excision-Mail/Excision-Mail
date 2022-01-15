@@ -1,6 +1,6 @@
 ---
 - name: install postgresql packages
-  openbsd_pkg:
+  package:
     name: "{{ item }}"
     state: present
   with_items: "{{ psql_packages }}"

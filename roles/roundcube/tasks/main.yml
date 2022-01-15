@@ -1,6 +1,6 @@
 ---
 - name: install roundcube packages
-  openbsd_pkg:
+  package:
     name: "{{ roundcube_packages }}"
     state: present
 

@@ -1,6 +1,6 @@
 ---
 - name: install davical packages
-  openbsd_pkg:
+  package:
     name: davical
     state: present
 
