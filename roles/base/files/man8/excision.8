@@ -265,6 +265,13 @@ can be added by putting it in
 This information is appended to the zonefile when
 it is created with
 .Cm ensure-zone .
+.Sh EXIT CODE
+.Nm
+exits with a return code of 0 in case of no errors and the
+requested changes were successfully implemented,
+2 if an error occurred but the requested changes were
+already present and 1 or > 3 in case of an error and the
+requested changes could not be made.
 .Sh SEE ALSO
 .Xr dovecot 1 ,
 .Xr gpg 1 ,

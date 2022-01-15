@@ -12,7 +12,7 @@ database:
 
 mod-queryacl:
   - id: default_deny
-    address: [ {% if ipv4 is defined %}{{ ipv4 }}@53{% endif %}{% if ipv4 is defined and ipv6 is defined %}, {% endif %}{% if ipv6 is defined %}{{ ipv6 }}@53{% endif %} ]
+    address: [ {% if ipv4 is defined %}{{ ipv4 }}{% endif %}{% if ipv4 is defined and ipv6 is defined %}, {% endif %}{% if ipv6 is defined %}{{ ipv6 }}{% endif %} ]
 
 remote:
 {% for ns in secondary_nameservers %}
@@ -26,7 +26,7 @@ acl:
     address: [ {% for ns in secondary_nameservers %}{% if loop.index > 1 %}, {% endif %}{% if ns.ipv4 is defined %}{{ ns.ipv4 }}{% elif ns.ipv6 is defined %}{{ ns.ipv6 }}{% endif %}{% endfor %} ]
     action: transfer
 
-- id: self_update
+  - id: self_update
     address: [ {% if ipv4 is defined %}{{ ipv4 }}{% endif %}{% if ipv4 is defined and ipv6 is defined %}, {% endif %}{% if ipv6 is defined %}{{ ipv6 }}{% endif %} ]
     action: update
 
