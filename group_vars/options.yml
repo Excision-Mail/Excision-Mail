@@ -6,7 +6,6 @@ enable_pf:           true
 enable_syslog:       true
 enable_clamav:       false
 
-enable_extras:       false
 enable_php:          true
 enable_postgresql:   true
 enable_davical:      true

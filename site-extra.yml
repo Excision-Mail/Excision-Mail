@@ -23,16 +23,16 @@
     - role: php
       tags:
         - 'php'
-      when: enable_extras and enable_php
+      when: enable_php
     - role: postgresql
       tags:
         - 'postgresql'
-      when: enable_extras and enable_postgresql
+      when: enable_postgresql
     - role: roundcube
       tags:
         - 'roundcube'
-      when: enable_extras and enable_roundcube
+      when: enable_roundcube
 #    - role: davical
 #      tags:
 #        - 'davical'
-#      when: enable_extras and enable_davical
+#      when: enable_davical
