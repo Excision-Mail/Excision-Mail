@@ -4,3 +4,6 @@
 [submodule "roles/openldap"]
 	path = roles/openldap
 	url = https://github.com/Excision-Mail/ansible-openldap
+[submodule "roles/syslog"]
+	path = roles/syslog
+	url = https://github.com/Excision-Mail/ansible-syslog

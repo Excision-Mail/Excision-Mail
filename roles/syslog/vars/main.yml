@@ -1,2 +1,0 @@
----
-syslog_logfiles: "{{ syslog_default_logfiles + syslog_extra_logfiles }}"

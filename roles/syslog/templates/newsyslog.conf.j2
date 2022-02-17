@@ -1,6 +1,0 @@
-# {{ ansible_managed }}
-# logfile_name			owner:group	mode count size when flags
-{% for logfile in syslog_logfiles %}
-{{ logfile.file }}		{% if logfile.user is defined %}{{ logfile.user }}{% endif %}{% if logfile.group is defined %}:{{ logfile.group }}{% endif %}	{{ logfile.mode | default('640') }} {{ logfile.count | default('5') }} {{ logfile.size | default ('300') }} {{ logfile.when | default('*') }} {{ logfile.flags | default('Z') }} {% if logfile.command is defined %} "{{ logfile.command }}" {% endif %}
-
-{% endfor %}

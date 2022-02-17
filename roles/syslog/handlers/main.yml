@@ -1,8 +1,0 @@
----
-- name: restart syslog
-  service:
-    name: syslogd
-    state: restarted
-
-- name: restart newsyslog
-  command: newsyslog
