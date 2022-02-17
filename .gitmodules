@@ -1,3 +1,6 @@
 [submodule "roles/nginx_core"]
 	path = roles/nginx_core
 	url = https://github.com/Excision-Mail/ansible-nginx
+[submodule "roles/openldap"]
+	path = roles/openldap
+	url = https://github.com/Excision-Mail/ansible-openldap
