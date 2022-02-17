@@ -13,3 +13,6 @@
 [submodule "roles/postgresql"]
 	path = roles/postgresql
 	url = https://github.com/Excision-Mail/ansible-postgresql
+[submodule "roles/redis"]
+	path = roles/redis
+	url = https://github.com/Excision-Mail/ansible-redis
