@@ -1,6 +1,0 @@
----
-- name: restart php-fpm
-  service:
-    name: "{{ php_fpm }}"
-    enabled: true
-    state: restarted

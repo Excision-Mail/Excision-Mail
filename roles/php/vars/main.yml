@@ -1,2 +1,0 @@
----
-php_fpm: 'php{{ php_version | replace(".", "") }}_fpm'
