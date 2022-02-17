@@ -1,0 +1,3 @@
+[submodule "roles/nginx_core"]
+	path = roles/nginx_core
+	url = https://github.com/Excision-Mail/ansible-nginx
