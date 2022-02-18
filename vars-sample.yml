@@ -18,7 +18,7 @@
 #           https://excision.bsd.ac/guides/manualdns/
 domains:
   - name: <change-me> # e.g. bsd.ac
-    dns: true         # HIGHLY RECOMMENDED, defaults to False if not present
+    dns: true         # HIGHLY RECOMMENDED, defaults to false if not present
   #- name: domain2.tld
   #  dns: false
   #- name: domain3.tld3
