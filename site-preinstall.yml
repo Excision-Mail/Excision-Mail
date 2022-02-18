@@ -5,12 +5,10 @@
     - mainserver
 
   vars_files:
-    - group_vars/options.yml
-    - group_vars/domains.yml
-    - role_vars/pf.yml
-    - role_vars/syslog.yml
+    - defaults.yml
     - vars.yml
-    - group_vars/extrapolate.yml
+    - extrapolate.yml
+    - overrides.yml
 
   roles:
     - role: base

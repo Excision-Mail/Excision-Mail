@@ -1,8 +1,0 @@
----
-pf_redirect:
-  - in_port: https
-    rdr_ip: 127.0.0.1
-    rdr_port: "{{ relayd_port }}"
-  - in_port: https
-    rdr_ip: fe80::1%lo0
-    rdr_port: "{{ relayd_port }}"
