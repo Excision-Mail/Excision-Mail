@@ -11,11 +11,11 @@
     groups: ""
     login_class: daemon
     shell: /bin/ksh
-    home: /var/excision-home
+    home: /var/excision
     password_lock: true
     password: "*************"
 
 - name: disable logins for excision user
   file:
     state: absent
-    path: /var/excision-home/.ssh/
+    path: /var/excision/.ssh/
