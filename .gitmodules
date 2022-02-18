@@ -16,3 +16,6 @@
 [submodule "roles/redis"]
 	path = roles/redis
 	url = https://github.com/Excision-Mail/ansible-redis
+[submodule "roles/saslauth"]
+	path = roles/saslauth
+	url = https://github.com/Excision-Mail/ansible-saslauth
