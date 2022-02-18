@@ -1,0 +1,19 @@
+server  {
+    listen	{{ extras_port }};
+    listen	[::]:{{ extras_port }};
+
+    server_name dav.{{ item.name }};
+
+    root /davical/htdocs;
+
+    location /images/ {
+    }
+
+    location ~ \.php$ {
+        try_files $uri $uri/ =404;
+        fastcgi_pass unix:run/php-fpm.sock;
+        fastcgi_index index.php;
+        fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+        include fastcgi_params;
+    }
+}

@@ -1,2 +1,5 @@
 ---
+davical_packages:
+  - davical
+
 davical_refresh_interval: 60

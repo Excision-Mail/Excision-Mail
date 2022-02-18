@@ -1,22 +1,40 @@
 ---
-- name: generate nginx extra configs
+- name: generate nginx roundcube config
   template:
-    src: "{{ item }}.j2"
-    dest: "/etc/nginx/sites-available/{{ item }}"
+    src: 'roundcube.conf.j2'
+    dest: '/etc/nginx/sites-available/roundcube.conf'
     owner: root
     group: wheel
-    mode: "0644"
-  with_items: "{{ extra_configs }}"
+    mode: '0644'
   notify: restart nginx
 
-- name: symlink extra configs
+- name: symlink roundcube config
   file:
-    src: "../sites-available/{{ item }}"
-    dest: "/etc/nginx/sites-enabled/{{ item }}"
+    src: '../sites-available/roundcube.conf'
+    dest: '/etc/nginx/sites-enabled/roundcube.conf'
     owner: root
     group: wheel
     state: link
-  with_items: "{{ extra_configs }}"
+  notify: restart nginx
+
+- name: generate nginx davical configs
+  template:
+    src: 'davical.conf.j2'
+    dest: '/etc/nginx/sites-available/davical_{{ item.name }}.conf'
+    owner: root
+    group: wheel
+    mode: '0644'
+  with_items: '{{ domains }}'
+  notify: restart nginx
+
+- name: symlink davical configs
+  file:
+    src: '../sites-available/davical_{{ item.name }}.conf'
+    dest: '/etc/nginx/sites-enabled/davical_{{ item.name }}.conf'
+    owner: root
+    group: wheel
+    state: link
+  with_items: '{{ domains }}'
   notify: restart nginx
 
 - name: flush_handlers

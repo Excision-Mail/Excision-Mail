@@ -8,6 +8,7 @@ server {
     ssl_stapling_verify on;
 
     server_name webmail.{{ item.name }};
+    server_name dav.{{ item.name }};
 
     include configs/http_headers.conf;
 

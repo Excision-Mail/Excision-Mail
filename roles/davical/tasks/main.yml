@@ -1,18 +1,18 @@
 ---
 - name: install davical packages
   package:
-    name: davical
+    name: '{{ davical_packages }}'
     state: present
 
-- name: create davical_dba user
+- name: create davical_dba user for postgresql
   postgresql_user:
     name: davical_dba
-    password: "{{ davical_dba_password }}"
+    password: '{{ davical_dba_password }}'
 
-- name: create davical_app user
+- name: create davical_app user for postgresql
   postgresql_user:
     name: davical_app
-    password: "{{ davical_app_password }}"
+    password: '{{ davical_app_password }}'
 
 - name: create initial db for davical_dba
   postgresql_db:
@@ -20,18 +20,20 @@
     owner: davical_dba
     encoding: UTF-8
     template: template0
+  register: _davical_initdb
 
 - name: run initial scripts for davical database
   postgresql_query:
     db: davical
-    path_to_script: "/var/www/{{ item.name }}"
+    path_to_script: '/var/www/{{ item.name }}'
     login_user: davical_dba
-    login_password: "{{ davical_dba_password }}"
+    login_password: '{{ davical_dba_password }}'
+    as_single_query: true
   with_items:
-    - name: "awl/dba/awl-tables.sql"
-    - name: "awl/dba/schema-management.sql"
-    - name: "davical/dba/davical.sql"
-  ignore_errors: true
+    - name: 'awl/dba/awl-tables.sql'
+    - name: 'awl/dba/schema-management.sql'
+    - name: 'davical/dba/davical.sql'
+  when: _davical_initdb.changed
 
 - name: run admin script for davical database
   command: >
@@ -40,24 +42,25 @@
     --appuser davical_app
     --nopatch
     --owner davical_dba
-    --dbpass "{{ davical_dba_password }}"
+    --dbpass '{{ davical_dba_password }}'
 
 - name: insert basic roles into davical database
   postgresql_query:
     db: davical
     login_user: davical_dba
-    login_password: "{{ davical_dba_password }}"
+    login_password: '{{ davical_dba_password }}'
     path_to_script: /var/www/davical/dba/base-data.sql
-  ignore_errors: true
+    as_single_query: true
+  when: _davical_initdb.changed
 
 - name: set password for admin user in davical database
   postgresql_query:
     db: davical
     login_user: davical_dba
-    login_password: "{{ davical_dba_password }}"
+    login_password: '{{ davical_dba_password }}'
     query: >
       UPDATE usr
-      SET password = '**{{ davical_tmp_admin_password }}'
+      SET password = '**{{ davical_admin_password }}'
       WHERE user_no = 1;
 
 - name: create folder for configs
@@ -66,15 +69,18 @@
     state: directory
     mode: '0755'
 
-- name: get all private keys 
-  command: cat "/var/www/etc/davical/keys/davRSA.{{ item.name }}.key"
-  loop: "{{ domains }}"
+- name: get all private keys
+  command: cat '/var/www/etc/davical/keys/davRSA.{{ item.name }}.key'
+  loop: '{{ domains }}'
   register: davical_keys
 
 - name: generate config file for all domains
   template:
     src: config.php.j2
-    dest: "/var/www/etc/davical/dav.{{ item.name }}-conf.php"
-  with_items: "{{ domains }}"
+    dest: '/var/www/etc/davical/dav.{{ item.name }}-conf.php'
+    owner: www
+    group: www
+    mode: '0440'
+  with_items: '{{ domains }}'
 
 - meta: flush_handlers
