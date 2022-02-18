@@ -10,7 +10,7 @@
     dest: /var/www/roundcubemail/config/config.inc.php
     owner: root
     group: wheel
-    mode: 0644
+    mode: '0644'
 
 - name: include roundcube plugins
   import_tasks: roundcube_plugins.yml
