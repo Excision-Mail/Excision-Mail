@@ -21,18 +21,6 @@ agg_subdomains: "{{ required_subdomains + extra_subdomains }}"
 timezone: "America/New_York"
 
 #####
-# optional role enabling
-enable_dns:          false
-enable_pf:           true
-enable_syslog:       true
-enable_clamav:       false
-
-enable_php:          true
-enable_postgresql:   true
-enable_davical:      true
-enable_roundcube:    true
-
-#####
 # Username delimiter to give all users access to infinite aliases
 # Is set to + by default can by set to any single character
 # NOTE: If set to some ascii character (such as 'a') a lot of
@@ -42,7 +30,8 @@ username_delimiter: "+"
 
 #####
 max_attachment_size: 32  # in MB
-## webmail, caldav and carddav
+
+##### webmail, caldav and carddav
 #
 # If extras are enabled there is an option to set them up
 # on a separate machine and let the two machines
@@ -53,7 +42,6 @@ max_attachment_size: 32  # in MB
 # interface to tun0/wg0
 extras_ip: 127.0.0.1
 extras_port: 8081
-extras_not_home: false
 
 # role: syslog
 syslog_extra_logfiles:
