@@ -1,0 +1,5 @@
+---
+baikal_packages:
+  - baikal
+
+baikal_timezone: '{{ timezone | default(UTC) }}'

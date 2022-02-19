@@ -1,0 +1,19 @@
+system:
+    configured_version: '{{ baikal_version }}'
+    timezone: {{ baikal_timezone }}
+    card_enabled: true
+    cal_enabled: true
+    dav_auth_type: Digest
+    admin_passwordhash: {{ baikal_admin_hash }}
+    failed_access_message: 'user %u authentication failure for Baikal'
+    auth_realm: BaikalDAV
+    base_uri: /
+    invite_from: noreply@{{ item.name }}
+database:
+    sqlite_file: /baikal/Specific/db/db.sqlite
+    mysql: true
+    mysql_host: 127.0.0.1
+    mysql_dbname: baikal_db{{ index }}
+    mysql_username: baikal
+    mysql_password: {{ baikal_db_password }}
+    encryption_key: {{ baikal_enc_key }}

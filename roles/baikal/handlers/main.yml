@@ -1,0 +1,6 @@
+---
+- name: initialize baikal database
+  shell: mysql 'baikal_db{{ index }}' < /var/www/baikal/Core/Resources/Db/MySQL/db.sql
+  with_items: '{{ domains }}'
+  loop_control:
+    index_var: index

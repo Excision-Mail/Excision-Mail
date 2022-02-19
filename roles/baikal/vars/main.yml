@@ -1,0 +1,2 @@
+---
+baikal_admin_password_expr: 'admin:BaikalDAV:{{ baikal_admin_password }}'

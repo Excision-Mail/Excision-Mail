@@ -1,0 +1,70 @@
+---
+- name: install baikal packages
+  package:
+    name: '{{ baikal_packages }}'
+    state: present
+
+- name: create baikal domain directories
+  file:
+    path: '/var/www/baikal-{{ item.name }}'
+    state: directory
+    owner: root
+    group: daemon
+    mode: '0755'
+  with_items: '{{ domains }}'
+
+- name: copy baikal for each domain
+  command: cp -a /var/www/baikal/. '/var/www/baikal-{{ item.name }}/'
+  with_items: '{{ domains }}'
+  changed_when: false
+
+- name: create baikal mariadb databases
+  mysql_db:
+    name: 'baikal_db{{ index }}'
+    state: present
+    login_unix_socket: /var/www/tmp/mysql.sock
+  with_items: '{{ domains }}'
+  loop_control:
+    index_var: index
+  notify: initialize baikal database
+
+- name: create baikal mariadb user
+  mysql_user:
+    name: baikal
+    password: '{{ baikal_db_password }}'
+    login_unix_socket: /var/www/tmp/mysql.sock
+
+- name: grant baikal mariadb user permissions
+  mysql_user:
+    name: baikal
+    priv: 'baikal_db{{ index }}.*:ALL'
+    append_privs: true
+    login_unix_socket: /var/www/tmp/mysql.sock
+  with_items: '{{ domains }}'
+  loop_control:
+    index_var: index
+
+- name: get admin password expr hash
+  shell: |
+    set -o pipefail
+    echo -n '{{ baikal_admin_password_expr }}' | sha256
+  register: _baikal_admin_hash
+  changed_when: false
+
+- name: set admin password expr hash
+  set_fact:
+    baikal_admin_hash: '{{ _baikal_admin_hash.stdout }}'
+
+- name: create baikal configs
+  template:
+    src: baikal.yaml.j2
+    dest: '/var/www/baikal-{{ item.name }}/config/baikal.yaml'
+    owner: www
+    group: www
+    mode: '0640'
+  with_items: '{{ domains }}'
+  loop_control:
+    index_var: index
+
+- name: flush_handlers
+  meta: flush_handlers
