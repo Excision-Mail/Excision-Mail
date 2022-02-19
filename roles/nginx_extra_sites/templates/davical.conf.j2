@@ -6,14 +6,18 @@ server  {
 
     root /davical/htdocs;
 
+    rewrite /.well-known/caldav(.*) /caldav.php$1;
+    rewrite /.well-known/carddav(.*) /caldav.php$1;
+
     location /images/ {
     }
 
-    location ~ \.php$ {
-        try_files $uri $uri/ =404;
-        fastcgi_pass unix:run/php-fpm.sock;
-        fastcgi_index index.php;
-        fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+    location ~ ^(.*\.php)(.*)$ {
         include fastcgi_params;
+        fastcgi_pass unix:run/php-fpm.sock;
+        fastcgi_split_path_info ^(.*\.php)(.*)$;
+        fastcgi_param PATH_INFO $fastcgi_path_info;
+        fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+        fastcgi_param PATH_TRANSLATED $document_root$fastcgi_path_info;
     }
 }

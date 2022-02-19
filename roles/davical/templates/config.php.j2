@@ -431,10 +431,10 @@ $c->allow_get_email_visibility = true;
 $c->enable_auto_schedule = false;
 
 /**
-* If true, then remote scheduling will be enabled.  There is a possibility 
+* If true, then remote scheduling will be enabled.  There is a possibility
 * of receiving spam events in calendars if enabled, you will at least know
 * what domain the spam came from as domain key signatures are required for
-* events to be accepted.  
+* events to be accepted.
 *
 * You probably need to setup Domain Keys for your domain as well as the
 * appropiate DNS SRV records.
@@ -453,7 +453,7 @@ $c->enable_auto_schedule = false;
 $c->enable_scheduling = true;
 
 /**
-* Domain Key domain to use when signing outbound scheduling requests, this 
+* Domain Key domain to use when signing outbound scheduling requests, this
 * is the domain with the public key in a TXT record as shown above.
 *
 * TODO: enable domain/signing by per user keys, patches welcome.
@@ -472,14 +472,14 @@ $c->scheduling_dkim_domain = 'dav.{{ item.name }}';
 $c->scheduling_dkim_selector = 'davRSA';
 
 /*
-* Domain Key private key 
+* Domain Key private key
 * Required if you want to enable outbound remote server scheduling
 *
 * Default: none
-*/  
+*/
 {% for register in davical_keys.results %}
 {% if register.item == item %}
-$c->schedule_private_key = '{{ register.stdout }}';
+$c->schedule_private_key = '{{ register.content | b64decode }}';
 {% endif %}
 {% endfor %}
 
@@ -697,7 +697,7 @@ include('drivers_imap_pam.php');
 /****** Webserver does Auth *****/
 /********************************/
 
-/** 
+/**
 * It is quite common that the webserver can do the authentication for you,
 * and you just want DAViCal to trust the username that the webserver will pass
 * through (in the REMOTE_USER or REDIRECT_REMOTE_USER environment variable).
@@ -784,4 +784,3 @@ include('drivers_imap_pam.php');
 *   http://wiki.davical.org/index.php/Configuration/hooks/log_caldav_action
 */
 //include('log_caldav_action.php');
-
