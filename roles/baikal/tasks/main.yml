@@ -4,6 +4,13 @@
     name: '{{ baikal_packages }}'
     state: present
 
+- name: apply custom patches
+  patch:
+    src: '{{ item }}'
+    basedir: '/var/www/baikal/'
+    strip: 1
+  with_items: '{{ baikal_patches }}'
+
 - name: create baikal domain directories
   file:
     path: '/var/www/baikal-{{ item.name }}'

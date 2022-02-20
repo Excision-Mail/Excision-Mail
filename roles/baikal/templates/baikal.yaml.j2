@@ -1,9 +1,13 @@
 system:
-    configured_version: '{{ baikal_version }}'
+    configured_version: {{ baikal_version }}
     timezone: {{ baikal_timezone }}
     card_enabled: true
     cal_enabled: true
-    dav_auth_type: Digest
+    dav_auth_type: LDAP
+    ldap_uri: '{{ baikal_ldap_uri }}'
+    ldap_dn: '{{ baikal_ldap_dn }}'
+    ldap_cn: '{{ baikal_ldap_cn }}'
+    ldap_mail: '{{ baikal_ldap_mail }}'
     admin_passwordhash: {{ baikal_admin_hash }}
     failed_access_message: 'user %u authentication failure for Baikal'
     auth_realm: BaikalDAV

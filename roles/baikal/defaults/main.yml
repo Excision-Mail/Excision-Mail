@@ -1,5 +1,16 @@
 ---
 baikal_packages:
   - baikal
+  - gpatch
 
 baikal_timezone: '{{ timezone | default(UTC) }}'
+
+baikal_version: 0.9.1
+
+baikal_patches:
+  - 'baikal-0.9.1-ldap-auth.patch'
+
+baikal_ldap_uri: 'ldap://127.0.0.1'
+baikal_ldap_dn: 'uid=%U,ou=users,dc=%2,dc=%1,dc=.'
+baikal_ldap_cn: 'cn'
+baikal_ldap_mail: 'mail'
