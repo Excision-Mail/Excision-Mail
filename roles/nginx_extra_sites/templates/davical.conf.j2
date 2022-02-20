@@ -7,10 +7,10 @@ server {
     root /davical/htdocs;
 
     location ~ ^/.well-known/caldav(.*)$ {
-        return 301 https://dav.{{ item.name }}/dav.php$1;
+        return 301 https://dav.{{ item.name }}/caldav.php$1;
     }
     location ~ ^/.well-known/carddav(.*)$ {
-        return 301 https://dav.{{ item.name }}/dav.php$1;
+        return 301 https://dav.{{ item.name }}/caldav.php$1;
     }
 
     location /images/ {
