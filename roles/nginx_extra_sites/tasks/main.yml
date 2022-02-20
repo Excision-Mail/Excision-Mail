@@ -37,5 +37,15 @@
   with_items: '{{ domains }}'
   notify: restart nginx
 
+- name: generate nginx baikal configs
+  template:
+    src: 'baikal.conf.j2'
+    dest: '/etc/nginx/sites-available/baikal_{{ item.name }}.conf'
+    owner: root
+    group: wheel
+    mode: '0644'
+  with_items: '{{ domains }}'
+  notify: restart nginx
+
 - name: flush_handlers
   meta: flush_handlers

@@ -1,4 +1,4 @@
-server  {
+server {
     listen	{{ extras_port }};
     listen	[::]:{{ extras_port }};
 
@@ -6,8 +6,12 @@ server  {
 
     root /davical/htdocs;
 
-    rewrite /.well-known/caldav(.*) /caldav.php$1;
-    rewrite /.well-known/carddav(.*) /caldav.php$1;
+    location ~ ^/.well-known/caldav(.*)$ {
+        return 301 https://dav.{{ item.name }}/dav.php$1;
+    }
+    location ~ ^/.well-known/carddav(.*)$ {
+        return 301 https://dav.{{ item.name }}/dav.php$1;
+    }
 
     location /images/ {
     }

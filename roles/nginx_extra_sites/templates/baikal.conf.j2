@@ -1,0 +1,29 @@
+server {
+    listen      {{ extras_port }};
+    listen	[::]:{{ extras_port }};
+
+    server_name dav.{{ item.name }};
+
+    root /baikal-{{ item.name }}/html;
+
+    location ~ ^/.well-known/caldav(.*)$ {
+        return 301 https://dav.{{ item.name }}/dav.php$1;
+    }
+    location ~ ^/.well-known/carddav(.*)$ {
+        return 301 https://dav.{{ item.name }}/dav.php$1;
+    }
+
+    location ~ /(\.ht|Core|Specific|config) {
+        deny all;
+        return 404;
+    }
+
+    location ~ ^(.*\.php)(.*)$ {
+        try_files $fastcgi_script_name =404;
+        include        /etc/nginx/fastcgi_params;
+        fastcgi_split_path_info  ^(.*\.php)(.*)$;
+        fastcgi_pass   unix:run/php-fpm.sock;
+        fastcgi_param  SCRIPT_FILENAME  $document_root$fastcgi_script_name;
+        fastcgi_param  PATH_INFO        $fastcgi_path_info;
+    }
+}
