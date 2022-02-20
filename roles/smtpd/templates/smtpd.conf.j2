@@ -61,6 +61,9 @@ listen on socket \
 # Private interfaces
 {% for pif in pf_private_interfaces %}
 listen on {{ pif }}
+listen on {{ pif }} \
+	tag trusted-interface \
+	filter rspamd
 {% endfor %}
 #
 # Incoming messages from outside to people in <vdomain>
@@ -115,12 +118,18 @@ action "outbound" \
 # Rules - first to match is applied
 #
 # Forward local messages
-match 	from local \
+match	from local \
 	for local \
 	action "local_mail"
 #
 # Send any authenticated mail not meant for <vdomains> to outside
 match	from any auth \
+	!for domain <vdomains> \
+	action "outbound"
+#
+# Send any mail on a trusted interface not for <vdomains> to outside
+match	from any \
+	tag trusted-interface \
 	!for domain <vdomains> \
 	action "outbound"
 #
