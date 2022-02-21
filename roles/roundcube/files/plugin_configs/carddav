@@ -32,30 +32,30 @@ $prefs['_GLOBAL']['loglevel_http'] = \Psr\Log\LogLevel::ERROR;
 //// ** ADDRESSBOOK PRESETS
 
 // Each addressbook preset takes the following form:
-/*
-$prefs['<Presetname>'] = [
+
+$prefs['default'] = [
 	// required attributes
-	'name'         =>  '<Addressbook Name>',
-	'url'          =>  '<CardDAV Discovery URL>',
+	'name'         =>  'Baikal',
+	'url'          =>  'https://dav.%d/.well-known/carddav',
 
 	// required attributes unless passwordless authentication is used (Kerberos)
-	'username'     =>  '<CardDAV Username>',
-	'password'     =>  '<CardDAV Password>',
+	'username'     =>  '%u',
+	'password'     =>  '%p',
 
 	// optional attributes
-	'active'       =>  <true or false>,
-	'readonly'     =>  <true or false>,
-	'refresh_time' => '<Refresh Time in Hours, Format HH[:MM[:SS]]>',
+	'active'       =>  true,
+	'readonly'     =>  false,
+	'refresh_time' => '00:05:00',
 
 	// attributes that are fixed (i.e., not editable by the user) and auto-updated for this preset
-	'fixed'        =>  [ < 0 or more of the other attribute keys > ],
+	'fixed'        =>  [ 'name', 'url, 'username', 'password' ],
 
 	// always require these attributes, even for addressbook view
 	'require_always' => ['email'],
 
 	// hide this preset from CardDAV preferences section so users can't even see it
-	'hide' => <true or false>,
+	'hide' => true,
 ];
-*/
+
 
 // vim: ts=4:sw=4:expandtab:fenc=utf8:ff=unix:tw=120
