@@ -22,7 +22,7 @@
     template: template0
   register: _davical_initdb
 
-- name: run initial scripts for davical database
+- name: run initial scripts for davical database # noqa no-handler
   postgresql_query:
     db: davical
     path_to_script: '/var/www/{{ item.name }}'
@@ -44,7 +44,7 @@
     --owner davical_dba
     --dbpass '{{ davical_dba_password }}'
 
-- name: insert basic roles into davical database
+- name: insert basic roles into davical database # noqa no-handler
   postgresql_query:
     db: davical
     login_user: davical_dba
