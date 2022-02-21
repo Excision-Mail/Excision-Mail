@@ -1,2 +1,5 @@
 enable_list:
   - yaml
+
+exclude_paths:
+  - vars-sample.yml
