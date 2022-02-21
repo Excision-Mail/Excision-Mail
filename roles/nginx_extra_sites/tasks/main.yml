@@ -27,16 +27,6 @@
   with_items: '{{ domains }}'
   notify: restart nginx
 
-- name: symlink davical configs
-  file:
-    src: '../sites-available/davical_{{ item.name }}.conf'
-    dest: '/etc/nginx/sites-enabled/davical_{{ item.name }}.conf'
-    owner: root
-    group: wheel
-    state: link
-  with_items: '{{ domains }}'
-  notify: restart nginx
-
 - name: generate nginx baikal configs
   template:
     src: 'baikal.conf.j2'
@@ -44,6 +34,16 @@
     owner: root
     group: wheel
     mode: '0644'
+  with_items: '{{ domains }}'
+  notify: restart nginx
+
+- name: symlink baikal configs
+  file:
+    src: '../sites-available/baikal_{{ item.name }}.conf'
+    dest: '/etc/nginx/sites-enabled/baikal_{{ item.name }}.conf'
+    owner: root
+    group: wheel
+    state: link
   with_items: '{{ domains }}'
   notify: restart nginx
 
