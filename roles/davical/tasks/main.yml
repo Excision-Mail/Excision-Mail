@@ -82,4 +82,5 @@
     mode: '0440'
   with_items: '{{ domains }}'
 
-- meta: flush_handlers
+- name: flush_handlers
+  meta: flush_handlers
