@@ -5,33 +5,18 @@
     - mainserver
 
   vars_files:
-    - group_vars/options.yml
-    - group_vars/domains.yml
-    - role_vars/pf.yml
-    - role_vars/syslog.yml
+    - defaults.yml
     - vars.yml
-    - group_vars/extrapolate.yml
+    - extrapolate.yml
+    - overrides.yml
 
   roles:
     - role: nginx_core
-      tags:
-        - 'nginx'
     - role: acme
-      tags:
-        - 'acme'
     - role: nginx_main_sites
-      tags:
-        - 'nginx'
-    - role: clamav
-      tags:
-        - 'clamav'
-      when: enable_clamav
+    - role: openldap
+    - role: redis
+    # - role: clamav
     - role: rspamd
-      tags:
-        - 'rspamd'
     - role: smtpd
-      tags:
-        - 'smtpd'
     - role: dovecot
-      tags:
-        - 'dovecot'
