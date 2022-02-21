@@ -1,11 +1,12 @@
 # Excision Mail
-[![ansible-lint](https://github.com/Excision-Mail/Excision-Mail/workflows/ansible-lint/badge.svg)](https://github.com/Excision-Mail/Excision-Mail/actions?query=workflow%3Aansible-lint)
-[![shellcheck](https://github.com/Excision-Mail/Excision-Mail/workflows/shellcheck/badge.svg)](https://github.com/Excision-Mail/Excision-Mail/actions?query=workflow%3Ashellcheck)
 [![release](https://img.shields.io/github/v/release/Excision-Mail/Excision-Mail?include_prereleases)](https://github.com/Excision-Mail/Excision-Mail/releases)
 [![license](https://img.shields.io/github/license/Excision-Mail/Excision-Mail.svg)](https://github.com/Excision-Mail/Excision-Mail/blobl/master/LICENSE)
 [![issues](https://img.shields.io/github/issues-raw/Excision-Mail/Excision-Mail)](https://github.com/Excision-Mail/Excision-Mail/issues)
 [![contributions welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat)](https://github.com/Excision-Mail/Excision-Mail/issues)
 [![support](https://img.shields.io/matrix/excision-mail:matrix.org?label=support&logo=matrix)](https://matrix.to/#/#excision-mail:matrix.org)
+
+[![ansible-lint](https://github.com/Excision-Mail/Excision-Mail/workflows/ansible-lint/badge.svg)](https://github.com/Excision-Mail/Excision-Mail/actions?query=workflow%3Aansible-lint)
+[![shellcheck](https://github.com/Excision-Mail/Excision-Mail/workflows/shellcheck/badge.svg)](https://github.com/Excision-Mail/Excision-Mail/actions?query=workflow%3Ashellcheck)
 
 Fullstack, security focused mailserver based on OpenSMTPD for OpenBSD using ansible
 
