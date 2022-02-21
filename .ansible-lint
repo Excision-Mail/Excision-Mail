@@ -2,4 +2,5 @@ enable_list:
   - yaml
 
 exclude_paths:
+  - .github
   - vars-sample.yml
