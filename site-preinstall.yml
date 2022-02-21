@@ -12,23 +12,7 @@
 
   roles:
     - role: base
-      tags:
-        - 'base'
     - role: pf
-      tags:
-        - 'base'
-        - 'pf'
-      when: enable_pf
     - role: syslog
-      tags:
-        - 'base'
-        - 'syslog'
-      when: enable_syslog
-    - role: zones
-      tags:
-        - 'zones'
-        - 'dns'
-    - role: knot
-      tags:
-        - 'dns'
-      when: enable_dns
+    # - role: knot
+    # - role: zones
