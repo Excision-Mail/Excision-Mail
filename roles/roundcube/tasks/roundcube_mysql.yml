@@ -1,0 +1,62 @@
+---
+- name: create roundcubemail database
+  mysql_db:
+    name: roundcubemail
+    state: present
+    login_unix_socket: /var/www/tmp/mysql.sock
+
+- name: create roundcubemail user
+  mysql_user:
+    name: roundcubemail
+    password: "{{ rc_db_password }}"
+    state: present
+    priv: 'roundcubemail.*:ALL'
+    login_unix_socket: /var/www/tmp/mysql.sock
+
+- name: get roundcube version from the database   # noqa ignore-errors
+  mysql_query:
+    login_db: roundcubemail
+    login_user: roundcubemail
+    login_password: "{{ rc_db_password }}"
+    login_unix_socket: /var/www/tmp/mysql.sock
+    query: SELECT value FROM system WHERE name = 'roundcube-version'
+  register: __rc_version_output
+  ignore_errors: true
+
+- name: initialize the database
+  mysql_db:
+    name: roundcubemail
+    state: import
+    encoding: utf8
+    target: /var/www/roundcubemail/SQL/mysql.initial.sql
+    login_user: roundcubemail
+    login_password: "{{ rc_db_password }}"
+    login_unix_socket: /var/www/tmp/mysql.sock
+  when: __rc_version_output.failed
+
+- name: update the database   # is an idempotent script
+  command:
+    chdir: /var/www/roundcubemail/bin
+    cmd: ./updatedb.sh --dir "../SQL" --package "roundcube"
+  changed_when: false
+
+- name: check if persisten_login initialized
+  mysql_query:
+    login_db: roundcubemail
+    login_user: roundcubemail
+    login_password: "{{ rc_db_password }}"
+    login_unix_socket: /var/www/tmp/mysql.sock
+    query: SELECT count(*) FROM information_schema.tables WHERE table_name = 'auth_tokens'
+  register: __rc_persistent_login
+
+- name: add table for persistent_login   # noqa ignore-errors
+  mysql_db:
+    name: roundcubemail
+    state: import
+    encoding: utf8
+    target: /var/www/roundcubemail/plugins/persistent_login/sql/mysql.sql
+    login_user: roundcubemail
+    login_password: "{{ rc_db_password }}"
+    login_unix_socket: /var/www/tmp/mysql.sock
+  ignore_errors: true
+  when: not __rc_persistent_login.query_result[0][0]["count(*)"]

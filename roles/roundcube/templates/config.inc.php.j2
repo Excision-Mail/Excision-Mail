@@ -26,7 +26,7 @@ $config = array();
 // NOTE: for SQLite use absolute path (Linux): 'sqlite:////full/path/to/sqlite.db?mode=0646'
 //       or (Windows): 'sqlite:///C:/full/path/to/sqlite.db'
 // $config['db_dsnw'] = 'mysql://roundcube:pass@localhost/roundcubemail';
-$config['db_dsnw'] = 'pgsql://roundcubemail:{{ pgsql_password_roundcube }}@unix(/tmp)/roundcubemail';
+$config['db_dsnw'] = 'mysql://roundcubemail:{{ rc_db_password }}@127.0.0.1/roundcubemail';
 
 // The IMAP host chosen to perform the log-in.
 // Leave blank to show a textbox at login, give a list of hosts

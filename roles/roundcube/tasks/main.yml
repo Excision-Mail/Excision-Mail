@@ -15,8 +15,8 @@
 - name: include roundcube plugins
   import_tasks: roundcube_plugins.yml
 
-- name: include roundcue postgresql
-  import_tasks: roundcube_pgsql.yml
+- name: include roundcue mysql
+  import_tasks: roundcube_mysql.yml
 
 - name: flush_handlers
   meta: flush_handlers
