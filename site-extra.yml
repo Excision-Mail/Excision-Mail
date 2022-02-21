@@ -1,38 +1,42 @@
 ---
+# - name: Sync Davical keys
+#   hosts:
+#     - mainserver
+#
+#   vars_files:
+#     - defaults.yml
+#     - vars.yml
+#     - extrapolate.yml
+#     - overrides.yml
+#
+#   tasks:
+#     - name: get all private keys
+#       slurp:
+#         src: '/etc/excision/dkim/private/davRSA.{{ item.name }}.key'
+#       with_items: '{{ domains }}'
+#       register: _davical_keys
+#
+#     - name: cache private keys
+#       set_fact:
+#         davical_keys: '{{ _davical_keys }}'
+
 - name: Install/Upgrade Excision Mail extra utilities
 
   hosts:
     - extraserver
 
   vars_files:
-    - group_vars/options.yml
-    - group_vars/domains.yml
-    - group_vars/extras.yml
+    - defaults.yml
     - vars.yml
-    - group_vars/extrapolate.yml
+    - extrapolate.yml
+    - overrides.yml
 
   roles:
     - role: nginx_core
-      tags:
-        - 'extras'
-        - 'nginx'
     - role: nginx_extra_sites
-      tags:
-        - 'extras'
-        - 'nginx'
     - role: php
-      tags:
-        - 'php'
-      when: enable_php
-    - role: postgresql
-      tags:
-        - 'postgresql'
-      when: enable_postgresql
+    - role: mariadb
     - role: roundcube
-      tags:
-        - 'roundcube'
-      when: enable_roundcube
-#    - role: davical
-#      tags:
-#        - 'davical'
-#      when: enable_davical
+    - role: baikal
+    # - role: postgresql
+    # - role: davical
