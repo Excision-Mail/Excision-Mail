@@ -173,7 +173,7 @@ index 0000000..445ed86
 +    }
 +}
 diff --git a/Core/Frameworks/Baikal/Core/Server.php b/Core/Frameworks/Baikal/Core/Server.php
-index f08c110..7f85b95 100644
+index f08c110..ac889f8 100644
 --- a/Core/Frameworks/Baikal/Core/Server.php
 +++ b/Core/Frameworks/Baikal/Core/Server.php
 @@ -135,6 +135,8 @@ class Server {
@@ -185,11 +185,20 @@ index f08c110..7f85b95 100644
          } else {
              $authBackend = new \Sabre\DAV\Auth\Backend\PDO($this->pdo);
              $authBackend->setRealm($this->authRealm);
+@@ -174,7 +176,7 @@ class Server {
+             $this->server->addPlugin(new \Sabre\DAV\Sharing\Plugin());
+             $this->server->addPlugin(new \Sabre\CalDAV\SharingPlugin());
+             if (isset($config['system']["invite_from"]) && $config['system']["invite_from"] !== "") {
+-                $this->server->addPlugin(new \Sabre\CalDAV\Schedule\IMipPlugin($config['system']["invite_from"]));
++                $this->server->addPlugin(new \Sabre\CalDAV\Schedule\IMipPlugin($config['system']["invite_from"], $config['system']['smtp_host'], $config['system']['smtp_port'], $config['system']['smtp_username'], $config['system']['smtp_password']));
+             }
+         }
+         if ($this->enableCardDAV) {
 diff --git a/Core/Frameworks/Baikal/Model/Config/Standard.php b/Core/Frameworks/Baikal/Model/Config/Standard.php
-index 310d512..9ff8188 100644
+index 310d512..8b86c69 100644
 --- a/Core/Frameworks/Baikal/Model/Config/Standard.php
 +++ b/Core/Frameworks/Baikal/Model/Config/Standard.php
-@@ -32,17 +32,21 @@ use Symfony\Component\Yaml\Yaml;
+@@ -32,17 +32,25 @@ use Symfony\Component\Yaml\Yaml;
  class Standard extends \Baikal\Model\Config {
      # Default values
      protected $aData = [
@@ -209,6 +218,10 @@ index 310d512..9ff8188 100644
 +        "ldap_dn"                => "mail=%u",
 +        "ldap_cn"                => "cn",
 +        "ldap_mail"              => "mail",
++        "smtp_username"          => "",
++        "smtp_password"          => "",
++        "smtp_host"              => "",
++        "smtp_port"              => "465",
 +        "admin_passwordhash"     => "",
 +        "failed_access_message"  => "user %u authentication failure for Baikal",
          // While not editable as will change admin & any existing user passwords,
@@ -220,7 +233,30 @@ index 310d512..9ff8188 100644
      ];
  
      function __construct() {
-@@ -79,7 +83,27 @@ class Standard extends \Baikal\Model\Config {
+@@ -76,10 +84,50 @@ class Standard extends \Baikal\Model\Config {
+             "help"  => "Leave empty to disable sending invite emails",
+         ]));
+ 
++        $oMorpho->add(new \Formal\Element\Text([
++            "prop"  => "smtp_username",
++            "label" => "Username for SMTP server",
++        ]));
++
++        $oMorpho->add(new \Formal\Element\Text([
++            "prop"  => "smtp_password",
++            "label" => "Password for SMTP server",
++        ]));
++
++        $oMorpho->add(new \Formal\Element\Text([
++            "prop"  => "smtp_host",
++            "label" => "SMTP server address",
++        ]));
++
++        $oMorpho->add(new \Formal\Element\Text([
++            "prop"  => "smtp_port",
++            "label" => "SMTP server port",
++        ]));
++
          $oMorpho->add(new \Formal\Element\Listbox([
              "prop"    => "dav_auth_type",
              "label"   => "WebDAV authentication type",
@@ -249,3 +285,85 @@ index 310d512..9ff8188 100644
          ]));
  
          $oMorpho->add(new \Formal\Element\Password([
+diff --git a/vendor/sabre/dav/lib/CalDAV/Schedule/IMipPlugin.php b/vendor/sabre/dav/lib/CalDAV/Schedule/IMipPlugin.php
+index e050ac2..86ab043 100644
+--- a/vendor/sabre/dav/lib/CalDAV/Schedule/IMipPlugin.php
++++ b/vendor/sabre/dav/lib/CalDAV/Schedule/IMipPlugin.php
+@@ -30,6 +30,12 @@ class IMipPlugin extends DAV\ServerPlugin
+      */
+     protected $senderEmail;
+ 
++    /**
++     * SMTP connection made by PEAR
++     *
++     */
++     protected $smtp;
++
+     /**
+      * ITipMessage.
+      *
+@@ -45,9 +51,11 @@ class IMipPlugin extends DAV\ServerPlugin
+      *                             generally be some kind of no-reply email
+      *                             address you own.
+      */
+-    public function __construct($senderEmail)
++    public function __construct($senderEmail, $smtp_host = "", $smtp_port = "", $smtp_username = "", $smtp_password = "")
+     {
++        require_once "Mail.php";
+         $this->senderEmail = $senderEmail;
++        $this->smtp = \Mail::factory('smtp', array ('host' => $smtp_host, 'port' => $smtp_port, 'auth' => true, 'username' => $smtp_username, 'password' => $smtp_password));
+     }
+ 
+     /*
+@@ -127,20 +135,21 @@ class IMipPlugin extends DAV\ServerPlugin
+                 break;
+         }
+ 
+-        $headers = [
+-            'Reply-To: '.$sender,
+-            'From: '.$iTipMessage->senderName.' <'.$this->senderEmail.'>',
+-            'MIME-Version: 1.0',
+-            'Content-Type: text/calendar; charset=UTF-8; method='.$iTipMessage->method,
+-        ];
++        $headers = array(
++            'Reply-To' => $sender,
++            'From' => $iTipMessage->senderName.' <'.$this->senderEmail.'>',
++            'To' => $recipient,
++            'Subject' => $subject,
++            'MIME-Version' => '1.0',
++            'Content-Type' => 'text/calendar; charset=UTF-8; method='.$iTipMessage->method,
++        );
+         if (DAV\Server::$exposeVersion) {
+-            $headers[] = 'X-Sabre-Version: '.DAV\Version::VERSION;
++            $headers += ['X-Sabre-Version' => DAV\Version::VERSION];
+         }
+         $this->mail(
+             $recipient,
+-            $subject,
+-            $iTipMessage->message->serialize(),
+-            $headers
++            $headers,
++            $iTipMessage->message->serialize()
+         );
+         $iTipMessage->scheduleStatus = '1.1; Scheduling message is sent via iMip';
+     }
+@@ -152,13 +161,16 @@ class IMipPlugin extends DAV\ServerPlugin
+      * This function is responsible for sending the actual email.
+      *
+      * @param string $to      Recipient email address
+-     * @param string $subject Subject of the email
+      * @param string $body    iCalendar body
+      * @param array  $headers List of headers
+      */
+-    protected function mail($to, $subject, $body, array $headers)
++    protected function mail($to, array $headers, $body)
+     {
+-        mail($to, $subject, $body, implode("\r\n", $headers));
++        $mail = $this->smtp->send($to, $headers, $body);
++        if (\PEAR::isError($mail))
++            error_log($mail->getMessage());
++        else
++            error_log("Email successfully sent!");
+     }
+ 
+     // @codeCoverageIgnoreEnd

@@ -8,6 +8,10 @@ system:
     ldap_dn: '{{ baikal_ldap_dn }}'
     ldap_cn: '{{ baikal_ldap_cn }}'
     ldap_mail: '{{ baikal_ldap_mail }}'
+    smtp_username: '{{ baikal_smtp_user }}'
+    smtp_password: '{{ baikal_smtp_password }}'
+    smtp_host: 'ssl://smtp.{{ item.name }}'
+    smtp_port: '465'
     admin_passwordhash: {{ baikal_admin_hash }}
     failed_access_message: 'user %u authentication failure for Baikal'
     auth_realm: BaikalDAV
