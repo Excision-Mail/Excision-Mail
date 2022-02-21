@@ -22,3 +22,6 @@
 [submodule "roles/mariadb"]
 	path = roles/mariadb
 	url = https://github.com/Excision-Mail/ansible-mariadb
+[submodule "roles/baikal"]
+	path = roles/baikal
+	url = https://github.com/Excision-Mail/ansible-baikal
