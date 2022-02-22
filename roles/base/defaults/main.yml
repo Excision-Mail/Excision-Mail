@@ -12,9 +12,7 @@ base_packages:
 
 base_services:
   - {name: "dovecot"}
-  - {name: "httpd"}
   - {name: "redis"}
-  - {name: "relayd"}
   - {name: "rspamd"}
 
 base_config_dirs:
