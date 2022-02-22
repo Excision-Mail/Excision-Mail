@@ -48,7 +48,7 @@ $prefs['default'] = [
 	'refresh_time' => '00:05:00',
 
 	// attributes that are fixed (i.e., not editable by the user) and auto-updated for this preset
-	'fixed'        =>  [ 'name', 'url, 'username', 'password' ],
+	'fixed'        =>  [ 'name', 'url', 'username', 'password' ],
 
 	// always require these attributes, even for addressbook view
 	'require_always' => ['email'],
