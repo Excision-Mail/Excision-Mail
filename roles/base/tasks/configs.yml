@@ -1,4 +1,15 @@
 ---
+- name: create excision config directories
+  file:
+    name: "{{ item.name }}"
+    state: directory
+    owner: root
+    group: wheel
+    mode: "{{ item.perm }}"
+    modification_time: preserve
+    access_time: preserve
+  with_items: "{{ base_config_dirs }}"
+
 - name: create hostname file
   copy:
     content: |
@@ -40,17 +51,6 @@
     mode: '0644'
     owner: root
     group: wheel
-
-- name: create excision config directories
-  file:
-    name: "{{ item.name }}"
-    state: directory
-    owner: root
-    group: wheel
-    mode: "{{ item.perm }}"
-    modification_time: preserve
-    access_time: preserve
-  with_items: "{{ base_config_dirs }}"
 
 - name: ensure passwd file exists
   file:
