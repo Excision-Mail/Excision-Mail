@@ -4,3 +4,5 @@ padding:
         suffix: ".key"
       - suffix: ".crt"
       - suffix: ".ocsp"
+      - suffix: ".pem"
+      - suffix: ".chain.pem"

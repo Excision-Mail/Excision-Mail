@@ -29,6 +29,8 @@ domain {{ mail_subdomain }}.{{ domain.name }} {
 {% endfor %}
 	}
 	domain key "/etc/excision/ssl/private/{{ domain.name }}.key"
+	domain certificate "/etc/excision/ssl/{{ domain.name }}.pem"
+	domain chain certificate "/etc/excision/ssl/{{ domain.name }}.chain.pem"
 	domain full chain certificate "/etc/excision/ssl/{{ domain.name }}.crt"
 	sign with letsencrypt
 }
