@@ -1,0 +1,36 @@
+---
+- name: add ldap top object
+  ldap_entry:
+    dn: '{{ openldap_base }}'
+    objectClass:
+      - 'domain'
+    attributes:
+      dc: '{{ domains[0].name | split(".") | first }}'
+
+- name: add domains organization
+  ldap_entry:
+    dn: 'o=domains,{{ openldap_base }}'
+    objectClass:
+      - 'organization'
+    attributes:
+      o: 'domains'
+
+- name: add all domains
+  ldap_entry:
+    dn: 'domainName={{ item.name }},o=domains,{{ openldap_base }}'
+    objectClass:
+      - 'mailDomain'
+    attributes:
+      domainName: '{{ item.name }}'
+  with_items: '{{ domains }}'
+
+- name: add organizational units
+  ldap_entry:
+    dn: 'ou={{ item[1] }},domainName={{ item[0].name }},o=domains,{{ openldap_base }}'
+    objectClass:
+      - 'organizationalUnit'
+    attributes:
+      ou: '{{ item[1] }}'
+  with_nested:
+    - '{{ domains }}'
+    - [ 'Aliases', 'Groups', 'Users']
