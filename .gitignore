@@ -1,7 +1,3 @@
-# don't add the vars file that users make
+secrets.yml
 vars.yml
-
-# don't add inventory.ini
-# changes by users
 inventory.ini
-

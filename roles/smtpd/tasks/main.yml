@@ -23,6 +23,9 @@
   changed_when: __smtpd_wks.rc == 0
   failed_when: __smtpd_wks.rc != 0 and __smtpd_wks.rc != 2
 
+- name: ensure gpg files are created
+  command: excision ensure-gpg
+
 - name: add aliases for admin
   command: excision add-alias "{{ item[0] }}@{{ item[1].name }}" "{{ admin }}@{{ domains[0].name }}"
   with_nested:
