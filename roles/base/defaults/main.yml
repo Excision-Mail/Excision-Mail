@@ -22,3 +22,4 @@ base_config_dirs:
   - {name: "/etc/excision/spam", perm: "0755"}
   - {name: "/etc/excision/users", perm: "0700"}
   - {name: "/etc/excision/users/user-data", perm: "0700"}
+  - {name: "/var/www/mta-sts", perm: "0755"}

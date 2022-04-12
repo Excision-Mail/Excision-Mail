@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Autodiscover xmlns="http://schemas.microsoft.com/exchange/autodiscover/responseschema/2006">
+	<Response xmlns="http://schemas.microsoft.com/exchange/autodiscover/outlook/responseschema/2006a">
+		<User>
+			<DisplayName>Excision Mail - {{ item.name }}</DisplayName>
+		</User>
+		<Account>
+			<AccountType>email</AccountType>
+			<Action>settings</Action>
+			<ServiceHome>https://autodiscover.{{ item.name }}</ServiceHome>
+			<Protocol>
+				<Type>IMAP</Type>
+				<Server>imap.{{ item.name }}</Server>
+				<Port>993</Port>
+				<LoginName></LoginName>
+			</Protocol>
+			<Protocol>
+				<Type>POP3</Type>
+				<Server>pop3.{{ item.name }}</Server>
+				<Port>995</Port>
+				<LoginName></LoginName>
+			</Protocol>
+			<Protocol>
+				<Type>SMTP</Type>
+				<Server>smtp.{{ item.name }}</Server>
+				<Port>465</Port>
+				<LoginName></LoginName>
+			</Protocol>
+		</Account>
+	</Response>
+</Autodiscover>
