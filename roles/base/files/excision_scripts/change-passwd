@@ -9,7 +9,8 @@ fi
 
 user=$1
 
-user_status=$(sh "$emscripts/helpers/check-user" "$user")
+/bin/sh "$emscripts/helpers/check-user" "$user" >/dev/null
+user_status=$?
 
 case $user_status in
 	1)
