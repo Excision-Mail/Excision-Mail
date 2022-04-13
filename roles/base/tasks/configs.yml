@@ -25,6 +25,7 @@
     owner: root
     group: wheel
     mode: '0755'
+  with_items: "{{ domains }}"
 
 # https://wiki.mozilla.org/Thunderbird:Autoconfiguration#Implementation
 - name: generate mozilla config files
@@ -43,6 +44,7 @@
     owner: root
     group: wheel
     mode: '0755'
+  with_items: "{{ domains }}"
 
 # https://github.com/gronke/email-autodiscover/blob/master/mail/autodiscover.xml
 # https://docs.microsoft.com/en-us/previous-versions/office/office-2010/cc511507(v=office.14)?redirectedfrom=MSDN#Anchor_3
