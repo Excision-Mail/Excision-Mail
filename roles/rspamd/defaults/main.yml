@@ -3,6 +3,9 @@ rspamd_templates:
   - name: dkim_signing.conf.j2
   - name: phishing.conf.j2
   - name: surbl.conf.j2
+  - name: redis.conf.j2
 
 rspamd_enable_phishtank: false
 rspamd_enable_surbl: true
+
+rspamd_redis_servers: "/var/run/redis/redis.sock"
