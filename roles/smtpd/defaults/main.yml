@@ -17,7 +17,7 @@ smtpd_tables:
   - {name: "mailname", user: "root", group: "wheel", perm: "0640"}
   - {name: "virtual", user: "root", group: "_smtpd", perm: "0640"}
   - {name: "revirt", user: "root", group: "_smtpd", perm: "0640"}
-  - {name: "vdomains", user: "root", group: "wheel", perm: "0640"}
+  - {name: "vdomains", user: "root", group: "wheel", perm: "0644"}
   - {name: "passwd", user: "_smtpd", group: "_dovecot", perm: "0440"}
 
 smtpd_legacy_protocols: false
