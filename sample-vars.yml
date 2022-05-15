@@ -3,24 +3,13 @@
 # Each option has been described in as much detail as possible.
 # READ EVERYTHING VERY CLOSELY.
 
-#####-------- REQUIRED SECTION
+##### REQUIRED SECTION
 
 # This are the domains for which the mail server will be set up.
 # NOTE: It is possible to have as many domains as needed in this list.
-#       For each domain it is possible to enable/disable DNS separately.
-#       It is strongly advised to enable DNS as it does a lot
-#       of certificate, subdomain, DNS records and DNSSEC management
-#       for authentication.
-#       Seconday DNS overview:
-#           https://excision.bsd.ac/guides/secondary/
-#       If dns is not enabled for a domain, it is to be ensured that all
-#       records are properly managed manually:
-#           https://excision.bsd.ac/guides/manualdns/
 domains:
   - name: <change-me> # e.g. bsd.ac
-    dns: true         # HIGHLY RECOMMENDED, defaults to false if not present
   #- name: domain2.tld
-  #  dns: false
   #- name: domain3.tld3
 
 # The mail_subdomain is what the IP here is going to be called.
@@ -49,7 +38,7 @@ admin: <change-me> # e.g. aisha
 ipv4: <change-me> # e.g. 1.2.3.4
 ipv6: <change-me> # e.g. dead:beef
 
-#####-------- OPTIONAL SECTION
+##### OPTIONAL SECTION
 
 # HIGHLY RECOMMENDED TO USE THIS SECTION
 #
