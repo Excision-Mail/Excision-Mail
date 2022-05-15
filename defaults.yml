@@ -31,6 +31,9 @@ username_delimiter: "+"
 #####
 max_attachment_size: 32  # in MB
 
+openldap_schemas_extra:
+  - 'excision-mail.schema'
+
 ##### webmail, caldav and carddav
 #
 # If extras are enabled there is an option to set them up

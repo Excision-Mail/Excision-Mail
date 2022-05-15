@@ -6,3 +6,5 @@ hostname: "{{ mail_subdomain }}.{{ domains[0].name }}"
 enable_dns: "{{ domains | map(attribute='dns', default=False) is any}}"
 
 max_attachment_size_bytes: "{{ max_attachment_size * 1048576 }}"
+
+openldap_base: 'dc={{ domains[0].name | split(".") | join(",dc=") }}'
