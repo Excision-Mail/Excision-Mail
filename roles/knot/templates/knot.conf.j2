@@ -34,10 +34,12 @@ key:
 {% endif %}
 
 acl:
+{% if secondary_nameservers|length > 0 %}
   - id: secondary_transfer
     address: [ {{ secondary_nameservers | join(', ') }} ]
     action: transfer
 
+{% endif %}
   - id: self_update
     address: [ 127.0.0.1, ::1 ]
     action: update
@@ -51,7 +53,6 @@ acl:
 {% endif %}
 
 {% endfor %}
-
   - id: deny_others
     address: [ 0.0.0.0/0, ::/0 ]
     action: [ transfer ]
@@ -62,16 +63,18 @@ template:
     storage: "/var/db/knot"
     file: "%s.zone"
     global-module: mod-queryacl/default_deny
-
-zone:
-{% for domain in domains %}
-  - domain: {{ domain.name }}
-    notify: [ {% for ip in secondary_nameservers %}{% if loop.index != 1 %}, {% endif %}secondary_{{ loop.index }}{% endfor %} ]
     dnssec-signing: on
-    acl: [ secondary_transfer, self_update, deny_others ]
+    acl: [ {% if secondary_nameservers|length > 0 %}secondary_transfer, {% endif %}self_update, deny_others ]
     zonefile-sync: -1
     zonefile-load: {{ knot_zonefile_load }}
     journal-max-depth: 20
     journal-content: all
+{% if secondary_nameservers|length > 0 %}
+    notify: [ {% for ip in secondary_nameservers %}{% if loop.index != 1 %}, {% endif %}secondary_{{ loop.index }}{% endfor %} ]
+{% endif %}
+
+zone:
+{% for domain in domains %}
+  - domain: {{ domain.name }}
 
 {% endfor %}
