@@ -1,7 +1,7 @@
 server:
     rundir: "/var/run/knot"
     user: _knot:_knot
-    listen: [ {% if ipv4 is defined %}{{ ipv4 }}@53{% endif %}{% if ipv4 is defined and ipv6 is defined %}, {% endif %}{% if ipv6 is defined %}{{ ipv6 }}@53{% endif %} ]
+    listen: [ 0.0.0.0, :: ]
 
 log:
   - target: syslog
@@ -12,25 +12,47 @@ database:
 
 mod-queryacl:
   - id: default_deny
-    address: [ {% if ipv4 is defined %}{{ ipv4 }}{% endif %}{% if ipv4 is defined and ipv6 is defined %}, {% endif %}{% if ipv6 is defined %}{{ ipv6 }}{% endif %} ]
+    address: [ 127.0.0.1, ::1 ]
 
 remote:
-{% for ns in secondary_nameservers %}
+{% for ip in secondary_nameservers %}
   - id: secondary_{{ loop.index }}
-    address: {% if ns.ipv4 is defined %}{{ ns.ipv4 }}{% elif ns.ipv6 is defined %}{{ ns.ipv6 }}{% endif %}
+    address: {{ ip }}
 
 {% endfor %}
 
+{% if knot_key_count|int > 0 %}
+key:
+{% for kip in knot_allow_updates %}
+{% if kip.key is defined %}
+  - id: key_{{ loop.index }}
+    algorithm: {{ kip.key.algorithm | default('hmac-sha256') }}
+    secret: {{ kip.key.secret }}
+
+{% endif %}
+{% endfor %}
+{% endif %}
+
 acl:
   - id: secondary_transfer
-    address: [ {% for ns in secondary_nameservers %}{% if loop.index > 1 %}, {% endif %}{% if ns.ipv4 is defined %}{{ ns.ipv4 }}{% elif ns.ipv6 is defined %}{{ ns.ipv6 }}{% endif %}{% endfor %} ]
+    address: [ {{ secondary_nameservers | join(', ') }} ]
     action: transfer
 
   - id: self_update
-    address: [ {% if ipv4 is defined %}{{ ipv4 }}{% endif %}{% if ipv4 is defined and ipv6 is defined %}, {% endif %}{% if ipv6 is defined %}{{ ipv6 }}{% endif %} ]
+    address: [ 127.0.0.1, ::1 ]
     action: update
 
-  - id: others
+{% for kip in knot_allow_updates %}
+  - id: allow_{{ loop.index }}
+    address: [ {{ kip.ips | join(', ') }} ]
+    action: update
+{% if kip.key is defined %}
+    key: key_{{ loop.index }}
+{% endif %}
+
+{% endfor %}
+
+  - id: deny_others
     address: [ 0.0.0.0/0, ::/0 ]
     action: [ transfer ]
     deny: on
@@ -39,16 +61,16 @@ template:
   - id: default
     storage: "/var/db/knot"
     file: "%s.zone"
+    global-module: mod-queryacl/default_deny
 
 zone:
 {% for domain in domains %}
   - domain: {{ domain.name }}
-    notify: [ {% for ns in secondary_nameservers %}{% if loop.index > 1 %}, {% endif %}secondary_{{ loop.index }}{% endfor %} ]
+    notify: [ {% for ip in secondary_nameservers %}{% if loop.index != 1 %}, {% endif %}secondary_{{ loop.index }}{% endfor %} ]
     dnssec-signing: on
-    module: mod-queryacl/default_deny
-    acl: [ secondary_transfer, self_update ]
+    acl: [ secondary_transfer, self_update, deny_others ]
     zonefile-sync: -1
-    zonefile-load: difference-no-serial
+    zonefile-load: {{ knot_zonefile_load }}
     journal-max-depth: 20
     journal-content: all
 

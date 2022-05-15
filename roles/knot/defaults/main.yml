@@ -1,0 +1,3 @@
+---
+knot_allow_updates: []
+knot_zonefile_load: 'none'

@@ -1,0 +1,2 @@
+---
+knot_key_count: "{{ knot_allow_updates | selectattr('key', 'defined') | count }}"
