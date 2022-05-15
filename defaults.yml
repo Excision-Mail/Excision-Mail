@@ -16,7 +16,7 @@ extra_subdomains:
   - dav
   - webmail
 
-agg_subdomains: "{{ required_subdomains + extra_subdomains }}"
+subdomains: "{{ required_subdomains + extra_subdomains }}"
 
 timezone: "America/New_York"
 

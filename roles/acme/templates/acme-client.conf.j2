@@ -24,7 +24,7 @@ authority buypass-test {
 {% for domain in domains %}
 domain {{ mail_subdomain }}.{{ domain.name }} {
 	alternative names { \
-{% for sdomain in agg_subdomains %}
+{% for sdomain in subdomains %}
 		"{{ sdomain }}.{{ domain.name }}" \
 {% endfor %}
 	}
