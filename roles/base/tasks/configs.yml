@@ -103,16 +103,6 @@
     modification_time: preserve
     access_time: preserve
 
-- name: generate login.conf
-  copy:
-    src: login.conf
-    dest: /etc/login.conf
-    force: true
-    owner: root
-    group: wheel
-    mode: '0644'
-  notify: rebuild login database
-
 - name: add daily-report cron job
   cron:
     name: Excision daily-report
