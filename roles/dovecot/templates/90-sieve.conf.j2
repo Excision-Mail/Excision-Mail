@@ -92,7 +92,11 @@ plugin {
   # to the default. For example `sieve_extensions = +imapflags' will enable the
   # deprecated imapflags extension in addition to all extensions were already
   # enabled by default.
-  sieve_extensions = +spamtest +spamtestplus +virustest +notify +imapflags # (default: +notify +imapflags)
+  sieve_extensions = +spamtest +spamtestplus +virustest +notify +imapflags +vacation-seconds # (default: +notify +imapflags)
+
+  sieve_vacation_min_period = 30m
+  sieve_vacation_default_period = 5d
+  sieve_vacation_max_period = 30d
 
   # Spamtest and Virustest
   # https://wiki.dovecot.org/Pigeonhole/Sieve/Extensions/SpamtestVirustest
