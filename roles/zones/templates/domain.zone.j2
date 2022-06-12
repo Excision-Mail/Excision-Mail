@@ -52,7 +52,7 @@ $ORIGIN	{{ item.name }}.
 ; gives an extra layer of encryption
 ;; strict transport security
 ; somewhat like DANE but doesn't need DNSSEC
-{% for sdomain in subdomains %}
+{% for sdomain in {{ [ mail_subdomain ] + required_subdomains + extra_subdomains }} %}
 {% if ipv4 is defined %}
 {{ sdomain }}	IN	A	{{ ipv4 }}
 {% endif %}
