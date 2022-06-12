@@ -1,6 +1,4 @@
 ---
-subdomains: "{{ [ mail_subdomain ] + required_subdomains + extra_subdomains }}"
-
 hostname: "{{ mail_subdomain }}.{{ domains[0].name }}"
 
 enable_dns: "{{ domains | map(attribute='dns', default=False) is any}}"
