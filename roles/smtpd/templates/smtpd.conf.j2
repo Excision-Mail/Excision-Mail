@@ -92,6 +92,7 @@ listen on egress port smtps \
 {% endif %}
 	auth <passwd> received-auth \
 	senders <revirt> \
+    mask-src \
 	filter rspamd
 listen on egress port submission \
 	tls-require \
@@ -103,6 +104,7 @@ listen on egress port submission \
 {% endif %}
 	auth <passwd> received-auth \
 	senders <revirt> \
+    mask-src \
 	filter rspamd
 
 # Sending messages
